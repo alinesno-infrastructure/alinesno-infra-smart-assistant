@@ -1,0 +1,10 @@
+server:
+  port: 30304
+
+# spring 配置
+spring:
+  application:
+    name: alinesno-infra-smart-assistant-boot
+  devtools:
+    restart:
+      enabled: true
