@@ -167,9 +167,9 @@ jobs:
           WELCOME: "ssh pipeline"
         with:
           host: ${{ secrets.SERVER_BATA_HOST_01 }}
-          user: ${{ secrets.SERVER_BATA_USER_01 }}
-          pass: ${{ secrets.SERVER_BATA_KEY_01 }}
           port: ${{ secrets.SERVER_BATA_PORT }}
+          user: ${{ secrets.SERVER_BATA_USER_01 }}
+          pass: ${{ secrets.SERVER_BATA_KEY_01 }} 
           connect_timeout: 20s
           script: |
             (rm -rf /home/github/test || true)
