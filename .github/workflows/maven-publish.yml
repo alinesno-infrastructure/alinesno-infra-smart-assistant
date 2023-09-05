@@ -150,24 +150,14 @@ jobs:
                         -Djib.to.tags=${{ env.PRO_VERSION }}.${{ env.BUILD_NUMBER }} \
                         -Djib.to.auth.username=${{secrets.ALIYUN_CR_USERNAME}} \
                         -Djib.to.auth.password=${{secrets.ALIYUN_CR_PASSWORD}}
-
-      - name: Run sshpass commands
-        uses: matheusvanzan/sshpass-action@v2
-        with:
-          host: ${{ secrets.SERVER_BATA_HOST_01 }}
-          user: ${{ secrets.SERVER_BATA_USER_01 }}
-          key: ${{ secrets.SERVER_BATA_KEY_01 }}
-          run: |
-            pwd
-            ls -lha
-
+ 
       - name: ssh pipelines
         uses: cross-the-world/ssh-pipeline@master
         env:
           WELCOME: "ssh pipeline"
         with:
           host: ${{ secrets.SERVER_BATA_HOST_01 }}
-          port: ${{ secrets.SERVER_BATA_PORT }}
+          port: ${{ secrets.SERVER_BATA_PORT_01 }}
           user: ${{ secrets.SERVER_BATA_USER_01 }}
           pass: ${{ secrets.SERVER_BATA_KEY_01 }} 
           connect_timeout: 20s
