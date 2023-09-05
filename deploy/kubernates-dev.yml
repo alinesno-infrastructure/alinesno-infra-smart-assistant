@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ${{ env.PROJECT_NAME }}-deployment
+  namespace: alinesno-infrastructure
+  labels:
+    app: ${{ env.PROJECT_NAME }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: ${{ env.PROJECT_NAME }}
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ${{ env.PROJECT_NAME }}
+    spec:
+      imagePullSecrets:
+      - name: docker-login
+      containers:
+      - name: ${{ env.PROJECT_NAME }}
+        image: ${{ALIYUN_CR_REGISTORY}}/${{ env.ALIYUN_CR_NAMESPACE }} /${{ env.PROJECT_NAME }}-${{ env.PRO_VERSION }}.${{ env.BUILD_NUMBER }} 
+        ports:
+        - containerPort: 30304 
+          protocol: TCP
+        env:
+          - name: SPRING_APPLICATION_NAME
+            value: '${{ env.PROJECT_NAME }}'
+        livenessProbe:
+          tcpSocket:
+            port: 30304
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 45
+        imagePullPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${{ env.PROJECT_NAME }}-svc
+  namespace: alinesno-infrastructure
+  labels:
+    app: ${{ env.PROJECT_NAME }}
+spec:
+  ports:
+    - name: http-boot
+      protocol: TCP
+      port: 30304 
+      targetPort: 30304 
+  selector:
+    app: ${{ env.PROJECT_NAME }}
+  type: ClusterIP
+
+
+--- 
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ${{ env.PROJECT_NAME }}-ingress
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - host: "${{secrets.ALINESNO_INFRA_SMART_ASSISTANT_SERVICE}}"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: ${{ env.PROJECT_NAME }}-svc
+            port:
+              number: 30304
