@@ -169,7 +169,7 @@ jobs:
           host: ${{ secrets.SERVER_BATA_HOST_01 }}
           user: ${{ secrets.SERVER_BATA_USER_01 }}
           pass: ${{ secrets.SERVER_BATA_KEY_01 }}
-          port: ${{ secrets.SERVER_BATA_PORT_01 }}
+          port: ${{ secrets.SERVER_BATA_PORT }}
           connect_timeout: 20s
           script: |
             (rm -rf /home/github/test || true)
