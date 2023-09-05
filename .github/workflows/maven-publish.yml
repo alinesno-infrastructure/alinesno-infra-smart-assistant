@@ -149,7 +149,7 @@ jobs:
         run: |
           mvn -B -U -f ${{ env.PROJECT_NAME }}/pom.xml clean compile jib:build \
                         -Ddocker.registry.name=${{ env.ALIYUN_CR_NAMESPACE }} \
-                        -Djib.to.tags=${{ env.PRO_VERSION }}.${{ env.BUILD_NUMBER }} \
+                        -Djib.to.tags=${{ env.PRO_VERSION }} \
                         -Djib.to.auth.username=${{secrets.ALIYUN_CR_USERNAME}} \
                         -Djib.to.auth.password=${{secrets.ALIYUN_CR_PASSWORD}}
 
@@ -164,11 +164,5 @@ jobs:
           pass: ${{ secrets.SERVER_BATA_KEY_01 }}
           connect_timeout: 20s
           script: |
-            docker rm -f ${{ env.PROJECT_NAME }} || true
-            docker run \
-              -e JAVA_TOOL_OPTIONS="-Dlogging.config=classpath:logback/logback-spring.xml" \
-              -p ${{ env.EXPOSE_PORT }}:${{ env.DOCKER_PORT}} \
-              --name ${{ env.PROJECT_NAME }} \
-              --restart="always" \
-              -d ${{ env.ALIYUN_CR_REGISTORY}}/${{ env.ALIYUN_CR_NAMESPACE }} /${{ env.PROJECT_NAME }}:${{ env.PRO_VERSION }}.${{ env.BUILD_NUMBER }}
+            kubectl apply -f /home/github/alinesno-infra-smart-assistant-boot/${{ env.PROJECT_NAME }}
 
