@@ -162,8 +162,4 @@ jobs:
           pass: ${{ secrets.SERVER_BATA_KEY_01 }} 
           connect_timeout: 20s
           script: |
-            (rm -rf /home/github/test || true)
-            ls -la  
-            echo $WELCOME 
-            mkdir -p /home/github/test/test1 && 
-            mkdir -p /home/github/test/test2 &&
+            (rm -rf /home/github/test || true) 
