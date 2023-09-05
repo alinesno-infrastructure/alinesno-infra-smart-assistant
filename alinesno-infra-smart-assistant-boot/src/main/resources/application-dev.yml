@@ -8,3 +8,8 @@ spring:
   devtools:
     restart:
       enabled: true
+
+# wechat token
+alinesno.infra.smart:
+  wechat:
+    token: xxxxx
