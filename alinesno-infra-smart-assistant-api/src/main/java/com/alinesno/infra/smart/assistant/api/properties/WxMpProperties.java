@@ -2,8 +2,10 @@ package com.alinesno.infra.smart.assistant.api.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import java.util.List;
-
+/**
+ * 微信公众号配置属性类
+ * 该类用于读取和设置微信公众号的相关配置信息
+ */
 @ConfigurationProperties(prefix = "alinesno.infra.smart.wechat")
 public class WxMpProperties {
     /*
