@@ -164,7 +164,7 @@ jobs:
           pass: ${{ secrets.SERVER_BATA_KEY_01 }}
           connect_timeout: 20s
           script: |
-            (docker rm -f ${{ env.PROJECT_NAME }} || true)
+            # (docker rm -f ${{ env.PROJECT_NAME }} || true)
             docker run \
               -e JAVA_TOOL_OPTIONS="-Dlogging.config=classpath:logback/logback-spring.xml" \
               -p ${{ env.EXPOSE_PORT }}:${{ env.DOCKER_PORT}} \
