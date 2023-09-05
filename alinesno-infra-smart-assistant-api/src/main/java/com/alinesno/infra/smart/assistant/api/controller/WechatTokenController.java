@@ -1,7 +1,7 @@
 package com.alinesno.infra.smart.assistant.api.controller;
 
 import com.alinesno.infra.common.web.adapter.utils.StringUtils;
-import me.chanjar.weixin.mp.api.WxMpService;
+import com.alinesno.infra.smart.assistant.api.utils.SignUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class WechatTokenController {
     private static final Logger log = LoggerFactory.getLogger(WechatTokenController.class);
 
     @Autowired
-    private WxMpService wxService;
+    private SignUtil signUtil;
 
     /**
      * 微信对接接口，用于验证微信消息的合法性。
@@ -42,7 +42,7 @@ public class WechatTokenController {
         if (StringUtils.isAnyBlank(signature, timestamp, nonce, echostr)) {
             throw new IllegalArgumentException("请求参数非法，请核实!");
         }
-        if (wxService.checkSignature(timestamp, nonce, signature)) {
+        if (signUtil.checkSignature(signature, timestamp, nonce)) {
             return echostr;
         }
         return "非法请求";

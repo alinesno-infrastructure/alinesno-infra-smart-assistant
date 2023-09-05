@@ -5,6 +5,11 @@ server:
 spring:
   application:
     name: alinesno-infra-smart-assistant-boot
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: aip@local
   devtools:
     restart:
       enabled: true
