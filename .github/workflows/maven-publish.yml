@@ -17,13 +17,12 @@ jobs:
       # 版本管理
       PROJECT_NAME: 'alinesno-infra-smart-assistant-boot'
       PRO_VERSION: '1.0.0-SNAPSHOT'
+      CURRENT_PROFIRE: 'dev'
       BUILD_NUMBER: ${{ github.run_number }}
 
       # 容器镜像
       ALIYUN_CR_REGISTORY: 'registry.cn-shenzhen.aliyuncs.com'
       ALIYUN_CR_NAMESPACE: 'alinesno-infra-platform'
-      EXPOSE_PORT: 30304
-      DOCKER_PORT: 30304
 
     steps:
       - uses: actions/checkout@v3
@@ -153,6 +152,16 @@ jobs:
                         -Djib.to.auth.username=${{secrets.ALIYUN_CR_USERNAME}} \
                         -Djib.to.auth.password=${{secrets.ALIYUN_CR_PASSWORD}}
 
+      - name: local remote scp
+        uses: cross-the-world/scp-pipeline@master
+        with:
+          host: ${{ secrets.SERVER_BATA_HOST_01 }}
+          port: ${{ secrets.SERVER_BATA_PORT_01 }}
+          user: ${{ secrets.SERVER_BATA_USER_01 }}
+          pass: ${{ secrets.SERVER_BATA_KEY_01 }}
+          local: "./deploy/*"
+          remote: /home/github-action/
+
       - name: SSH Pipelines
         uses: cross-the-world/ssh-pipeline@master
         env:
@@ -162,8 +171,18 @@ jobs:
           port: ${{ secrets.SERVER_BATA_PORT_01 }}
           user: ${{ secrets.SERVER_BATA_USER_01 }}
           pass: ${{ secrets.SERVER_BATA_KEY_01 }}
-          connect_timeout: 20s
+          connect_timeout: 30s
           script: |
+            export PROJECT_NAME=${{ env.PROJECT_NAME }}
             export VERSION=${{ env.PRO_VERSION }}.${{ env.BUILD_NUMBER }}
-            envsubst < /home/github/alinesno-infra-smart-assistant-boot/${{ env.PROJECT_NAME }}.yaml | kubectl apply -f -
+
+            export ALIYUN_CR_REGISTORY=${{ env.ALIYUN_CR_REGISTORY }}
+            export ALIYUN_CR_NAMESPACE=${{ env.ALIYUN_CR_NAMESPACE }}
+            export NAMESPACE=${{ secrets.K8S_NAMESPACE }}
+
+            export REDIS_HOST=${{ secrets.REDIS_HOST }}
+            export WECHAT_MP_TOKEN=${{ secrets.WECHAT_MP_TOKEN }}
+            export INFRA_DEV_DOMAIN=${{ secrets.INFRA_DEV_DOMAIN }}
+
+            envsubst < /home/github-action/kubernetes-${{ env.CURRENT_PROFIRE }}.yaml | kubectl apply -f -
 
