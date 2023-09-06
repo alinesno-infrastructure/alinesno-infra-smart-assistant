@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.smart.assistant.api.request.*;
 import com.alinesno.infra.smart.assistant.api.response.TextMessageRes;
 import com.alinesno.infra.smart.assistant.api.utils.MessageUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.Map;
@@ -13,6 +15,8 @@ import java.util.Map;
  * 该类用于处理不同类型的微信消息，并进行相应的处理逻辑
  */
 public class MsgDispatcher {
+
+    private static final Logger log = LoggerFactory.getLogger(MsgDispatcher.class) ;
 
     /**
      * 处理微信消息
@@ -36,7 +40,6 @@ public class MsgDispatcher {
             TextMessageReq textMessage = JSONObject.parseObject(jsonString, TextMessageReq.class);
 
             textMessageRes.setContent("你好，这里是测试回复");
-
             return MessageUtil.textMessageToXml(textMessageRes);
         }
 
@@ -71,6 +74,10 @@ public class MsgDispatcher {
             String jsonString = JSONObject.toJSONString(map);
             VoiceMessageReq voiceMessage = JSONObject.parseObject(jsonString, VoiceMessageReq.class);
 
+            log.debug("voiceMessage = {}" , JSONObject.toJSON(voiceMessage));
+
+            textMessageRes.setContent("你好，这里是语音回复");
+            return MessageUtil.textMessageToXml(textMessageRes);
         }
         return "";
     }
