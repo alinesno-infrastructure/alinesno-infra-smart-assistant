@@ -180,7 +180,7 @@ jobs:
             export ALIYUN_CR_NAMESPACE=${{ env.ALIYUN_CR_NAMESPACE }}
             export NAMESPACE=${{ secrets.K8S_NAMESPACE }}
 
-            export REDIS_HOST=${{ secrets.REDIS_HOST }}
+            export REDIS_HOST=${{ secrets.DEV_REDIS_HOST }}
             export WECHAT_MP_TOKEN=${{ secrets.WECHAT_MP_TOKEN }}
             export INFRA_DEV_DOMAIN=${{ secrets.INFRA_DEV_DOMAIN }}
 
