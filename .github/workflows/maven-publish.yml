@@ -146,7 +146,7 @@ jobs:
           wget -q https://s.murphysec.com/release/install.sh -O - | /bin/bash
 
       - name: Code scan
-        run: murphysec  scan . --token ${{ secrets.MURPHYSEC_TOKEN }} --json >scan_results.json
+        run: murphysec scan . --token ${{ secrets.MURPHYSEC_TOKEN }}  --log-level debug
 
       - name: Build and Deploy to Nexus
         run: mvn clean deploy --settings nexus-config.xml
