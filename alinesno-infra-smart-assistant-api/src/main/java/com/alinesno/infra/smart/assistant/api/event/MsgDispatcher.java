@@ -76,7 +76,11 @@ public class MsgDispatcher {
 
             log.debug("voiceMessage = {}" , JSONObject.toJSON(voiceMessage));
 
-            textMessageRes.setContent("你好，这里是语音回复");
+            String recognition = voiceMessage.getRecognition() ;
+
+            String replayMsg = "接入AIP大脑的信息:\n" + recognition ;
+
+            textMessageRes.setContent(replayMsg);
             return MessageUtil.textMessageToXml(textMessageRes);
         }
         return "";
