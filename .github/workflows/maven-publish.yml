@@ -149,7 +149,7 @@ jobs:
         run: |
           mvn -B -U -f ${{ env.PROJECT_NAME }}/pom.xml clean compile jib:build \
                         -Ddocker.registry.name=${{ env.ALIYUN_CR_NAMESPACE }} \
-                        -Djib.to.tags=${{ env.PRO_VERSION }} \
+                        -Djib.to.tags=${{ env.PRO_VERSION }}.${{ env.BUILD_NUMBER }} \
                         -Djib.to.auth.username=${{secrets.ALIYUN_CR_USERNAME}} \
                         -Djib.to.auth.password=${{secrets.ALIYUN_CR_PASSWORD}}
 
@@ -164,5 +164,6 @@ jobs:
           pass: ${{ secrets.SERVER_BATA_KEY_01 }}
           connect_timeout: 20s
           script: |
-            kubectl apply -f /home/github/alinesno-infra-smart-assistant-boot/${{ env.PROJECT_NAME }}
+            export VERSION=${{ env.PRO_VERSION }}.${{ env.BUILD_NUMBER }}
+            envsubst < /home/github/alinesno-infra-smart-assistant-boot/${{ env.PROJECT_NAME }}.yaml | kubectl apply -f -
 
