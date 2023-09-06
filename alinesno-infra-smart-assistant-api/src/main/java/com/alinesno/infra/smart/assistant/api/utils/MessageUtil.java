@@ -140,7 +140,7 @@ public class MessageUtil {
      * 对象到xml的处理
      **/
     @SuppressWarnings("unused")
-    private static XStream xstream = new XStream(new XppDriver() {
+    private static final XStream xstream = new XStream(new XppDriver() {
         public HierarchicalStreamWriter createWriter(Writer out) {
             return new PrettyPrintWriter(out) {
                 // 对所有xml节点的转换都增加CDATA标记

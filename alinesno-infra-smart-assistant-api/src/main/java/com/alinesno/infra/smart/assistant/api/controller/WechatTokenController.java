@@ -47,4 +47,7 @@ public class WechatTokenController {
         }
         return "非法请求";
     }
+
+
+
 }
