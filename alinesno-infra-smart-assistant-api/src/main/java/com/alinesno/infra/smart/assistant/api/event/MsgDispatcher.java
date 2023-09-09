@@ -1,6 +1,8 @@
 package com.alinesno.infra.smart.assistant.api.event;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alinesno.infra.common.core.context.SpringContext;
+import com.alinesno.infra.smart.assistant.adapter.SmartBrainConsumer;
 import com.alinesno.infra.smart.assistant.api.request.*;
 import com.alinesno.infra.smart.assistant.api.response.TextMessageRes;
 import com.alinesno.infra.smart.assistant.api.utils.MessageUtil;
@@ -25,6 +27,8 @@ public class MsgDispatcher {
      * @return 返回处理后的响应消息
      */
     public static String processMessage(Map<String, String> map) {
+
+        SmartBrainConsumer smartBrainConsumer = SpringContext.getBean(SmartBrainConsumer.class) ;
 
         String openid = map.get("FromUserName"); //用户openid
         String mpid = map.get("ToUserName");   //公众号原始ID
@@ -76,9 +80,9 @@ public class MsgDispatcher {
 
             log.debug("voiceMessage = {}" , JSONObject.toJSON(voiceMessage));
 
-            String recognition = voiceMessage.getRecognition() ;
+            String recognition = smartBrainConsumer.chatProcess(voiceMessage.getRecognition()) ;
 
-            String replayMsg = "接入AIP大脑的信息:\n" + recognition ;
+            String replayMsg = "推理结果:\n" + recognition ;
 
             textMessageRes.setContent(replayMsg);
             return MessageUtil.textMessageToXml(textMessageRes);

@@ -15,6 +15,9 @@ spring:
       enabled: true
 
 # wechat token
-alinesno.infra.smart:
-  wechat:
-    token: xxxxx
+alinesno.infra:
+  gateway:
+    host:
+  smart:
+    wechat:
+      token: xxxxx
