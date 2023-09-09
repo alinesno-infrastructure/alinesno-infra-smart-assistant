@@ -43,7 +43,10 @@ public class MsgDispatcher {
             String jsonString = JSONObject.toJSONString(map);
             TextMessageReq textMessage = JSONObject.parseObject(jsonString, TextMessageReq.class);
 
-            textMessageRes.setContent("你好，这里是测试回复");
+            String recognition = smartBrainConsumer.chatProcess(textMessage.getContent()) ;
+            String replayMsg = "推理结果:\n" + recognition ;
+
+            textMessageRes.setContent(replayMsg);
             return MessageUtil.textMessageToXml(textMessageRes);
         }
 
