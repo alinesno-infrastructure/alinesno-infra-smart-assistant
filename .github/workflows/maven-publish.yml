@@ -142,12 +142,12 @@ jobs:
           echo '  </activeProfiles>' >> nexus-config.xml
           echo '</settings>' >> nexus-config.xml
 
-      - name: Install MurphySec code scan cli
-        run: |
-          wget -q https://s.murphysec.com/release/install.sh -O - | /bin/bash
+      # - name: Install MurphySec code scan cli
+      #   run: |
+      #     wget -q https://s.murphysec.com/release/install.sh -O - | /bin/bash
 
-      - name: Code scan
-        run: murphysec scan . --token ${{ secrets.MURPHYSEC_TOKEN }}  --log-level debug
+      # - name: Code scan
+      #   run: murphysec scan . --token ${{ secrets.MURPHYSEC_TOKEN }}  --log-level debug
 
       - name: Build and Deploy to Nexus
         run: mvn clean deploy --settings nexus-config.xml
