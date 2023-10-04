@@ -209,7 +209,7 @@ jobs:
             export REDIS_HOST=${{ secrets.DEV_REDIS_HOST }}
 
             export WECHAT_MP_TOKEN=${{ secrets.WECHAT_MP_TOKEN }}
-            export INFRA_DEV_DOMAIN=${{ secrets.INFRA_DEV_DOMAIN }}
+            export INFRA_DEV_DOMAIN=${{ secrets.INFRA_BETA_SMART_DOMAIN }}
 
             envsubst < /home/github-action/kubernetes-${{ env.CURRENT_PROFIRE }}.yml | kubectl apply -f -
 
