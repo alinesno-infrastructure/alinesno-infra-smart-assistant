@@ -44,7 +44,7 @@ public class MsgDispatcher {
             TextMessageReq textMessage = JSONObject.parseObject(jsonString, TextMessageReq.class);
 
             String recognition = smartBrainConsumer.chatProcess(textMessage.getContent()) ;
-            String replayMsg = "推理结果:\n" + recognition ;
+            String replayMsg = "AI推理结果:\n" + recognition ;
 
             textMessageRes.setContent(replayMsg);
             return MessageUtil.textMessageToXml(textMessageRes);
@@ -85,7 +85,7 @@ public class MsgDispatcher {
 
             String recognition = smartBrainConsumer.chatProcess(voiceMessage.getRecognition()) ;
 
-            String replayMsg = "推理结果:\n" + recognition ;
+            String replayMsg = "AI推理结果:\n" + recognition ;
 
             textMessageRes.setContent(replayMsg);
             return MessageUtil.textMessageToXml(textMessageRes);
