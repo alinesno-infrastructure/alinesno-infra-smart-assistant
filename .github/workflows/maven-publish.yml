@@ -207,6 +207,7 @@ jobs:
             export INFRA_GAGTEWAY=${{ secrets.DEV_INFRA_GATEWAY_PROXY }}
 
             export REDIS_HOST=${{ secrets.DEV_REDIS_HOST }}
+            export REDIS_KEY=${{ secrets.DEV_REDIS_KEY }}
 
             export DB_MYSQL_URL=${{ secrets.DEV_DB_MYSQL_URL }}
             export DB_MYSQL_USRENAME=${{ secrets.DEV_DB_MYSQL_USRENAME }}
