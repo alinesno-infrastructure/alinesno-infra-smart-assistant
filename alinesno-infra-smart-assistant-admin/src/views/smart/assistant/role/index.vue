@@ -5,12 +5,12 @@
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
 
-          <el-form-item label="应用名称" prop="applicationName">
-            <el-input v-model="queryParams['condition[applicationName|like]']" placeholder="请输入应用名称" clearable
+          <el-form-item label="角色名称" prop="roleName">
+            <el-input v-model="queryParams['condition[roleName|like]']" placeholder="请输入角色名称" clearable
                       style="width: 240px" @keyup.enter="handleQuery"/>
           </el-form-item>
-          <el-form-item label="显示名称" prop="showName" label-width="100px">
-            <el-input v-model="queryParams['condition[showName|like]']" placeholder="请输入显示名称" clearable
+          <el-form-item label="角色描述" prop="responsibilities" label-width="100px">
+            <el-input v-model="queryParams['condition[responsibilities|like]']" placeholder="请输入角色描述" clearable
                       style="width: 240px" @keyup.enter="handleQuery"/>
           </el-form-item>
 
@@ -58,34 +58,51 @@
 
         <el-table v-loading="loading" :data="ApplicationList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center"/>
-          <el-table-column label="图标" align="center" width="55px" prop="icon" v-if="columns[0].visible">
-          </el-table-column>
-          <el-table-column label="应用名称" align="center" key="applicationName" prop="applicationName"
-                           v-if="columns[1].visible" :show-overflow-tooltip="true"/>
-          <el-table-column label="显示名称" align="center" key="showName" prop="showName" v-if="columns[2].visible"
-                           :show-overflow-tooltip="true"/>
-          <el-table-column label="所属领域" align="center" key="domain" prop="domain" v-if="columns[3].visible"
-                           :show-overflow-tooltip="true"/>
-          <el-table-column label="域名" align="center" key="domainName" prop="domainName" v-if="columns[4].visible"
-                           :show-overflow-tooltip="true"/>
-          <el-table-column label="安全存储路径" align="center" key="storagePath" prop="storagePath"
-                           v-if="columns[5].visible" :show-overflow-tooltip="true"/>
-          <el-table-column label="应用目标" align="center" key="target" prop="target" v-if="columns[6].visible"
-                           :show-overflow-tooltip="true"/>
-          <el-table-column label="创建时间" align="center" prop="addTime" v-if="columns[7].visible" width="160">
+          <el-table-column label="图标" align="center" width="80px" prop="icon" v-if="columns[0].visible">
             <template #default="scope">
-              <span>{{ parseTime(scope.row.addTime) }}</span>
+              <div class="role-icon">
+                <img :src="'http://data.linesno.com/icons/circle/Delivery boy-' + (scope.$index + 1)+ '.png'" />
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="角色名称" align="left" width="150" key="roleName" prop="roleName" v-if="columns[1].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <span style="font-size: 15px;font-weight: 500;color: #3b5998;">
+                {{ scope.row.roleName }}
+              </span>
+            </template>
+          </el-table-column>
+          <el-table-column label="角色描述" align="left" key="responsibilities" prop="responsibilities" v-if="columns[2].visible" :show-overflow-tooltip="true"/>
+          <el-table-column label="所属领域" align="center" width="150" key="domain" prop="domain" v-if="columns[3].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              软件开发
+            </template>
+          </el-table-column>
+          <el-table-column label="知识库" align="center" width="130"  key="domainName" prop="domainName" v-if="columns[4].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <el-button type="primary" text bg icon="CopyDocument">导入库</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="角色技能" align="center" width="130"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <el-button type="primary" text bg icon="Paperclip">配置(2)</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column label="数据集" align="center" width="130"  key="target" prop="target" v-if="columns[6].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <el-button type="primary" text bg icon="Link">向量化</el-button>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" v-if="columns[8].visible">
             <template #default="scope">
-              <el-tooltip content="修改" placement="top" v-if="scope.row.applicationId !== 1">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                           v-hasPermi="['system:Application:edit']"></el-button>
+              <el-tooltip content="对话记录" placement="top" v-if="scope.row.applicationId !== 1">
+                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:Application:edit']"></el-button>
+              </el-tooltip>
+              <el-tooltip content="对话记录" placement="top" v-if="scope.row.applicationId !== 1">
+                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:Application:edit']"></el-button>
               </el-tooltip>
               <el-tooltip content="删除" placement="top" v-if="scope.row.applicationId !== 1">
-                <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                           v-hasPermi="['system:Application:remove']"></el-button>
+                <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:Application:remove']"></el-button>
               </el-tooltip>
 
             </template>
@@ -106,15 +123,15 @@
       <el-form :model="form" :rules="rules" ref="ApplicationRef" label-width="80px">
         <el-row>
           <el-col :span="24">
-            <el-form-item  label="应用名称" prop="applicationName">
-              <el-input v-model="form.applicationName" placeholder="请输入应用名称" maxlength="50"/>
+            <el-form-item  label="角色名称" prop="roleName">
+              <el-input v-model="form.roleName" placeholder="请输入角色名称" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="显示名称" prop="showName">
-              <el-input v-model="form.showName" placeholder="请输入显示名称" maxlength="50"/>
+            <el-form-item label="角色描述" prop="responsibilities">
+              <el-input v-model="form.responsibilities" placeholder="请输入角色描述" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -206,7 +223,7 @@ import {
   getApplication,
   updateApplication,
   addApplication,
-} from "@/api/smart/assistant/application";
+} from "@/api/smart/assistant/role";
 import {reactive} from "vue";
 
 const router = useRouter();
@@ -246,8 +263,8 @@ const upload = reactive({
 // 列显隐信息
 const columns = ref([
   {key: 0, label: `图标`, visible: true},
-  {key: 1, label: `应用名称`, visible: true},
-  {key: 2, label: `显示名称`, visible: true},
+  {key: 1, label: `角色名称`, visible: true},
+  {key: 2, label: `角色描述`, visible: true},
   {key: 3, label: `所属领域`, visible: true},
   {key: 4, label: `域名`, visible: true},
   {key: 5, label: `安全存储路径`, visible: true},
@@ -262,21 +279,21 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    ApplicationName: undefined,
-    applicationName: undefined,
-    showName: undefined,
+    roleName: undefined,
+    roleName: undefined,
+    responsibilities: undefined,
     status: undefined,
     deptId: undefined
   },
   rules: {
     applicationId: [{required: true, message: "应用编号不能为空", trigger: "blur"}],
-    applicationName: [{required: true, message: "应用名称不能为空", trigger: "blur"}, {
+    roleName: [{required: true, message: "角色名称不能为空", trigger: "blur"}, {
       min: 2,
       max: 20,
-      message: "应用名称长度必须介于 2 和 20 之间",
+      message: "角色名称长度必须介于 2 和 20 之间",
       trigger: "blur"
     }],
-    showName: [{required: true, message: "显示名称不能为空", trigger: "blur"}],
+    responsibilities: [{required: true, message: "角色描述不能为空", trigger: "blur"}],
     domain: [{required: true, message: "所属领域不能为空", trigger: "blur"}],
     domainName: [{required: true, message: "域名不能为空", trigger: "blur"}],
     storagePath: [{required: true, message: "安全存储路径不能为空", trigger: "blur"}],
@@ -309,8 +326,8 @@ function handleQuery() {
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
-  queryParams.value.applicationName = undefined;
-  queryParams.value.showName = undefined;
+  queryParams.value.roleName = undefined;
+  queryParams.value.responsibilities = undefined;
   proxy.$refs.deptTreeRef.setCurrentKey(null);
   handleQuery();
 };
@@ -339,8 +356,8 @@ function handleSelectionChange(selection) {
 function reset() {
   form.value = {
     applicationId: undefined,
-    applicationName: undefined,
-    showName: undefined,
+    roleName: undefined,
+    responsibilities: undefined,
     domain: undefined,
     domainName: undefined,
     storagePath: undefined,
@@ -398,3 +415,12 @@ function submitForm() {
 
 getList();
 </script>
+
+<style lang="scss" scoped>
+.role-icon {
+  img {
+    width:45px;
+    height:45px;
+  }
+}
+</style>
