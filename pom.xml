@@ -25,6 +25,8 @@
         <module>alinesno-infra-smart-assistant-facade</module>  <!-- 接口和引用 -->
         <module>alinesno-infra-smart-assistant-domain</module>  <!-- 领域服务 -->
         <module>alinesno-infra-smart-assistant-adapter</module> <!-- 适配层 -->
+        <module>alinesno-infra-smart-assistant-role</module> <!-- 角色服务 -->
+        <module>alinesno-infra-smart-assistant-im</module> <!-- 第三方IM通信 -->
         <module>alinesno-infra-smart-assistant-api</module>  <!-- 接口服务 -->
         <module>alinesno-infra-smart-assistant-client</module>  <!-- 对外引用 -->
         <module>alinesno-infra-smart-assistant-boot</module>  <!-- 启动服务 -->
