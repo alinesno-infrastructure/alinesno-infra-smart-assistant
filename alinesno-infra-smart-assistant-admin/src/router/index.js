@@ -80,10 +80,10 @@ export const constantRoutes = [
 
       // >>>>>>>>>>>>>>>>>>>> assistant_router_start >>>>>>>>>>>>>>>>>>
       {
-        path: '/smart/assistant/application/index',
-        component: () => import('@/views/smart/assistant/application/index'),
-        name: '/smart/assistant/application/index',
-        meta: { title: '应用管理', icon: 'dashboard', affix: true }
+        path: '/smart/assistant/apikey/index',
+        component: () => import('@/views/smart/assistant/apikey/index'),
+        name: '/smart/assistant/apikey/index',
+        meta: { title: '密钥管理', icon: 'dashboard', affix: true }
       },
       {
         path: '/smart/assistant/role/index',
@@ -98,15 +98,15 @@ export const constantRoutes = [
         meta: { title: '渠道管理', icon: 'dashboard', affix: true }
       },
       {
-        path: '/smart/assistant/dataloader/index',
-        component: () => import('@/views/smart/assistant/dataloader/index'),
-        name: '/smart/assistant/dataloader/index',
+        path: '/smart/assistant/loaderData/index',
+        component: () => import('@/views/smart/assistant/loaderData/index'),
+        name: '/smart/assistant/loaderData/index',
         meta: { title: '数据管理', icon: 'dashboard', affix: true }
       },
       {
-        path: '/smart/assistant/logger/index',
-        component: () => import('@/views/smart/assistant/logger/index'),
-        name: '/smart/assistant/logger/index',
+        path: '/smart/assistant/requestRecord/index',
+        component: () => import('@/views/smart/assistant/requestRecord/index'),
+        name: '/smart/assistant/requestRecord/index',
         meta: { title: '调用日志', icon: 'dashboard', affix: true }
       },
       // >>>>>>>>>>>>>>>>>>>> assistant_router_end >>>>>>>>>>>>>>>>>>

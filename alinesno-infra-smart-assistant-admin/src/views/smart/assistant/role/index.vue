@@ -61,24 +61,36 @@
           <el-table-column label="图标" align="center" width="80px" prop="icon" v-if="columns[0].visible">
             <template #default="scope">
               <div class="role-icon">
-                <img :src="'http://data.linesno.com/icons/circle/Delivery boy-' + (scope.$index + 1)+ '.png'" />
+                <img :src="'http://data.linesno.com/icons/circle/Delivery boy-' + ((scope.$index + 1)%5 + 1) + '.png'" />
               </div>
             </template>
           </el-table-column>
           <el-table-column label="角色名称" align="left" width="150" key="roleName" prop="roleName" v-if="columns[1].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <span style="font-size: 15px;font-weight: 500;color: #3b5998;">
+              <div style="font-size: 15px;font-weight: 500;color: #3b5998;">
                 {{ scope.row.roleName }}
-              </span>
+              </div>
+              <div style="font-size: 13px;color: #a5a5a5;">
+                 {{ scope.row.roleLevel }}
+              </div>
             </template>
           </el-table-column>
-          <el-table-column label="角色描述" align="left" key="responsibilities" prop="responsibilities" v-if="columns[2].visible" :show-overflow-tooltip="true"/>
+          <el-table-column label="角色描述" align="left" key="responsibilities" prop="responsibilities" v-if="columns[2].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <div>
+                {{ scope.row.responsibilities }}
+              </div>
+              <div style="font-size: 13px;color: #a5a5a5;">
+                会话次数: 12734 有效沟通:198312
+              </div>
+            </template>
+          </el-table-column>
           <el-table-column label="所属领域" align="center" width="150" key="domain" prop="domain" v-if="columns[3].visible" :show-overflow-tooltip="true">
             <template #default="scope">
               软件开发
             </template>
           </el-table-column>
-          <el-table-column label="知识库" align="center" width="130"  key="domainName" prop="domainName" v-if="columns[4].visible" :show-overflow-tooltip="true">
+          <el-table-column label="知识库" align="center" width="130"  key="roleLevel" prop="roleLevel" v-if="columns[4].visible" :show-overflow-tooltip="true">
             <template #default="scope">
               <el-button type="primary" text bg icon="CopyDocument">导入库</el-button>
             </template>
@@ -96,7 +108,7 @@
           <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" v-if="columns[8].visible">
             <template #default="scope">
               <el-tooltip content="对话记录" placement="top" v-if="scope.row.applicationId !== 1">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:Application:edit']"></el-button>
+                <el-button link type="primary" icon="ChatLineSquare" @click="handleUpdate(scope.row)" v-hasPermi="['system:Application:edit']"></el-button>
               </el-tooltip>
               <el-tooltip content="对话记录" placement="top" v-if="scope.row.applicationId !== 1">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:Application:edit']"></el-button>
@@ -138,8 +150,8 @@
 
         <el-row>
           <el-col :span="24">
-            <el-form-item label="域名" prop="domainName">
-              <el-input v-model="form.domainName" placeholder="请输入域名" maxlength="100"/>
+            <el-form-item label="角色级别" prop="roleLevel">
+              <el-input v-model="form.roleLevel" placeholder="请输入角色级别" maxlength="100"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -151,20 +163,6 @@
           </el-col>
         </el-row>
 
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="安全存储路径" prop="storagePath" label-width="107px">
-              <el-input v-model="form.storagePath" placeholder="请输入安全存储路径" maxlength="200"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="应用目标" prop="target">
-              <el-input v-model="form.target" placeholder="请输入应用目标" maxlength="20"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -266,7 +264,7 @@ const columns = ref([
   {key: 1, label: `角色名称`, visible: true},
   {key: 2, label: `角色描述`, visible: true},
   {key: 3, label: `所属领域`, visible: true},
-  {key: 4, label: `域名`, visible: true},
+  {key: 4, label: `角色级别`, visible: true},
   {key: 5, label: `安全存储路径`, visible: true},
   {key: 6, label: `应用目标`, visible: true},
   {key: 7, label: `创建时间`, visible: true},
@@ -295,7 +293,7 @@ const data = reactive({
     }],
     responsibilities: [{required: true, message: "角色描述不能为空", trigger: "blur"}],
     domain: [{required: true, message: "所属领域不能为空", trigger: "blur"}],
-    domainName: [{required: true, message: "域名不能为空", trigger: "blur"}],
+    roleLevel: [{required: true, message: "角色级别不能为空", trigger: "blur"}],
     storagePath: [{required: true, message: "安全存储路径不能为空", trigger: "blur"}],
     target: [{required: true, message: "应用目标不能为空", trigger: "blur"}],
   }
@@ -359,7 +357,7 @@ function reset() {
     roleName: undefined,
     responsibilities: undefined,
     domain: undefined,
-    domainName: undefined,
+    roleLevel: undefined,
     storagePath: undefined,
     target: undefined,
   };

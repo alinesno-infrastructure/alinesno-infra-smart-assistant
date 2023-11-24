@@ -24,10 +24,10 @@ const router = useRouter();
 // 菜单列表
 const menuItems = ref([
   {id:'2' , icon:'fa-solid fa-masks-theater' , link:'/smart/assistant/role/index' , desc:'角色管理'},
-  {id:'9' , icon:'fa-solid fa-feather' , link:'/smart/assistant/application/index' , desc:'密钥管理'},
+  {id:'9' , icon:'fa-solid fa-feather' , link:'/smart/assistant/apikey/index' , desc:'密钥管理'},
   {id:'3' , icon:'fa-solid fa-box' , link:'/smart/assistant/channel/index' , desc:'渠道管理'},
-  {id:'4' , icon:'fa-solid fa-server' , link:'/smart/assistant/dataloader/index' , desc:'数据管理'},
-  {id:'7' , icon:'fa-solid fa-house-tsunami' , link:'/smart/assistant/logger/index' , desc:'调用日志'},
+  {id:'4' , icon:'fa-solid fa-server' , link:'/smart/assistant/loaderData/index' , desc:'数据管理'},
+  {id:'7' , icon:'fa-solid fa-house-tsunami' , link:'/smart/assistant/requestRecord/index' , desc:'调用日志'},
 ]);
 
 // 打开服务市场

@@ -206,7 +206,7 @@ import {
   getApplication,
   updateApplication,
   addApplication,
-} from "@/api/smart/assistant/application";
+} from "@/api/smart/assistant/apikey";
 import {reactive} from "vue";
 
 const router = useRouter();

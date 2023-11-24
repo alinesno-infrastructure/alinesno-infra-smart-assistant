@@ -1,6 +1,6 @@
 package com.alinesno.infra.smart.assistant.entity;
 
-import com.alinesno.infra.common.facade.mapper.entity.BaseEntity;
+import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("skill_table") // MyBatis-Plus注解
-public class SkillEntity extends BaseEntity {
+public class SkillEntity extends InfraBaseEntity {
 
     @ColumnComment("角色ID")
     @ColumnType(value = MySqlTypeConstant.BIGINT)
