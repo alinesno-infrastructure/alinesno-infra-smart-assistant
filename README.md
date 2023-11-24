@@ -8,8 +8,7 @@
 - 密钥管理 --> 提供出Token和第三方交互密钥和方式
 - 调用日志 --> 接口调用日志
 
-## 三方检测
- 
-|序号|图标|描述|查看|
-|---|---|---|---|
-|1|![Security Status](https://www.murphysec.com/platform3/v31/badge/1699429633627914240.svg)|安全状态|[点击查看报告](https://www.murphysec.com/console/report/1699429633434976256/1699429633627914240)|报告链接|
+## 鸣谢
+
+- 头像地址从:https://userpics.craftwork.design/获取（注:此头像不能用于商用)
+

@@ -8,7 +8,7 @@ import com.alinesno.infra.common.facade.services.IBaseService;
  * 服务类
  * </p>
  *
- * @author LuoXiaoDong
+ * @author luoxiaodong
  * @version 1.0.0
  */
 

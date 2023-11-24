@@ -2,7 +2,7 @@
   "name": "alinesno-infra-smart-assistant-admin",
   "version": "1.0.0",
   "description": "基设智能助手服务",
-  "author": "LuoXiaoDong",
+  "author": "luoxiaodong",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",

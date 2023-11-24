@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 处理与UserEntity相关的请求的Controller。
  * 继承自BaseController类并实现IUserService接口。
  *
- * @author LuoXiaoDong
+ * @author luoxiaodong
  * @version 1.0.0
  */
 @Api(tags = "User")

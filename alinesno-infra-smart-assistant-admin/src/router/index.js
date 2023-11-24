@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 /* Layout */
-//import Layout from '@/layout/SaaSLayout'
-import Layout from '@/layout'
+import Layout from '@/layout/SaaSLayout'
+// import Layout from '@/layout'
 
 /**
  * Note: 路由配置项
@@ -83,6 +83,39 @@ export const constantRoutes = [
         name: '/dashboard/learnPanel',
         meta: { title: '学习手册', icon: 'dashboard', affix: true }
       }, 
+
+      // >>>>>>>>>>>>>>>>>>>> assistant_router_start >>>>>>>>>>>>>>>>>>
+      {
+        path: '/smart/assistant/application/index',
+        component: () => import('@/views/smart/assistant/application/index'),
+        name: '/smart/assistant/application/index',
+        meta: { title: '应用管理', icon: 'dashboard', affix: true }
+      },
+      {
+        path: '/smart/assistant/role/index',
+        component: () => import('@/views/smart/assistant/role/index'),
+        name: '/smart/assistant/role/index',
+        meta: { title: '角色管理', icon: 'dashboard', affix: true }
+      },
+      {
+        path: '/smart/assistant/channel/index',
+        component: () => import('@/views/smart/assistant/channel/index'),
+        name: '/smart/assistant/channel/index',
+        meta: { title: '渠道管理', icon: 'dashboard', affix: true }
+      },
+      {
+        path: '/smart/assistant/dataloader/index',
+        component: () => import('@/views/smart/assistant/dataloader/index'),
+        name: '/smart/assistant/dataloader/index',
+        meta: { title: '数据管理', icon: 'dashboard', affix: true }
+      },
+      {
+        path: '/smart/assistant/logger/index',
+        component: () => import('@/views/smart/assistant/logger/index'),
+        name: '/smart/assistant/logger/index',
+        meta: { title: '调用日志', icon: 'dashboard', affix: true }
+      },
+      // >>>>>>>>>>>>>>>>>>>> assistant_router_end >>>>>>>>>>>>>>>>>>
 
     ]
   },

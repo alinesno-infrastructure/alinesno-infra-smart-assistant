@@ -293,6 +293,7 @@ $chartColor: #3b5998;
     .app-info {
       float: left;
       margin-left: 10px;
+      width: calc(100% - 40px) ;
     }
 
     .app-icon {
@@ -301,6 +302,8 @@ $chartColor: #3b5998;
 
       img {
         border-radius: 3px;
+        width:30px;
+        height:30px;
       }
     }
 
@@ -1365,7 +1368,7 @@ $chartColor: #3b5998;
   li.box-item{
 
     float: left;
-    width: 33%;
+    width: 25%;
     margin-top: 10px;
     padding: 15px;
     line-height: 1.3rem;
@@ -1400,7 +1403,7 @@ $chartColor: #3b5998;
     }
   }
 
-  li.box-item:nth-child(3n+1) {
+  li.box-item:nth-child(4n+1) {
     border-left: 0px solid #eee !important;
   }
 }

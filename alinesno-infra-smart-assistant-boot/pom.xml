@@ -28,6 +28,16 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alinesno.infra.smart</groupId>
+			<artifactId>alinesno-infra-smart-assistant-im</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alinesno.infra.smart</groupId>
+			<artifactId>alinesno-infra-smart-assistant-role</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alinesno.infra.smart</groupId>
 			<artifactId>alinesno-infra-smart-assistant-adapter</artifactId>
 			<version>${revision}</version>
 		</dependency>
