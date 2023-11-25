@@ -1,6 +1,5 @@
 package com.alinesno.infra.smart.assistant.adapter.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.smart.assistant.adapter.SmartBrainConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,12 +52,12 @@ public class SmartBrainConsumerImpl implements SmartBrainConsumer {
 
                 String textData = "" ;
 
-                while ((line = reader.readLine()) != null) {
-                    JSONObject json = JSONObject.parseObject(line) ;
-                    textData = json.getString("text") ;
-
-                    log.debug(">>>>>>> line = {}" , textData);
-                }
+//                while ((line = reader.readLine()) != null) {
+//                    JSONObject json = JSONObject.parseObject(line) ;
+//                    textData = json.getString("text") ;
+//
+//                    log.debug(">>>>>>> line = {}" , textData);
+//                }
                 reader.close();
 
                 log.debug("textData = {}" , textData);
