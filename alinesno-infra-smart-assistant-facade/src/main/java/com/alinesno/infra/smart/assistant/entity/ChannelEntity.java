@@ -17,6 +17,14 @@ import javax.persistence.Entity;
 @TableName("channel")
 public class ChannelEntity extends InfraBaseEntity {
 
+    /**
+     * 渠道名称
+     */
+    @ColumnType(length = 50)
+    @ColumnComment("渠道名称")
+    @TableField("name")
+    private String name;
+
     @TableField("tool_type") // MyBatis-Plus 字段注解
     @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 50)
     @ColumnComment("工具类型：企业微信/钉钉/飞书等.")
@@ -36,5 +44,15 @@ public class ChannelEntity extends InfraBaseEntity {
     @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 100)
     @ColumnComment("认证信息")
     private String authToken; // 认证信息
+
+    @ColumnComment("使用场景")
+    @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 50)
+    @TableField(value = "screen")
+    private String screen;
+
+    @ColumnComment("描述信息")
+    @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 50)
+    @TableField(value = "description")
+    private String description;
 
 }

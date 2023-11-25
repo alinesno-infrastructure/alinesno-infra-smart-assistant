@@ -10,5 +10,5 @@
 
 ## 鸣谢
 
-- 头像地址从:https://userpics.craftwork.design/获取（注:此头像不能用于商用)
-
+- 头像地址从[userpics](https://userpics.craftwork.design/) , 注:此不可商用
+- 部分设计参考[FastGPT](https://github.com/labring/FastGPT)

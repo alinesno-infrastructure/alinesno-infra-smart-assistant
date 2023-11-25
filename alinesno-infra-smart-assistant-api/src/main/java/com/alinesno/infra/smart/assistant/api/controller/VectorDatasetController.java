@@ -3,8 +3,8 @@ package com.alinesno.infra.smart.assistant.api.controller;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
-import com.alinesno.infra.smart.assistant.entity.ApiKeyEntity;
-import com.alinesno.infra.smart.assistant.service.IApiKeyService;
+import com.alinesno.infra.smart.assistant.entity.VectorDatasetEntity;
+import com.alinesno.infra.smart.assistant.service.IVectorDatasetService;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -26,14 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2023-09-30
  */
 @Slf4j
-@Api(tags = "ApiKey")
+@Api(tags = "VectorDataset")
 @RestController
 @Scope("prototype")
-@RequestMapping("/api/infra/smart/assistant/loaderData")
-public class LoaderDataController extends BaseController<ApiKeyEntity, IApiKeyService> {
+@RequestMapping("/api/infra/smart/assistant/vectorDataset")
+public class VectorDatasetController extends BaseController<VectorDatasetEntity, IVectorDatasetService> {
 
     @Autowired
-    private IApiKeyService service;
+    private IVectorDatasetService service;
 
     /**
      * 获取ApplicationEntity的DataTables数据
@@ -51,7 +51,7 @@ public class LoaderDataController extends BaseController<ApiKeyEntity, IApiKeySe
     }
 
     @Override
-    public IApiKeyService getFeign() {
+    public IVectorDatasetService getFeign() {
         return this.service;
     }
 }

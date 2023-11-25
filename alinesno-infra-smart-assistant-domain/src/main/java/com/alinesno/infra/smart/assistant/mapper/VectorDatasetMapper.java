@@ -1,7 +1,7 @@
 package com.alinesno.infra.smart.assistant.mapper;
 
 import com.alinesno.infra.common.facade.mapper.repository.IBaseMapper;
-import com.alinesno.infra.smart.assistant.entity.LoaderDataEntity;
+import com.alinesno.infra.smart.assistant.entity.VectorDatasetEntity;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -11,6 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 2023-09-30
  */
 @Mapper
-public interface LoaderDataMapper extends IBaseMapper<LoaderDataEntity> {
+public interface VectorDatasetMapper extends IBaseMapper<VectorDatasetEntity> {
 
 }

@@ -1,7 +1,7 @@
 package com.alinesno.infra.smart.assistant.service;
 
 import com.alinesno.infra.common.facade.services.IBaseService;
-import com.alinesno.infra.smart.assistant.entity.LoaderDataEntity;
+import com.alinesno.infra.smart.assistant.entity.VectorDatasetEntity;
 
 /**
  * 应用构建Service接口
@@ -9,6 +9,6 @@ import com.alinesno.infra.smart.assistant.entity.LoaderDataEntity;
  * @version 1.0.0
  * @since 2023-09-30
  */
-public interface ILoadDataService extends IBaseService<LoaderDataEntity> {
+public interface IVectorDatasetService extends IBaseService<VectorDatasetEntity> {
 
 }

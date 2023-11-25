@@ -5,12 +5,12 @@
       <el-col :span="24" :xs="24">
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
 
-          <el-form-item label="应用名称" prop="applicationName">
-            <el-input v-model="queryParams['condition[applicationName|like]']" placeholder="请输入应用名称" clearable
+          <el-form-item label="渠道名称" prop="name">
+            <el-input v-model="queryParams['condition[name|like]']" placeholder="请输入渠道名称" clearable
                       style="width: 240px" @keyup.enter="handleQuery"/>
           </el-form-item>
-          <el-form-item label="显示名称" prop="showName" label-width="100px">
-            <el-input v-model="queryParams['condition[showName|like]']" placeholder="请输入显示名称" clearable
+          <el-form-item label="渠道类型" prop="toolType" label-width="100px">
+            <el-input v-model="queryParams['condition[toolType|like]']" placeholder="请输入渠道类型" clearable
                       style="width: 240px" @keyup.enter="handleQuery"/>
           </el-form-item>
 
@@ -58,20 +58,41 @@
 
         <el-table v-loading="loading" :data="ApplicationList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center"/>
-          <el-table-column label="图标" align="center" width="55px" prop="icon" v-if="columns[0].visible">
+          <el-table-column label="图标" align="center" width="80px" prop="icon" v-if="columns[0].visible">
+            <template #default="scope">
+              <div class="role-icon">
+                <img :src="'http://data.linesno.com/icons/im/' + scope.row.toolType + '.png'" />
+              </div>
+            </template>
           </el-table-column>
-          <el-table-column label="应用名称" align="center" key="applicationName" prop="applicationName"
-                           v-if="columns[1].visible" :show-overflow-tooltip="true"/>
-          <el-table-column label="显示名称" align="center" key="showName" prop="showName" v-if="columns[2].visible"
-                           :show-overflow-tooltip="true"/>
-          <el-table-column label="所属领域" align="center" key="domain" prop="domain" v-if="columns[3].visible"
-                           :show-overflow-tooltip="true"/>
-          <el-table-column label="域名" align="center" key="domainName" prop="domainName" v-if="columns[4].visible"
-                           :show-overflow-tooltip="true"/>
-          <el-table-column label="安全存储路径" align="center" key="storagePath" prop="storagePath"
-                           v-if="columns[5].visible" :show-overflow-tooltip="true"/>
-          <el-table-column label="应用目标" align="center" key="target" prop="target" v-if="columns[6].visible"
-                           :show-overflow-tooltip="true"/>
+          <el-table-column label="渠道名称" align="left" key="name" prop="name" v-if="columns[1].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <div style="font-size: 15px;font-weight: 500;color: #3b5998;">
+                {{ scope.row.name }}
+              </div>
+              <div style="font-size: 13px;color: #a5a5a5;">
+                 {{ scope.row.name }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="渠道描述" align="left" key="description" prop="description" v-if="columns[5].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <div>
+                {{ scope.row.description }}
+              </div>
+              <div style="font-size: 13px;color: #a5a5a5;">
+                会话次数: 12734 有效沟通:198312
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="渠道类型" align="center" key="toolType" prop="toolType" v-if="columns[2].visible" :show-overflow-tooltip="true"/>
+          <el-table-column label="使用场景" align="center" key="screen" prop="screen" v-if="columns[3].visible" :show-overflow-tooltip="true"/>
+          <el-table-column label="状态" align="center" key="hasStatus" prop="hasStatus" v-if="columns[4].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <el-button type="primary" text bg icon="Link" v-if="scope.row.hasStauts === '1'">正常</el-button>
+              <el-button type="danger" text bg icon="Link" v-if="scope.row.hasStauts === '0'">异常</el-button>
+            </template>
+          </el-table-column>
           <el-table-column label="创建时间" align="center" prop="addTime" v-if="columns[7].visible" width="160">
             <template #default="scope">
               <span>{{ parseTime(scope.row.addTime) }}</span>
@@ -106,45 +127,38 @@
       <el-form :model="form" :rules="rules" ref="ApplicationRef" label-width="80px">
         <el-row>
           <el-col :span="24">
-            <el-form-item  label="应用名称" prop="applicationName">
-              <el-input v-model="form.applicationName" placeholder="请输入应用名称" maxlength="50"/>
+            <el-form-item  label="渠道名称" prop="name">
+              <el-input v-model="form.name" placeholder="请输入渠道名称" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="显示名称" prop="showName">
-              <el-input v-model="form.showName" placeholder="请输入显示名称" maxlength="50"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="域名" prop="domainName">
-              <el-input v-model="form.domainName" placeholder="请输入域名" maxlength="100"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="所属领域" prop="domain">
-              <el-input v-model="form.domain" placeholder="请输入所属领域" maxlength="100"/>
+            <el-form-item label="渠道类型" prop="toolType">
+              <el-input v-model="form.toolType" placeholder="请输入渠道类型" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
 
         <el-row>
           <el-col :span="24">
-            <el-form-item label="安全存储路径" prop="storagePath" label-width="107px">
-              <el-input v-model="form.storagePath" placeholder="请输入安全存储路径" maxlength="200"/>
+            <el-form-item label="状态" prop="hasStatus">
+              <el-input v-model="form.hasStatus" placeholder="请输入状态" maxlength="100"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="应用目标" prop="target">
-              <el-input v-model="form.target" placeholder="请输入应用目标" maxlength="20"/>
+            <el-form-item label="使用场景" prop="screen">
+              <el-input v-model="form.screen" placeholder="请输入使用场景" maxlength="100"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="渠道描述" prop="description">
+              <el-input v-model="form.description" placeholder="请输入渠道描述" maxlength="200"/>
             </el-form-item>
           </el-col>
         </el-row>
@@ -246,11 +260,11 @@ const upload = reactive({
 // 列显隐信息
 const columns = ref([
   {key: 0, label: `图标`, visible: true},
-  {key: 1, label: `应用名称`, visible: true},
-  {key: 2, label: `显示名称`, visible: true},
-  {key: 3, label: `所属领域`, visible: true},
-  {key: 4, label: `域名`, visible: true},
-  {key: 5, label: `安全存储路径`, visible: true},
+  {key: 1, label: `渠道名称`, visible: true},
+  {key: 2, label: `渠道类型`, visible: true},
+  {key: 3, label: `使用场景`, visible: true},
+  {key: 4, label: `状态`, visible: true},
+  {key: 5, label: `渠道描述`, visible: true},
   {key: 6, label: `应用目标`, visible: true},
   {key: 7, label: `创建时间`, visible: true},
   {key: 8, label: `编辑`, visible: true},
@@ -263,23 +277,23 @@ const data = reactive({
     pageNum: 1,
     pageSize: 10,
     ApplicationName: undefined,
-    applicationName: undefined,
-    showName: undefined,
+    name: undefined,
+    toolType: undefined,
     status: undefined,
     deptId: undefined
   },
   rules: {
     applicationId: [{required: true, message: "应用编号不能为空", trigger: "blur"}],
-    applicationName: [{required: true, message: "应用名称不能为空", trigger: "blur"}, {
+    name: [{required: true, message: "渠道名称不能为空", trigger: "blur"}, {
       min: 2,
       max: 20,
-      message: "应用名称长度必须介于 2 和 20 之间",
+      message: "渠道名称长度必须介于 2 和 20 之间",
       trigger: "blur"
     }],
-    showName: [{required: true, message: "显示名称不能为空", trigger: "blur"}],
-    domain: [{required: true, message: "所属领域不能为空", trigger: "blur"}],
-    domainName: [{required: true, message: "域名不能为空", trigger: "blur"}],
-    storagePath: [{required: true, message: "安全存储路径不能为空", trigger: "blur"}],
+    toolType: [{required: true, message: "渠道类型不能为空", trigger: "blur"}],
+    screen: [{required: true, message: "使用场景不能为空", trigger: "blur"}],
+    hasStatus: [{required: true, message: "状态不能为空", trigger: "blur"}],
+    description: [{required: true, message: "渠道描述不能为空", trigger: "blur"}],
     target: [{required: true, message: "应用目标不能为空", trigger: "blur"}],
   }
 });
@@ -309,8 +323,8 @@ function handleQuery() {
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
-  queryParams.value.applicationName = undefined;
-  queryParams.value.showName = undefined;
+  queryParams.value.name = undefined;
+  queryParams.value.toolType = undefined;
   proxy.$refs.deptTreeRef.setCurrentKey(null);
   handleQuery();
 };
@@ -339,11 +353,11 @@ function handleSelectionChange(selection) {
 function reset() {
   form.value = {
     applicationId: undefined,
-    applicationName: undefined,
-    showName: undefined,
-    domain: undefined,
-    domainName: undefined,
-    storagePath: undefined,
+    name: undefined,
+    toolType: undefined,
+    screen: undefined,
+    hasStatus: undefined,
+    description: undefined,
     target: undefined,
   };
   proxy.resetForm("ApplicationRef");
@@ -398,3 +412,13 @@ function submitForm() {
 
 getList();
 </script>
+
+<style lang="scss" scoped>
+.role-icon {
+  img {
+    width:45px;
+    height:45px;
+    border-radius: 50%;
+  }
+}
+</style>

@@ -88,4 +88,7 @@ app.use(ElementPlus, {
   size: Cookies.get('size') || 'default'
 })
 
+// 修改 el-dialog 默认点击遮照为不关闭
+app._context.components.ElDialog.props.closeOnClickModal.default = false
+
 app.mount('#app')
