@@ -1,6 +1,5 @@
 package com.alinesno.infra.smart.assistant.api.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.smart.assistant.api.event.MsgDispatcher;
 import com.alinesno.infra.smart.assistant.api.utils.MessageUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +36,7 @@ public class WechatMessageController {
 
         Map<String, String>  map = MessageUtil.parseXml(request) ;
 
-        log.debug("map = {}" , JSONObject.toJSON(map));
+//        log.debug("map = {}" , JSONObject.toJSON(map));
 
         String result = MsgDispatcher.processMessage(map) ;
 
