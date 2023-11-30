@@ -69,7 +69,7 @@
           </el-table-column>
           <el-table-column label="脚本名称" align="left" key="scriptName" prop="scriptName" v-if="columns[5].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <div>
+              <div style="font-size: 15px;font-weight: 500;color: #3b5998;">
                 {{ scope.row.scriptName }}
               </div>
               <div style="font-size: 13px;color: #a5a5a5;">
@@ -85,9 +85,9 @@
             </template>
           </el-table-column>
           <el-table-column label="脚本类型" align="center" key="scriptType" width="200" prop="scriptType" v-if="columns[2].visible" :show-overflow-tooltip="true"/>
-          <el-table-column label="角色技能" align="center" width="150"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
+          <el-table-column label="执行脚本" align="center" width="150"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button type="primary" text bg icon="Paperclip">配置(2)</el-button>
+              <el-button type="primary" text bg icon="Paperclip">脚本配置</el-button>
             </template>
           </el-table-column>
           <el-table-column label="脚本语言" align="center" key="scriptLanguage" width="120" prop="scriptLanguage" v-if="columns[3].visible" :show-overflow-tooltip="true"/>

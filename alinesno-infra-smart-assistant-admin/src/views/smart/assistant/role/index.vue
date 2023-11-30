@@ -97,7 +97,7 @@
           </el-table-column>
           <el-table-column label="角色技能" align="center" width="150"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button type="primary" text bg icon="Paperclip">配置(2)</el-button>
+              <el-button type="primary" text bg icon="Paperclip">配置</el-button>
             </template>
           </el-table-column>
           <el-table-column label="流程定义" align="center" width="200"  key="target" prop="target" v-if="columns[6].visible" :show-overflow-tooltip="true">
