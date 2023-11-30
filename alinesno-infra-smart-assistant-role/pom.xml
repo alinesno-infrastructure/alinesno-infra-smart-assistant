@@ -13,6 +13,10 @@
 	<artifactId>alinesno-infra-smart-assistant-role</artifactId>
 	<packaging>jar</packaging>
 
+	<properties>
+		<liteflow.version>2.11.3</liteflow.version>
+	</properties>
+
 	<dependencies>
 
 		<!-- 引用公共门面服务 -->
@@ -21,6 +25,24 @@
 			<artifactId>alinesno-infra-smart-assistant-facade</artifactId>
 			<version>${revision}</version>
 		</dependency>
+
+		<!-- liteflow_start -->
+		<dependency>
+			<groupId>com.yomahub</groupId>
+			<artifactId>liteflow-spring-boot-starter</artifactId>
+			<version>${liteflow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yomahub</groupId>
+			<artifactId>liteflow-rule-sql</artifactId>
+			<version>${liteflow.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yomahub</groupId>
+			<artifactId>liteflow-script-groovy</artifactId>
+			<version>${liteflow.version}</version>
+		</dependency>
+		<!-- liteflow_end -->
 
 	</dependencies>
 

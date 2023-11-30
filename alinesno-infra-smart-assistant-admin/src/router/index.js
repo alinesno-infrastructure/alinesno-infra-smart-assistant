@@ -80,6 +80,12 @@ export const constantRoutes = [
 
       // >>>>>>>>>>>>>>>>>>>> assistant_router_start >>>>>>>>>>>>>>>>>>
       {
+        path: '/smart/assistant/chainScript/index',
+        component: () => import('@/views/smart/assistant/chainScript/index'),
+        name: '/smart/assistant/chainScript/index',
+        meta: { title: '流程定义', icon: 'dashboard', affix: true }
+      },
+      {
         path: '/smart/assistant/apikey/index',
         component: () => import('@/views/smart/assistant/apikey/index'),
         name: '/smart/assistant/apikey/index',
