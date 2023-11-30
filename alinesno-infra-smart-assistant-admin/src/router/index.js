@@ -104,12 +104,6 @@ export const constantRoutes = [
         meta: { title: '渠道管理', icon: 'dashboard', affix: true }
       },
       {
-        path: '/smart/assistant/loaderData/index',
-        component: () => import('@/views/smart/assistant/loaderData/index'),
-        name: '/smart/assistant/loaderData/index',
-        meta: { title: '数据管理', icon: 'dashboard', affix: true }
-      },
-      {
         path: '/smart/assistant/requestRecord/index',
         component: () => import('@/views/smart/assistant/requestRecord/index'),
         name: '/smart/assistant/requestRecord/index',
