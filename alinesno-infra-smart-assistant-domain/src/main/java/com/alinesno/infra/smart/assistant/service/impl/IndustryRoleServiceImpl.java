@@ -2,10 +2,16 @@ package com.alinesno.infra.smart.assistant.service.impl;
 
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
+import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.mapper.IndustryRoleMapper;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
+import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * 应用构建Service业务层处理
@@ -17,4 +23,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class IndustryRoleServiceImpl extends IBaseServiceImpl<IndustryRoleEntity, IndustryRoleMapper> implements IIndustryRoleService {
 
+    @Autowired
+    private IRoleChainService roleChainService ;
+
+    @Value("${spring.application.name}")
+    private String applicationName;
+
+    @Override
+    public void saveRoleChainInfo(RoleChainEntity chain , String roleId) {
+
+        chain.setEnable("1");
+        chain.setChainApplicationName(applicationName);
+        chain.setCreateTime(new Date());
+
+        roleChainService.save(chain) ;
+
+        IndustryRoleEntity role = this.getById(roleId) ;
+        role.setChainId(chain.getId());
+        this.update(role) ;
+    }
 }

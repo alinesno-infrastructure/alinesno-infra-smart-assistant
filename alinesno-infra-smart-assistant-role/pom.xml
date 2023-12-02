@@ -13,10 +13,6 @@
 	<artifactId>alinesno-infra-smart-assistant-role</artifactId>
 	<packaging>jar</packaging>
 
-	<properties>
-		<liteflow.version>2.11.3</liteflow.version>
-	</properties>
-
 	<dependencies>
 
 		<!-- 引用公共门面服务 -->
@@ -42,7 +38,7 @@
 			<artifactId>liteflow-script-groovy</artifactId>
 			<version>${liteflow.version}</version>
 		</dependency>
-		<!-- liteflow_end -->
+        <!-- liteflow_end -->
 
 	</dependencies>
 

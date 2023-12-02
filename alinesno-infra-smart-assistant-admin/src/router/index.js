@@ -109,6 +109,12 @@ export const constantRoutes = [
         name: '/smart/assistant/requestRecord/index',
         meta: { title: '调用日志', icon: 'dashboard', affix: true }
       },
+      {
+        path: '/smart/assistant/workflowRecord/index',
+        component: () => import('@/views/smart/assistant/workflowRecord/index'),
+        name: '/smart/assistant/workflowRecord/index',
+        meta: { title: '工作流日志', icon: 'dashboard', affix: true }
+      },
       // >>>>>>>>>>>>>>>>>>>> assistant_router_end >>>>>>>>>>>>>>>>>>
 
     ]

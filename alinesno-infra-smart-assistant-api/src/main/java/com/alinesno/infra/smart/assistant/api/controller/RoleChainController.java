@@ -2,6 +2,7 @@ package com.alinesno.infra.smart.assistant.api.controller;
 
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
+import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
@@ -10,12 +11,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 应用构建Controller
@@ -31,6 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 @Scope("prototype")
 @RequestMapping("/api/infra/smart/assistant/roleChain")
 public class RoleChainController extends BaseController<RoleChainEntity, IRoleChainService> {
+
+    @Value("${spring.application.name}")
+    private String applicationName;
 
     @Autowired
     private IRoleChainService service;
@@ -48,6 +50,22 @@ public class RoleChainController extends BaseController<RoleChainEntity, IRoleCh
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
         return this.toPage(model, this.getFeign(), page);
+    }
+
+    /**
+     * 新增加配置
+     * @param model
+     * @param entity
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public AjaxResult save(Model model, @RequestBody RoleChainEntity entity) throws Exception {
+
+        entity.setEnable("1");
+        entity.setChainApplicationName(applicationName);
+
+        return super.save(model , entity);
     }
 
     @Override

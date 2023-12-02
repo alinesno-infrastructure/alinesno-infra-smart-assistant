@@ -11,4 +11,10 @@ import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
  */
 public interface IRoleChainService extends IBaseService<RoleChainEntity> {
 
+    /**
+     * 运行工作流
+     * @param chainId
+     */
+    void runById(Long chainId);
+
 }

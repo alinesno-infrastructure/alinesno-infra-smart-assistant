@@ -25,7 +25,7 @@ public class RoleChainScriptEntity extends InfraBaseEntity {
     private String applicationName;
 
     @ColumnComment(value = "脚本ID")
-    @Column(type = MySqlTypeConstant.VARCHAR , length = 16)
+    @Column(type = MySqlTypeConstant.VARCHAR , length = 64)
     @TableField("script_id")
     private String scriptId;
 

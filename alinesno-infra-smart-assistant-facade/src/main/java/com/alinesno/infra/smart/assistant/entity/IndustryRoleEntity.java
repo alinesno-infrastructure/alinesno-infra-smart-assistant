@@ -61,4 +61,10 @@ public class IndustryRoleEntity extends InfraBaseEntity {
     @ColumnType(value = MySqlTypeConstant.TEXT)
     @ColumnComment("其他角色相关字段")
     private String otherAttributes; // 其他角色相关字段
+
+    @ColumnType(value = MySqlTypeConstant.BIGINT , length = 32)
+    @ColumnComment("关联的ChainID")
+    @TableField("chain_id") // MyBatis-Plus 字段注解
+    private Long chainId; // 其他角色相关字段
+
 }

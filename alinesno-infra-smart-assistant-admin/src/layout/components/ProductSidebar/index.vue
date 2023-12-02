@@ -28,6 +28,7 @@ const menuItems = ref([
   {id:'4' , icon:'fa-solid fa-paper-plane' , link:'/smart/assistant/apikey/index' , desc:'密钥管理'},
   {id:'5' , icon:'fa-solid fa-box' , link:'/smart/assistant/channel/index' , desc:'渠道管理'},
   {id:'6' , icon:'fa-brands fa-drupal' , link:'/smart/assistant/requestRecord/index' , desc:'调用日志'},
+  {id:'7' , icon:'fa-solid fa-pen-nib' , link:'/smart/assistant/workflowRecord/index' , desc:'工作流日志'},
 ]);
 
 // 打开服务市场

@@ -3,7 +3,7 @@ import { parseStrEmpty } from "@/utils/ruoyi";
 
 
 // 接口配置项
-var prefix = '/api/infra/smart/assistant/roleChain/' ;
+var prefix = '/api/infra/smart/assistant/workflowNodeExecution/' ;
 var managerUrl = {
   datatables : prefix +"datatables" ,
   createUrl: prefix + 'add' ,
@@ -16,10 +16,20 @@ var managerUrl = {
   exportUrl: prefix + "exportExcel",
   changeField: prefix + "changeField",
   downloadfile: prefix + "downloadfile",
+  getNodeList: prefix + "getNodeList",
 }
 
-// 查询应用列表
-export function listRoleChain(query) {
+// 查询流程节点列表
+export function getNodeList(query) {
+  return request({
+    url: managerUrl.getNodeList ,
+    method: 'post',
+    params: query
+  })
+}
+
+// 查询流程节点列表
+export function listNodeExcection(query) {
   return request({
     url: managerUrl.datatables ,
     method: 'post',
@@ -27,16 +37,16 @@ export function listRoleChain(query) {
   })
 }
 
-// 查询应用详细
-export function getRoleChain(RoleChainId) {
+// 查询流程节点详细
+export function getNodeExcection(NodeExcectionId) {
   return request({
-    url: managerUrl.detailUrl + '/' + parseStrEmpty(RoleChainId),
+    url: managerUrl.detailUrl + '/' + parseStrEmpty(NodeExcectionId),
     method: 'get'
   })
 }
 
-// 新增应用
-export function addRoleChain(data) {
+// 新增流程节点
+export function addNodeExcection(data) {
   return request({
     url: managerUrl.saveUrl ,
     method: 'post',
@@ -44,8 +54,8 @@ export function addRoleChain(data) {
   })
 }
 
-// 修改应用
-export function updateRoleChain(data) {
+// 修改流程节点
+export function updateNodeExcection(data) {
   return request({
     url: managerUrl.updateUrl ,
     method: 'put',
@@ -53,35 +63,35 @@ export function updateRoleChain(data) {
   })
 }
 
-// 删除应用
-export function delRoleChain(RoleChainId) {
+// 删除流程节点
+export function delNodeExcection(NodeExcectionId) {
   return request({
-    url: managerUrl.removeUrl + '/' + parseStrEmpty(RoleChainId),
+    url: managerUrl.removeUrl + '/' + parseStrEmpty(NodeExcectionId),
     method: 'delete'
   })
 }
 
-// 应用密码重置
-export function resetRoleChainPwd(RoleChainId, password) {
+// 流程节点密码重置
+export function resetNodeExcectionPwd(NodeExcectionId, password) {
   const data = {
-    RoleChainId,
+    NodeExcectionId,
     password
   }
   return request({
-    url: '/api/infra/base/starter/application/resetPwd',
+    url: '/api/infra/base/starter/NodeExcection/resetPwd',
     method: 'put',
     data: data
   })
 }
 
-// 应用状态修改
-export function changeRoleChainStatus(RoleChainId, status) {
+// 流程节点状态修改
+export function changeNodeExcectionStatus(NodeExcectionId, status) {
   const data = {
-    RoleChainId,
+    NodeExcectionId,
     status
   }
   return request({
-    url: '/api/infra/base/starter/application/changeStatus',
+    url: '/api/infra/base/starter/NodeExcection/changeStatus',
     method: 'put',
     data: data
   })
@@ -90,7 +100,7 @@ export function changeRoleChainStatus(RoleChainId, status) {
 // 查询部门下拉树结构
 export function deptTreeSelect() {
   return request({
-    url: '/api/infra/base/starter/application/deptTree',
+    url: '/api/infra/base/starter/NodeExcection/deptTree',
     method: 'get'
   })
 }

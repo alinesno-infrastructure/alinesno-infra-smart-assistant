@@ -2,19 +2,20 @@ package com.alinesno.infra.smart.assistant.api.controller;
 
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
-import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
-import com.alinesno.infra.smart.assistant.entity.RoleChainScriptEntity;
-import com.alinesno.infra.smart.assistant.service.IRoleChainScriptService;
+import com.alinesno.infra.smart.assistant.entity.WorkflowExecutionEntity;
+import com.alinesno.infra.smart.assistant.service.IWorkflowExecutionService;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 应用构建Controller
@@ -28,14 +29,11 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "ApiKey")
 @RestController
 @Scope("prototype")
-@RequestMapping("/api/infra/smart/assistant/roleChainScript")
-public class RoleChainScriptController extends BaseController<RoleChainScriptEntity, IRoleChainScriptService> {
-
-    @Value("${spring.application.name}")
-    private String applicationName;
+@RequestMapping("/api/infra/smart/assistant/workflowExecution")
+public class WorkflowExecutionController extends BaseController<WorkflowExecutionEntity, IWorkflowExecutionService> {
 
     @Autowired
-    private IRoleChainScriptService service;
+    private IWorkflowExecutionService service;
 
     /**
      * 获取ApplicationEntity的DataTables数据
@@ -52,24 +50,8 @@ public class RoleChainScriptController extends BaseController<RoleChainScriptEnt
         return this.toPage(model, this.getFeign(), page);
     }
 
-    /**
-     * 保存配置
-     * @param model
-     * @param entity
-     * @return
-     * @throws Exception
-     */
     @Override
-    public AjaxResult save(Model model, @RequestBody RoleChainScriptEntity entity) throws Exception {
-
-        entity.setEnable("1");
-        entity.setApplicationName(applicationName);
-
-        return super.save(model , entity);
-    }
-
-    @Override
-    public IRoleChainScriptService getFeign() {
+    public IWorkflowExecutionService getFeign() {
         return this.service;
     }
 }

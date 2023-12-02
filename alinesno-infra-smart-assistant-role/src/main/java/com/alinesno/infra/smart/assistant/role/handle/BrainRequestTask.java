@@ -1,4 +1,4 @@
-package com.alinesno.infra.smart.assistant.role.task;
+package com.alinesno.infra.smart.assistant.role.handle;
 
 import lombok.Data;
 import lombok.SneakyThrows;

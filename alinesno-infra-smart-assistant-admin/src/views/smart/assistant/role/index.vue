@@ -6,12 +6,10 @@
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
 
           <el-form-item label="角色名称" prop="roleName">
-            <el-input v-model="queryParams['condition[roleName|like]']" placeholder="请输入角色名称" clearable
-                      style="width: 240px" @keyup.enter="handleQuery"/>
+            <el-input v-model="queryParams['condition[roleName|like]']" placeholder="请输入角色名称" clearable style="width: 240px" @keyup.enter="handleQuery"/>
           </el-form-item>
           <el-form-item label="角色描述" prop="responsibilities" label-width="100px">
-            <el-input v-model="queryParams['condition[responsibilities|like]']" placeholder="请输入角色描述" clearable
-                      style="width: 240px" @keyup.enter="handleQuery"/>
+            <el-input v-model="queryParams['condition[responsibilities|like]']" placeholder="请输入角色描述" clearable style="width: 240px" @keyup.enter="handleQuery"/>
           </el-form-item>
 
           <el-form-item>
@@ -37,7 +35,7 @@
                 icon="Edit"
                 :disabled="single"
                 @click="handleUpdate"
-                v-hasPermi="['system:Application:edit']"
+                v-hasPermi="['system:Role:edit']"
             >修改
             </el-button>
           </el-col>
@@ -48,7 +46,7 @@
                 icon="Delete"
                 :disabled="multiple"
                 @click="handleDelete"
-                v-hasPermi="['system:Application:remove']"
+                v-hasPermi="['system:Role:remove']"
             >删除
             </el-button>
           </el-col>
@@ -56,7 +54,7 @@
           <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
         </el-row>
 
-        <el-table v-loading="loading" :data="ApplicationList" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" :data="RoleList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center"/>
           <el-table-column label="图标" align="center" width="80px" prop="icon" v-if="columns[0].visible">
             <template #default="scope">
@@ -86,35 +84,38 @@
             </template>
           </el-table-column>
           <el-table-column label="所属领域" align="center" width="150" key="domain" prop="domain" v-if="columns[3].visible" :show-overflow-tooltip="true">
-            <template #default="scope">
+            <template>
               软件开发
             </template>
           </el-table-column>
           <el-table-column label="知识库" align="center" width="150"  key="roleLevel" prop="roleLevel" v-if="columns[4].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button type="primary" text bg icon="CopyDocument">导入库</el-button>
+              <el-button type="primary" text bg icon="CopyDocument"  @click="handleLangChain(scope.row)" >导入库</el-button>
             </template>
           </el-table-column>
           <el-table-column label="角色技能" align="center" width="150"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button type="primary" text bg icon="Paperclip">配置</el-button>
+              <el-button type="primary" text bg icon="Paperclip"  @click="handleLangChain(scope.row)" >配置</el-button>
             </template>
           </el-table-column>
           <el-table-column label="流程定义" align="center" width="200"  key="target" prop="target" v-if="columns[6].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button type="primary" text bg icon="Postcard">执行流程</el-button>
+              <el-button type="primary" text bg icon="Postcard" @click="handleLangChain(scope.row)" >专家链路</el-button>
             </template>
           </el-table-column>
           <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" v-if="columns[8].visible">
             <template #default="scope">
-              <el-tooltip content="对话记录" placement="top" v-if="scope.row.applicationId !== 1">
-                <el-button link type="primary" icon="ChatLineSquare" @click="handleUpdate(scope.row)" v-hasPermi="['system:Application:edit']"></el-button>
+              <el-tooltip content="运行对话" placement="top" v-if="scope.row.roleId !== 1">
+                <el-button link type="primary" icon="Position" @click="handleRunChain(scope.row)" v-hasPermi="['system:Role:edit']"></el-button>
               </el-tooltip>
-              <el-tooltip content="对话记录" placement="top" v-if="scope.row.applicationId !== 1">
-                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:Application:edit']"></el-button>
+              <el-tooltip content="对话记录" placement="top" v-if="scope.row.roleId !== 1">
+                <el-button link type="primary" icon="ChatLineSquare" @click="handleUpdate(scope.row)" v-hasPermi="['system:Role:edit']"></el-button>
               </el-tooltip>
-              <el-tooltip content="删除" placement="top" v-if="scope.row.applicationId !== 1">
-                <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:Application:remove']"></el-button>
+              <el-tooltip content="更新" placement="top" v-if="scope.row.roleId !== 1">
+                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:Role:edit']"></el-button>
+              </el-tooltip>
+              <el-tooltip content="删除" placement="top" v-if="scope.row.roleId !== 1">
+                <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:Role:remove']"></el-button>
               </el-tooltip>
 
             </template>
@@ -130,9 +131,43 @@
       </el-col>
     </el-row>
 
+    <!-- 添加或修改角色链路 -->
+    <el-dialog :title="chainTitle" v-model="chainOpen" width="900px" append-to-body>
+      <el-form :model="chainForm" :rules="chainRules" ref="ChainRef" label-width="80px">
+        <el-row>
+          <el-col :span="24">
+            <el-form-item  label="流程名称" prop="chainName">
+              <el-input v-model="chainForm.chainName" placeholder="请输入链路名称" maxlength="50"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item  label="流程描述" prop="chainDescription">
+              <el-input v-model="chainForm.chainDescription" placeholder="请输入流程描述" maxlength="50"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="流程数据" prop="elData">
+              <el-input v-model="chainForm.elData" placeholder="请输入链路流程" maxlength="120"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitChainForm">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
     <!-- 添加或修改应用配置对话框 -->
-    <el-dialog :title="title" v-model="open" width="900px" append-to-body>
-      <el-form :model="form" :rules="rules" ref="ApplicationRef" label-width="80px">
+    <el-dialog :title="title" v-model="open" width="800px" append-to-body>
+      <el-form :model="form" :rules="rules" ref="RoleRef" label-width="80px">
         <el-row>
           <el-col :span="24">
             <el-form-item  label="角色名称" prop="roleName">
@@ -213,22 +248,31 @@
   </div>
 </template>
 
-<script setup name="Application">
+<script setup name="Role">
 import {getToken} from "@/utils/auth";
 import {
-  listApplication,
-  delApplication,
-  getApplication,
-  updateApplication,
-  addApplication,
+  listRole,
+  delRole,
+  getRole,
+  updateRole,
+  addRole,
+  getRoleChainByChainId,
+  saveRoleChainInfo,
+  runRoleChainByRoleId,
 } from "@/api/smart/assistant/role";
+
+import {
+  addRoleChain , 
+  updateRoleChain,
+} from "@/api/smart/assistant/chain"
+
 import {reactive} from "vue";
 
 const router = useRouter();
 const {proxy} = getCurrentInstance();
-// const { sys_normal_disable, sys_Application_sex } = proxy.useDict("sys_normal_disable", "sys_Application_sex");
+// const { sys_normal_disable, sys_Role_sex } = proxy.useDict("sys_normal_disable", "sys_Role_sex");
 
-const ApplicationList = ref([]);
+const RoleList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -238,6 +282,10 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+
+const chainOpen = ref(false);
+const chainTitle = ref("");
+
 const deptName = ref("");
 const deptOptions = ref(undefined);
 const initPassword = ref(undefined);
@@ -256,7 +304,7 @@ const upload = reactive({
   // 设置上传的请求头部
   headers: {Authorization: "Bearer " + getToken()},
   // 上传的地址
-  url: import.meta.env.VITE_APP_BASE_API + "/system/Application/importData"
+  url: import.meta.env.VITE_APP_BASE_API + "/system/Role/importData"
 });
 // 列显隐信息
 const columns = ref([
@@ -284,7 +332,7 @@ const data = reactive({
     deptId: undefined
   },
   rules: {
-    applicationId: [{required: true, message: "应用编号不能为空", trigger: "blur"}],
+    roleId: [{required: true, message: "应用编号不能为空", trigger: "blur"}],
     roleName: [{required: true, message: "角色名称不能为空", trigger: "blur"}, {
       min: 2,
       max: 20,
@@ -296,18 +344,25 @@ const data = reactive({
     roleLevel: [{required: true, message: "角色级别不能为空", trigger: "blur"}],
     storagePath: [{required: true, message: "安全存储路径不能为空", trigger: "blur"}],
     target: [{required: true, message: "应用目标不能为空", trigger: "blur"}],
+  },
+  chainForm: {
+    roleId: undefined,
+  },
+  chainRules: {
+    chainName: [{required: true, message: "链路名称不能为空", trigger: "blur"}],
+    elData: [{required: true, message: "链路流程不能为空", trigger: "blur"}],
   }
 });
 
-const {queryParams, form, rules} = toRefs(data);
+const {queryParams, form, rules , chainForm , chainRules} = toRefs(data);
 
 
 /** 查询应用列表 */
 function getList() {
   loading.value = true;
-  listApplication(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
+  listRole(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
     loading.value = false;
-    ApplicationList.value = res.rows;
+    RoleList.value = res.rows;
     total.value = res.total;
   });
 };
@@ -332,16 +387,40 @@ function resetQuery() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const applicationIds = row.id || ids.value;
+  const roleIds = row.id || ids.value;
 
-  proxy.$modal.confirm('是否确认删除应用编号为"' + applicationIds + '"的数据项？').then(function () {
-    return delApplication(applicationIds);
+  proxy.$modal.confirm('是否确认删除应用编号为"' + roleIds + '"的数据项？').then(function () {
+    return delRole(roleIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {
   });
 };
+
+/** 运行一次专家链路 */
+function handleRunChain(row){
+
+  loading.value = true;
+  runRoleChainByRoleId(row.id).then(response => {
+    proxy.$modal.msgSuccess("运行成功.");
+    loading.value = false;
+  })
+}
+
+/** 配置用户链路流程 */
+function handleLangChain(row){
+  const roleId = row.id || ids.value;
+
+  getRoleChainByChainId(roleId).then(response => {
+    chainForm.value = response.data;
+    chainForm.value.roleId = roleId;
+
+    chainOpen.value = true;
+    chainTitle.value = "配置链路";
+  });
+
+}
 
 /** 选择条数  */
 function handleSelectionChange(selection) {
@@ -353,7 +432,7 @@ function handleSelectionChange(selection) {
 /** 重置操作表单 */
 function reset() {
   form.value = {
-    applicationId: undefined,
+    roleId: undefined,
     roleName: undefined,
     responsibilities: undefined,
     domain: undefined,
@@ -361,12 +440,13 @@ function reset() {
     storagePath: undefined,
     target: undefined,
   };
-  proxy.resetForm("ApplicationRef");
+  proxy.resetForm("RoleRef");
 };
 
 /** 取消按钮 */
 function cancel() {
   open.value = false;
+  chainOpen.value = false;
   reset();
 };
 
@@ -380,28 +460,51 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const applicationId = row.id || ids.value;
-  getApplication(applicationId).then(response => {
+  const roleId = row.id || ids.value;
+  getRole(roleId).then(response => {
     form.value = response.data;
-    form.value.applicationId = applicationId;
+    form.value.roleId = roleId;
     open.value = true;
     title.value = "修改应用";
 
   });
 };
 
+/** 提交流程按钮 */
+function submitChainForm() {
+  proxy.$refs["ChainRef"].validate(valid => {
+
+    if (valid) {
+      if (chainForm.value.id != undefined) {
+        updateRoleChain(chainForm.value).then(response => {
+          proxy.$modal.msgSuccess("配置成功");
+          chainOpen.value = false;
+          getList();
+        });
+      } else {
+        saveRoleChainInfo(chainForm.value , chainForm.value.roleId).then(response => {
+          proxy.$modal.msgSuccess("配置成功");
+          chainOpen.value = false;
+          getList();
+        });
+      }
+    }
+  });
+};
+
+
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["ApplicationRef"].validate(valid => {
+  proxy.$refs["RoleRef"].validate(valid => {
     if (valid) {
-      if (form.value.applicationId != undefined) {
-        updateApplication(form.value).then(response => {
+      if (form.value.id != undefined) {
+        updateRole(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
-        addApplication(form.value).then(response => {
+        addRole(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();

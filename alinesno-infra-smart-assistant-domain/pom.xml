@@ -15,6 +15,14 @@
 
 	<dependencies>
 
+		<!-- liteflow_start -->
+		<dependency>
+			<groupId>com.yomahub</groupId>
+			<artifactId>liteflow-spring-boot-starter</artifactId>
+			<version>${liteflow.version}</version>
+		</dependency>
+		<!-- liteflow_end -->
+
 		<!-- 引用公共门面服务 -->
 		<dependency>
 			<groupId>com.alinesno.infra.smart</groupId>

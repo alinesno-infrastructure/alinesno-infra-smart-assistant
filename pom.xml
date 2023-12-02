@@ -18,6 +18,9 @@
     <properties>
         <revision>1.0.0-SNAPSHOT</revision>
         <alinesno.infra.version>${revision}</alinesno.infra.version>
+
+        <!-- 定义liteflow版本 -->
+        <liteflow.version>2.11.3</liteflow.version>
     </properties>
 
     <modules>

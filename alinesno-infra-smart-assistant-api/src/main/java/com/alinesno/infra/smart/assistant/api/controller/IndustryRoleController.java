@@ -2,20 +2,22 @@ package com.alinesno.infra.smart.assistant.api.controller;
 
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
+import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
+import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
+import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
+import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import io.swagger.annotations.Api;
+import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 应用构建Controller
@@ -35,6 +37,12 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
     @Autowired
     private IIndustryRoleService service;
 
+    @Autowired
+    private IRoleChainService roleChainService ;
+
+    @Resource(name="chainRunner")
+    private IBaseExpertService baseExpert ;
+
     /**
      * 获取ApplicationEntity的DataTables数据
      * 
@@ -48,6 +56,49 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
         return this.toPage(model, this.getFeign(), page);
+    }
+
+    /**
+     * 运行角色流程
+     * @return
+     */
+    @GetMapping("/runRoleChainByRoleId")
+    public AjaxResult runRoleChainByRoleId(String roleId){
+
+        IndustryRoleEntity role = service.getById(roleId) ;
+        RoleChainEntity roleChain = roleChainService.getById(role.getChainId()) ;
+
+        String chainName = roleChain.getChainName() ;
+        Long chainId = roleChain.getId() ;
+
+        baseExpert.processExpert(null , chainName , chainId);
+
+        return ok() ;
+    }
+
+    /**
+     * 获取到角色的ID
+     * @param roleId
+     * @return
+     */
+    @GetMapping("/getRoleChainByChainId")
+    public AjaxResult getRoleChainByChainId(String roleId){
+
+        IndustryRoleEntity role = service.getById(roleId) ;
+        RoleChainEntity roleChain = roleChainService.getById(role.getChainId()) ;
+
+        return AjaxResult.success(roleChain==null?new RoleChainEntity():roleChain) ;
+    }
+
+    /**
+     * 保存角色工作流
+     * @param entity
+     * @return
+     */
+    @PostMapping("/saveRoleChainInfo")
+    public AjaxResult saveRoleChainInfo(@RequestBody RoleChainEntity entity , String roleId){
+        service.saveRoleChainInfo(entity , roleId) ;
+        return ok() ;
     }
 
     @Override

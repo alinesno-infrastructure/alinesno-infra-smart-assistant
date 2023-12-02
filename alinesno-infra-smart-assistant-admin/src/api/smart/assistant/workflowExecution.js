@@ -3,7 +3,7 @@ import { parseStrEmpty } from "@/utils/ruoyi";
 
 
 // 接口配置项
-var prefix = '/api/infra/smart/assistant/role/' ;
+var prefix = '/api/infra/smart/assistant/workflowExecution/' ;
 var managerUrl = {
   datatables : prefix +"datatables" ,
   createUrl: prefix + 'add' ,
@@ -15,39 +15,11 @@ var managerUrl = {
   removeUrl: prefix + "delete" ,
   exportUrl: prefix + "exportExcel",
   changeField: prefix + "changeField",
-  downloadfile: prefix + "downloadfile",
-  getRoleChainByChainId: prefix + "getRoleChainByChainId",
-  saveRoleChainInfo: prefix + "saveRoleChainInfo",
-  runRoleChainByRoleId: prefix + "runRoleChainByRoleId",
-}
-
-// 运行角色流程
-export function runRoleChainByRoleId(roleId) {
-  return request({
-    url: managerUrl.runRoleChainByRoleId + '?roleId=' + parseStrEmpty(roleId),
-    method: 'get'
-  })
-}
-
-// 新增角色工作流
-export function saveRoleChainInfo(roleChain , roleId) {
-  return request({
-    url: managerUrl.saveRoleChainInfo + '?roleId=' + roleId ,
-    method: 'post',
-    data: roleChain
-  })
-}
-
-// 查询角色流程 
-export function getRoleChainByChainId(roleId) {
-  return request({
-    url: managerUrl.getRoleChainByChainId + '?roleId=' + parseStrEmpty(roleId),
-    method: 'get'
-  })
+  downloadfile: prefix + "downloadfile"
 }
 
 // 查询应用列表
-export function listRole(query) {
+export function listApplication(query) {
   return request({
     url: managerUrl.datatables ,
     method: 'post',
@@ -56,15 +28,15 @@ export function listRole(query) {
 }
 
 // 查询应用详细
-export function getRole(RoleId) {
+export function getApplication(ApplicationId) {
   return request({
-    url: managerUrl.detailUrl + '/' + parseStrEmpty(RoleId),
+    url: managerUrl.detailUrl + '/' + parseStrEmpty(ApplicationId),
     method: 'get'
   })
 }
 
 // 新增应用
-export function addRole(data) {
+export function addApplication(data) {
   return request({
     url: managerUrl.saveUrl ,
     method: 'post',
@@ -73,7 +45,7 @@ export function addRole(data) {
 }
 
 // 修改应用
-export function updateRole(data) {
+export function updateApplication(data) {
   return request({
     url: managerUrl.updateUrl ,
     method: 'put',
@@ -82,17 +54,17 @@ export function updateRole(data) {
 }
 
 // 删除应用
-export function delRole(RoleId) {
+export function delApplication(ApplicationId) {
   return request({
-    url: managerUrl.removeUrl + '/' + parseStrEmpty(RoleId),
+    url: managerUrl.removeUrl + '/' + parseStrEmpty(ApplicationId),
     method: 'delete'
   })
 }
 
 // 应用密码重置
-export function resetRolePwd(RoleId, password) {
+export function resetApplicationPwd(ApplicationId, password) {
   const data = {
-    RoleId,
+    ApplicationId,
     password
   }
   return request({
@@ -103,9 +75,9 @@ export function resetRolePwd(RoleId, password) {
 }
 
 // 应用状态修改
-export function changeRoleStatus(RoleId, status) {
+export function changeApplicationStatus(ApplicationId, status) {
   const data = {
-    RoleId,
+    ApplicationId,
     status
   }
   return request({

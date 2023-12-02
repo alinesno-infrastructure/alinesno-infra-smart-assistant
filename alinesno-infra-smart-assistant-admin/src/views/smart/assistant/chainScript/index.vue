@@ -87,7 +87,7 @@
           <el-table-column label="脚本类型" align="center" key="scriptType" width="200" prop="scriptType" v-if="columns[2].visible" :show-overflow-tooltip="true"/>
           <el-table-column label="执行脚本" align="center" width="150"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button type="primary" text bg icon="Paperclip">脚本配置</el-button>
+              <el-button @click="configScript(scope.row)" type="primary" text bg icon="Paperclip">脚本配置</el-button>
             </template>
           </el-table-column>
           <el-table-column label="脚本语言" align="center" key="scriptLanguage" width="120" prop="scriptLanguage" v-if="columns[3].visible" :show-overflow-tooltip="true"/>
@@ -131,41 +131,40 @@
       <el-form :model="form" :rules="rules" ref="ApplicationRef" label-width="80px">
         <el-row>
           <el-col :span="24">
-            <el-form-item  label="渠道名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入渠道名称" maxlength="50"/>
+            <el-form-item  label="脚本名称" prop="scriptName">
+              <el-input v-model="form.scriptName" placeholder="请输入脚本名称" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="渠道类型" prop="toolType">
-              <el-input v-model="form.toolType" placeholder="请输入渠道类型" maxlength="50"/>
+            <el-form-item label="流程标识" prop="scriptId">
+              <el-input v-model="form.scriptId" placeholder="请输入流程标识" maxlength="50"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="流程类型" prop="scriptType">
+              <el-input v-model="form.scriptType" placeholder="请输入流程类型" maxlength="50"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="脚本语言" prop="scriptLanguage">
+              <el-input v-model="form.scriptLanguage" placeholder="请输入脚本语言" maxlength="100"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="脚本内容" prop="scriptData">
+              <el-input v-model="form.scriptData" placeholder="请输入脚本内容" maxlength="1024"/>
             </el-form-item>
           </el-col>
         </el-row>
 
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="状态" prop="hasStatus">
-              <el-input v-model="form.hasStatus" placeholder="请输入状态" maxlength="100"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="使用场景" prop="screen">
-              <el-input v-model="form.screen" placeholder="请输入使用场景" maxlength="100"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="渠道描述" prop="description">
-              <el-input v-model="form.description" placeholder="请输入渠道描述" maxlength="200"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">

@@ -1,8 +1,7 @@
 package com.alinesno.infra.smart.assistant.role;
 
-import com.alinesno.infra.smart.assistant.role.bean.PlatformExpert;
-import com.alinesno.infra.smart.assistant.role.bean.PromptMessage;
-import com.alinesno.infra.smart.assistant.role.task.BrainRequestTask;
+import com.alinesno.infra.smart.assistant.api.prompt.PromptMessage;
+import com.alinesno.infra.smart.assistant.role.handle.BrainRequestTask;
 
 import java.util.List;
 import java.util.concurrent.Callable;
