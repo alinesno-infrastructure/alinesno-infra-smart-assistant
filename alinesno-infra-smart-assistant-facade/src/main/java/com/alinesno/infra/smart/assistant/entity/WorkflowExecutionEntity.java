@@ -48,7 +48,7 @@ public class WorkflowExecutionEntity extends BaseEntity {
 
     @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 16)
     @ColumnComment("节点状态")
-    @TableField("status")
+    @TableField("workflow_status")
     private String workflowStatus; // 节点状态
 
     @ColumnType(value = MySqlTypeConstant.VARCHAR,length = 16)
