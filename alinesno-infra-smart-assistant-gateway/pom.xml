@@ -10,7 +10,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>alinesno-infra-smart-assistant-domain</artifactId>
+	<artifactId>alinesno-infra-smart-assistant-gateway</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -24,10 +24,22 @@
 
 		<dependency>
 			<groupId>com.alinesno.infra.common</groupId>
-			<artifactId>alinesno-infra-common-core</artifactId>
+			<artifactId>alinesno-infra-common-web-api</artifactId>
 			<version>${revision}</version>
 		</dependency>
 
-	</dependencies>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.13.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alinesno.infra.smart</groupId>
+            <artifactId>alinesno-infra-smart-assistant-adapter</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+    </dependencies>
 
 </project>

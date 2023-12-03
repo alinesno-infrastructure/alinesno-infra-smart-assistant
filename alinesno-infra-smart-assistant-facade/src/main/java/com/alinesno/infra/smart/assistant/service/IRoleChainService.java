@@ -17,4 +17,15 @@ public interface IRoleChainService extends IBaseService<RoleChainEntity> {
      */
     void runById(Long chainId);
 
+    /**
+     * 保存流程节点
+     * @param entity
+     */
+    void saveRoleChain(RoleChainEntity entity);
+
+    /**
+     * 更新流程节点
+     * @param entity
+     */
+    void updateRoleChain(RoleChainEntity entity);
 }

@@ -1,13 +1,16 @@
 package com.alinesno.infra.smart.assistant.service.impl;
 
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
+import com.alinesno.infra.smart.assistant.chain.IChainService;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.mapper.RoleChainMapper;
+import com.alinesno.infra.smart.assistant.redis.MessageConstants;
+import com.alinesno.infra.smart.assistant.redis.PublishService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import com.yomahub.liteflow.core.FlowExecutor;
-import com.yomahub.liteflow.flow.LiteflowResponse;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,12 +26,33 @@ public class RoleChainServiceImpl extends IBaseServiceImpl<RoleChainEntity, Role
     @Resource
     private FlowExecutor flowExecutor;
 
+    @Autowired
+    private PublishService publishService ;
+
+    @Autowired
+    private IChainService chainService ;
+
     @Override
     public void runById(Long chainId) {
 
         RoleChainEntity roleChain = getById(chainId) ;
 
-        LiteflowResponse response = flowExecutor.execute2Resp(roleChain.getChainName() , "arg");
-        log.debug("response = {}" , response);
+        chainService.executeRule(roleChain) ;
+    }
+
+    @Override
+    public void saveRoleChain(RoleChainEntity entity) {
+        this.save(entity) ;
+
+        // 发送消息用于规则的热更新
+        publishService.sendMsg(MessageConstants.RELOAD_RULE);
+    }
+
+    @Override
+    public void updateRoleChain(RoleChainEntity entity) {
+        this.update(entity) ;
+
+        // 发送消息用于规则的热更新
+        publishService.sendMsg(MessageConstants.RELOAD_RULE);
     }
 }
