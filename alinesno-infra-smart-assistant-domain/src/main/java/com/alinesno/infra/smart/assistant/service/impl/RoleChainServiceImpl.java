@@ -7,8 +7,6 @@ import com.alinesno.infra.smart.assistant.mapper.RoleChainMapper;
 import com.alinesno.infra.smart.assistant.redis.MessageConstants;
 import com.alinesno.infra.smart.assistant.redis.PublishService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
-import com.yomahub.liteflow.core.FlowExecutor;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +20,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class RoleChainServiceImpl extends IBaseServiceImpl<RoleChainEntity, RoleChainMapper> implements IRoleChainService {
-
-    @Resource
-    private FlowExecutor flowExecutor;
 
     @Autowired
     private PublishService publishService ;
