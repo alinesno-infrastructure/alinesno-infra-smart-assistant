@@ -1,7 +1,7 @@
 package com.alinesno.infra.smart.assistant.im.wechat.controller;
 
 import com.alinesno.infra.smart.assistant.im.wechat.event.MsgDispatcher;
-import com.alinesno.infra.smart.assistant.im.wechat.utils.MessageUtil;
+import com.alinesno.infra.smart.assistant.im.utils.MessageUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;

@@ -209,6 +209,12 @@ jobs:
             export REDIS_HOST=${{ secrets.DEV_REDIS_HOST }}
             export REDIS_KEY=${{ secrets.DEV_REDIS_KEY }}
 
+            export DINGTALK_ROBOT_CODE=${{ secrets.DEV_DINGTALK_ROBOT_CODE }}
+            export DINGTALK_APP_KEY=${{ secrets.DEV_DINGTALK_APP_KEY }}
+            export DINGTALK_APP_SECRET=${{ secrets.DEV_DINGTALK_APP_SECRET }}
+            export DINGTALK_ROBOT_WEBHOOK=${{ secrets.DEV_DINGTALK_ROBOT_WEBHOOK }}
+            export DINGTALK_ROBOT_SECRET=${{ secrets.DEV_DINGTALK_ROBOT_SECRET }}
+
             export DB_MYSQL_URL=${{ secrets.DEV_DB_MYSQL_URL }}
             export DB_MYSQL_USRENAME=${{ secrets.DEV_DB_MYSQL_USRENAME }}
             export DB_MYSQL_PASSWORD=${{ secrets.DEV_DB_MYSQL_PASSWORD }}

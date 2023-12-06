@@ -1,7 +1,7 @@
 package com.alinesno.infra.smart.assistant.im.wechat.controller;
 
 import com.alinesno.infra.common.web.adapter.utils.StringUtils;
-import com.alinesno.infra.smart.assistant.im.wechat.utils.SignUtil;
+import com.alinesno.infra.smart.assistant.im.utils.SignUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

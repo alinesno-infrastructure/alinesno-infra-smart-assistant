@@ -3,7 +3,7 @@ package com.alinesno.infra.smart.assistant.im.wechat.event;
 import com.alinesno.infra.common.core.context.SpringContext;
 import com.alinesno.infra.smart.assistant.adapter.SmartBrainConsumer;
 import com.alinesno.infra.smart.assistant.api.response.TextMessageRes;
-import com.alinesno.infra.smart.assistant.im.wechat.utils.MessageUtil;
+import com.alinesno.infra.smart.assistant.im.utils.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
