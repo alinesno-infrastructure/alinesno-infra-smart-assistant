@@ -50,6 +50,10 @@ alinesno.infra:
   gateway:
     host:
   smart:
+    dingtalk:
+      app-key:
+      app-secret:
+      robot-code:
     wechat:
       token: xxxxx
 

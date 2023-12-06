@@ -1,11 +1,10 @@
-package com.alinesno.infra.smart.assistant.gateway.controller;
+package com.alinesno.infra.smart.assistant.im.wechat.controller;
 
-import com.alinesno.infra.smart.assistant.gateway.event.MsgDispatcher;
-import com.alinesno.infra.smart.assistant.gateway.utils.MessageUtil;
+import com.alinesno.infra.smart.assistant.im.wechat.event.MsgDispatcher;
+import com.alinesno.infra.smart.assistant.im.wechat.utils.MessageUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,11 +14,10 @@ import java.util.Map;
 /**
  * WechatMessageController 是一个控制器类，用于处理微信消息相关的请求。
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/v1/smart/assistant/wechat")
 public class WechatMessageController {
-
-    private static final Logger log = LoggerFactory.getLogger(WechatMessageController.class);
 
     // 在这里可以添加处理微信消息请求的方法
 

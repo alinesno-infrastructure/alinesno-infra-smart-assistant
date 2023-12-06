@@ -1,4 +1,4 @@
-package com.alinesno.infra.smart.assistant.gateway.utils;
+package com.alinesno.infra.smart.assistant.im.wechat.utils;
 
 import com.alinesno.infra.smart.assistant.api.response.*;
 import com.thoughtworks.xstream.XStream;
@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
- 
+
 import java.io.InputStream;
 import java.io.Writer;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.alinesno.infra.smart.assistant.gateway.utils;
+package com.alinesno.infra.smart.assistant.im.wechat.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
