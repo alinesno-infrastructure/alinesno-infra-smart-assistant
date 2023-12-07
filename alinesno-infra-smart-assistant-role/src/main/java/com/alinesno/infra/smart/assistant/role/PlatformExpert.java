@@ -3,6 +3,7 @@ package com.alinesno.infra.smart.assistant.role;
 import cn.hutool.core.util.IdUtil;
 import com.alinesno.infra.smart.assistant.api.prompt.PromptMessage;
 import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
+import com.alinesno.infra.smart.assistant.im.service.IDingtalkNoticeService;
 import com.alinesno.infra.smart.assistant.role.service.BrainRemoteService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import com.alinesno.infra.smart.assistant.service.IWorkflowExecutionService;
@@ -34,6 +35,9 @@ public abstract class PlatformExpert implements IBaseExpertService {
 
     @Autowired
     protected BrainRemoteService brainRemoteService ;
+
+    @Autowired
+    protected IDingtalkNoticeService dingtalkNoticeService ;
 
     @Resource
     protected FlowExecutor flowExecutor;
@@ -74,8 +78,8 @@ public abstract class PlatformExpert implements IBaseExpertService {
      * 生成Id
      * @return
      */
-    protected Long generatorId(){
-       return IdUtil.getSnowflakeNextId() ;
+    protected String generatorId(){
+       return IdUtil.getSnowflakeNextId()+"" ;
     }
 
 }

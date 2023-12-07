@@ -15,23 +15,15 @@
 
 	<dependencies>
 
-		<!-- spring-retry_start -->
-		<dependency>
-			<groupId>org.springframework.retry</groupId>
-			<artifactId>spring-retry</artifactId>
-			<version>2.0.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			<version>1.9.1</version>
-		</dependency>
-		<!-- spring-retry_end -->
-
 		<!-- 引用公共门面服务 -->
 		<dependency>
 			<groupId>com.alinesno.infra.smart</groupId>
 			<artifactId>alinesno-infra-smart-assistant-facade</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alinesno.infra.smart</groupId>
+			<artifactId>alinesno-infra-smart-assistant-adapter</artifactId>
 			<version>${revision}</version>
 		</dependency>
 
@@ -57,6 +49,19 @@
 			<version>${liteflow.version}</version>
 		</dependency>
         <!-- liteflow_end -->
+
+		<!-- spring-retry_start -->
+		<dependency>
+			<groupId>org.springframework.retry</groupId>
+			<artifactId>spring-retry</artifactId>
+			<version>2.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.1</version>
+		</dependency>
+		<!-- spring-retry_end -->
 
 	</dependencies>
 

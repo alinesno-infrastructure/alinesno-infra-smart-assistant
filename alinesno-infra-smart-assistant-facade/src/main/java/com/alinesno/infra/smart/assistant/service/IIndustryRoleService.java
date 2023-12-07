@@ -4,6 +4,8 @@ import com.alinesno.infra.common.facade.services.IBaseService;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 
+import java.util.Map;
+
 /**
  * 应用构建Service接口
  * 
@@ -20,4 +22,10 @@ public interface IIndustryRoleService extends IBaseService<IndustryRoleEntity> {
      */
     void saveRoleChainInfo(RoleChainEntity entity, String roleId);
 
+    /**
+     * 运行角色工作流
+     * @param params
+     * @param roleId
+     */
+    void runRoleChainByRoleId(Map<String , Object> params , String roleId);
 }

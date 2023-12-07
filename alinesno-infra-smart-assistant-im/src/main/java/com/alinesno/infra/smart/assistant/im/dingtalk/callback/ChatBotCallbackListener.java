@@ -2,12 +2,16 @@ package com.alinesno.infra.smart.assistant.im.dingtalk.callback;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alinesno.infra.smart.assistant.im.dingtalk.service.RobotGroupMessagesService;
+import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
 import com.dingtalk.open.app.api.callback.OpenDingTalkCallbackListener;
 import com.dingtalk.open.app.api.models.bot.ChatbotMessage;
 import com.dingtalk.open.app.api.models.bot.MessageContent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 机器人消息回调
@@ -17,12 +21,12 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ChatBotCallbackListener implements OpenDingTalkCallbackListener<ChatbotMessage, JSONObject> {
+
+    @Autowired
     private RobotGroupMessagesService robotGroupMessagesService;
 
     @Autowired
-    public ChatBotCallbackListener(RobotGroupMessagesService robotGroupMessagesService) {
-        this.robotGroupMessagesService = robotGroupMessagesService;
-    }
+    private IIndustryRoleService industryRoleService ;
 
     /**
      * https://open.dingtalk.com/document/orgapp/the-application-robot-in-the-enterprise-sends-group-chat-messages
@@ -36,6 +40,10 @@ public class ChatBotCallbackListener implements OpenDingTalkCallbackListener<Cha
             MessageContent text = message.getText();
             if (text != null) {
 
+                // roleId
+                // TODO 待做IM渠道与机器人映射关系
+                String roleId = "1731289335711506434" ;
+
                 String senderId = message.getSenderId() ;
                 String senderNick = message.getSenderNick() ;
                 String chatbotUserId = message.getChatbotUserId() ;
@@ -48,7 +56,12 @@ public class ChatBotCallbackListener implements OpenDingTalkCallbackListener<Cha
                 log.info("receive bot message from user={}, msg={}", message.getSenderId(), msg);
                 String openConversationId = message.getConversationId();
                 try {
+
                     // 发送培训相关的要求到任务中
+                    Map<String , Object> params = new HashMap<>() ;
+                    params.put("label1" , msg) ;
+
+                    industryRoleService.runRoleChainByRoleId(params , roleId);
 
                     //发送机器人消息
                     String result = robotGroupMessagesService.send(openConversationId, "收到，你的任务我已经在处理，请耐心等待 :-)");

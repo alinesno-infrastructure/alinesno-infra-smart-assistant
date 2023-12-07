@@ -5,16 +5,18 @@ import com.alinesno.infra.smart.assistant.entity.WorkflowExecutionEntity;
 import com.alinesno.infra.smart.assistant.entity.WorkflowNodeExecutionEntity;
 import com.alinesno.infra.smart.assistant.role.common.ExecutionStatus;
 import com.alinesno.infra.smart.assistant.role.common.WorkflowStatusEnum;
-import com.alinesno.infra.smart.assistant.role.context.RoleContext;
+import com.alinesno.infra.smart.assistant.role.context.RoleChainContext;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import com.yomahub.liteflow.flow.entity.CmpStep;
 import com.yomahub.liteflow.slot.DefaultContext;
 import com.yomahub.liteflow.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,12 +30,17 @@ public class ChainRunner extends PlatformExpert implements IBaseExpertService {
      * @param chainName
      * @param chainId
      */
+    @Async
     public void processExpert(Map<String, Object> params, String chainName , Long chainId){
+
+        if(params == null){
+            params = new HashMap<>() ;
+        }
 
         Long workflowId = startFlowRecord(chainName , chainId) ; // 开始执行工作流
 
         // 定义上下文
-        RoleContext roleContext = new RoleContext() ;
+        RoleChainContext roleContext = new RoleChainContext() ;
 
         // 执行工作流
         LiteflowResponse response = flowExecutor.execute2Resp(chainName, params , roleContext);

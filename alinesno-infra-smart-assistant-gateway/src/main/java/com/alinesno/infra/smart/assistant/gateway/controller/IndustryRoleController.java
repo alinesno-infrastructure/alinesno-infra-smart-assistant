@@ -4,20 +4,22 @@ import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
-import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import io.swagger.annotations.Api;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 应用构建Controller
@@ -40,9 +42,6 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
     @Autowired
     private IRoleChainService roleChainService ;
 
-    @Resource(name="chainRunner")
-    private IBaseExpertService baseExpert ;
-
     /**
      * 获取ApplicationEntity的DataTables数据
      * 
@@ -63,15 +62,14 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
      * @return
      */
     @GetMapping("/runRoleChainByRoleId")
-    public AjaxResult runRoleChainByRoleId(String roleId){
+    public AjaxResult runRoleChainByRoleId(String roleId , String executeOrder){
 
-        IndustryRoleEntity role = service.getById(roleId) ;
-        RoleChainEntity roleChain = roleChainService.getById(role.getChainId()) ;
+        Assert.hasLength(executeOrder , "执行命令为空.");
 
-        String chainName = roleChain.getChainName() ;
-        Long chainId = roleChain.getId() ;
+        Map<String , Object> params = new HashMap<>() ;
+        params.put("label1" , executeOrder) ;
 
-        baseExpert.processExpert(null , chainName , chainId);
+        service.runRoleChainByRoleId(params , roleId) ;
 
         return ok() ;
     }

@@ -15,6 +15,22 @@
 
 	<dependencies>
 
+		<!-- 引入第三方facade_start -->
+		<dependency>
+			<groupId>com.alinesno.infra.smart</groupId>
+			<artifactId>alinesno-infra-smart-brain-facade</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<!-- 引入第三方facade_end -->
+
+		<!-- 引入forest_starter_start -->
+		<dependency>
+			<groupId>com.dtflys.forest</groupId>
+			<artifactId>forest-spring-boot3-starter</artifactId>
+			<version>${forest.version}</version>
+		</dependency>
+		<!-- 引入forest_starter_end -->
+
 		<!-- 引用公共门面服务 -->
 		<dependency>
 			<groupId>com.alinesno.infra.smart</groupId>
