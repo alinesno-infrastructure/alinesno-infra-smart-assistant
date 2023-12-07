@@ -1,11 +1,11 @@
 package com.alinesno.infra.smart.assistant.role;
 
-import com.alinesno.infra.smart.assistant.api.prompt.PromptMessage;
 import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
 import com.alinesno.infra.smart.assistant.entity.WorkflowExecutionEntity;
 import com.alinesno.infra.smart.assistant.entity.WorkflowNodeExecutionEntity;
 import com.alinesno.infra.smart.assistant.role.common.ExecutionStatus;
 import com.alinesno.infra.smart.assistant.role.common.WorkflowStatusEnum;
+import com.alinesno.infra.smart.assistant.role.context.RoleContext;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import com.yomahub.liteflow.flow.entity.CmpStep;
 import com.yomahub.liteflow.slot.DefaultContext;
@@ -22,11 +22,6 @@ import java.util.Map;
 @Service("chainRunner")
 public class ChainRunner extends PlatformExpert implements IBaseExpertService {
 
-    @Override
-    public void performSpecializedTask(List<PromptMessage> prompts) {
-
-    }
-
     /**
      * 运行方法
      * @param params
@@ -37,8 +32,11 @@ public class ChainRunner extends PlatformExpert implements IBaseExpertService {
 
         Long workflowId = startFlowRecord(chainName , chainId) ; // 开始执行工作流
 
+        // 定义上下文
+        RoleContext roleContext = new RoleContext() ;
+
         // 执行工作流
-        LiteflowResponse response = flowExecutor.execute2Resp(chainName, "arg");
+        LiteflowResponse response = flowExecutor.execute2Resp(chainName, params , roleContext);
 
         saveFlowRecord(response , workflowId) ;
 

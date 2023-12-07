@@ -43,9 +43,9 @@ public class RobotController extends SuperController {
         DingtalkRobotMessageDto dto = new DingtalkRobotMessageDto() ;
         dto.setWebhook(robotWebhook) ;
         dto.setSecret(robotSecret) ;
-        dto.setAtAll(true);
+        dto.setAtAll(false);
         dto.setAtUser("");
-        dto.setMessageType("link");
+        dto.setMessageType("markdown");
         dto.setMessageContent("你要求生成的Java计算机考核题目已经生成，请查看连接.");
 
         sendMessageWebhook(dto) ;
@@ -74,11 +74,20 @@ public class RobotController extends SuperController {
             request.setLink(link);
         }else if(dto.getMessageType().equals("markdown")){
             OapiRobotSendRequest.Markdown markdown = new OapiRobotSendRequest.Markdown();
-            markdown.setTitle("杭州天气");
-            markdown.setText("#### 杭州天气 @156xxxx8827\n" +
-                    "> 9度，西北风1级，空气良89，相对温度73%\n\n" +
-                    "> ![screenshot](https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png)\n"  +
-                    "> ###### 10点20分发布 [天气](http://www.thinkpage.cn/) \n");
+            markdown.setTitle("## 任务执行结果通知");
+
+            String markdownText = "#### 你的任务已经完成:\n" +
+                    "- <font color=\"#3b5998\">请生成关于CentOS的相关题目,生成内容包含选择题目和填空题</font>\n" +
+                    "---\n" +
+                    "- 持续时间: 1分23秒\n" +
+                    "- 环境: [测试环境](#)\n" +
+                    "- 内容: [查看生成结果](http://www.thinkpage.cn/)\n" +
+                    "- 状态: 成功\n" +
+                    "- 完成时间: 2023-12-21 12:33:23\n" +
+                    "- 执行人：培训题设计Agent" ;
+                    ;
+
+            markdown.setText(markdownText) ;
             request.setMarkdown(markdown);
         }
 

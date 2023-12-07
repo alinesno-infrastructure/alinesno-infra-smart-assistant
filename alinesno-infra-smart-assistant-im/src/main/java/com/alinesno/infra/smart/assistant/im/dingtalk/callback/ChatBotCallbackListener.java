@@ -35,6 +35,15 @@ public class ChatBotCallbackListener implements OpenDingTalkCallbackListener<Cha
         try {
             MessageContent text = message.getText();
             if (text != null) {
+
+                String senderId = message.getSenderId() ;
+                String senderNick = message.getSenderNick() ;
+                String chatbotUserId = message.getChatbotUserId() ;
+
+                log.debug("发送者ID senderId = {}" , senderId);
+                log.debug("发送者名称 senderNick = {}" , senderNick);
+                log.debug("机器人Id chatbotUserId = {}" , chatbotUserId);
+
                 String msg = text.getContent();
                 log.info("receive bot message from user={}, msg={}", message.getSenderId(), msg);
                 String openConversationId = message.getConversationId();
@@ -42,7 +51,7 @@ public class ChatBotCallbackListener implements OpenDingTalkCallbackListener<Cha
                     // 发送培训相关的要求到任务中
 
                     //发送机器人消息
-                    String result = robotGroupMessagesService.send(openConversationId, "任务已经在执行，请耐心等待 :-)");
+                    String result = robotGroupMessagesService.send(openConversationId, "收到，你的任务我已经在处理，请耐心等待 :-)");
                     log.debug("result = {}" , result);
                 } catch (Exception e) {
                     log.error("send group message by robot error:" + e.getMessage(), e);
