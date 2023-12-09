@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -102,6 +101,8 @@ public class DingtalkMsgDispatcher {
                 "- 完成时间: "+finishTime+"\n" +
                 "---\n" +
                 "- 执行人：培训题设计Agent" ;
+
+        System.out.println("markdownText = " + markdownText);
 
         markdown.setText(markdownText) ;
         return markdown;

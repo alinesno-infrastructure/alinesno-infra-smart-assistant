@@ -44,7 +44,7 @@
     </el-row>
 
     <el-container>
-      <el-aside width="280px" style="background: #fff;padding:10px;">
+      <el-aside width="300px" style="background: #fff;padding:10px;">
         <ChatSessionPanel @onSendParams="handleGetParams" />
       </el-aside>
       <el-main style="padding:0px;">

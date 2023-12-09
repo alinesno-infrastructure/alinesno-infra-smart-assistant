@@ -65,6 +65,27 @@ public class RobotController extends SuperController {
             personDto.setDateTime(DateUtil.formatDateTime(new Date()));
             messageList.add(personDto) ;
 
+            ChatMessageDto dto3 = new ChatMessageDto() ;
+
+            String md = "" +
+                    "### 罗小东的任务已经处理\n" +
+//                    "- 任务：\n" + ta.getGenContent() + "\n" +
+                    "- 任务: \n" + "请编写关于Ansible的考核题目." + "\n" +
+                    "- 业务标识: 1733539703232249856\n" +
+                    "- 持续时间: 46秒503\n" +
+                    "- 环境: [测试环境](#)\n" +
+                    "- 内容: [查看生成结果](http://localhost/smart/specialist/index?businessId=1733539703232249856)\n" +
+                    "- 状态: 完成\n" +
+                    "- 完成时间: 2023-12-10 01:31:34\n" +
+                    "- 执行人：培训题设计Agent" +
+                    "" ;
+
+            dto3.setChatText(md);
+            dto3.setName("高级数据库工程师");
+            dto3.setRoleType("agent");
+            dto3.setDateTime(DateUtil.formatDateTime(new Date()));
+            messageList.add(dto3) ;
+
             return AjaxResult.success(messageList) ;
         }
 

@@ -3,7 +3,7 @@
   <div class="acp-dashboard" style="padding: 0px 10px !important">
     <div class="smart-container">
       <el-row>
-        <el-col :span="16">
+        <el-col :span="18">
           <div class="robot-chat-windows">
             <div class="robot-chat-header">
               <div class="chat-header-title">
@@ -52,7 +52,7 @@
           </div>
         </el-col>
 
-        <el-col :span="8">
+        <el-col :span="6">
           <div class="robot-chat-help-container">
             <div class="robot-chat-help-panel">
               <div class="robot-chat-help-title">专家服务Agent</div>
@@ -61,7 +61,7 @@
                   <ul>
                     <li class="item-process" v-for="(item,index) in favouriteList" :key="index">
                       <img style="width:30px;height:30px;border-radius: 50%;position: absolute;" :src="'http://data.linesno.com/icons/sepcialist/dataset_' + (index+35)+ '.png'" />
-                      <div style="float: left;margin-left: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin-top: -2px;">
+                      <div style="margin-left: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin-top: -2px;">
                         {{ item.name }} 
                       </div>
                     </li>
@@ -76,7 +76,7 @@
                   <ul>
                     <li class="item-process" v-for="(item,index) in helpAutoList" :key="item.id">
                       <img style="width:30px;height:30px;border-radius: 50%;position: absolute;" :src="'http://data.linesno.com/icons/sepcialist/dataset_' + (index+15)+ '.png'" />
-                      <div style="float: left;margin-left: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin-top: -2px;">
+                      <div style="margin-left: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin-top: -2px;">
                         {{ item.name }} 
                       </div>
                     </li>
