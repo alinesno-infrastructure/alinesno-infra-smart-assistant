@@ -874,9 +874,15 @@ $chartColor: #3b5998;
           margin: 0px;
         }
 
+        li.item-process:hover {
+          color: #409EFF;
+          background-color: #eaeaea;
+        }
+
         li.item-process {
           list-style: none;
           float: left;
+          cursor: pointer;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

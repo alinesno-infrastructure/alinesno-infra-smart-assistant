@@ -52,13 +52,18 @@ public class RobotController extends SuperController {
             List<ChatMessageDto> messageList = new ArrayList<>() ;
 
             ChatMessageDto dto = new ChatMessageDto() ;
-
             dto.setChatText(ta.getGenContent());
             dto.setName("高级数据库工程师");
             dto.setRoleType("agent");
             dto.setDateTime(DateUtil.formatDateTime(new Date()));
-
             messageList.add(dto) ;
+
+            ChatMessageDto personDto = new ChatMessageDto() ;
+            personDto.setChatText("收到，罗小东的任务我已经在处理，请稍等1-2分钟 :-)");
+            personDto.setName("考核题目生成Agent");
+            personDto.setRoleType("person");
+            personDto.setDateTime(DateUtil.formatDateTime(new Date()));
+            messageList.add(personDto) ;
 
             return AjaxResult.success(messageList) ;
         }

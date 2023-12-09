@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-row>
       <el-col :span="24" style="border-bottom: 1px solid rgb(229, 229, 229);height: 55px;">
         <div class="flex items-center" style="padding: 9px;border-radius: 5px;color: #242e42;">
@@ -28,11 +28,13 @@
             <div class="header-body-main" style="float: right;margin-top: 10px;font-size: 13px;">
               <span class="text-sm mr-2" style="color: var(--el-text-color-regular);">业务标识 : 1732055435930882069 <el-icon>
                   <CopyDocument />
-                </el-icon> </span>
+                </el-icon> 
+              </span>
               <span class="text-sm mr-2" style="margin-left:10px;color: var(--el-text-color-regular);">角色标识 : uvaWo9Es
                 <el-icon>
                   <CopyDocument />
-                </el-icon> </span>
+                </el-icon> 
+              </span>
             </div>
 
           </div>
@@ -43,10 +45,10 @@
 
     <el-container>
       <el-aside width="280px" style="background: #fff;padding:10px;">
-        <ChatSessionPanel />
+        <ChatSessionPanel @onSendParams="handleGetParams" />
       </el-aside>
       <el-main style="padding:0px;">
-        <SmartService />
+        <SmartService @onSendParams="handleGetParams" />
       </el-main>
     </el-container>
 
@@ -63,6 +65,7 @@ import ChatSessionPanel from './chatSessionPanel';
 import { ref, reactive } from 'vue'
 const textarea = ref('this is a test')
 
+const loading = ref(false)
 const labelPosition = ref("top")
 const checked1 = ref(false)
 const engineers = ref([{
@@ -172,6 +175,11 @@ const onInput = (val) => {
 
 const onReady = (cm) => {
   console.log(cm.focus())
+}
+
+const handleGetParams = (params) => {
+  console.log(params) // 传递给父组件的数据
+  loading.value = params ; 
 }
 
 /** 提交按钮 */

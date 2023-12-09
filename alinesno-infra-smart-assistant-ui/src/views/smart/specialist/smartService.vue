@@ -20,12 +20,32 @@
             </div>
             <div class="robot-chat-footer" style="float:left;width:100%">
               <div class="chat-completion">
-                <textarea placeholder="请用 “输入你的审批意见” 描述您的问题，如：缺少生成的内容" maxlength="1000" rows="2" 
-                  style="resize: none;float: left;width: 78%;background: #fafafa;margin: 10px;"></textarea>
-                <div class="chat-operation" style="margin-top: 10px;float: right;">
-                  <el-button type="primary"><el-icon><Link /></el-icon></el-button>
-                  <el-button type="danger"><el-icon><Position /></el-icon></el-button>
-                  <el-button type="success"><el-icon><Connection /></el-icon></el-button>
+
+                <textarea placeholder="请用 “输入你的审批意见” 描述您的问题，如：缺少生成的内容" 
+                          maxlength="1000" 
+                          rows="2"  
+                          style="resize: none;float: left;width:calc(100% - 250px);background: #fafafa;margin: 10px;"></textarea>
+
+                <div class="chat-operation" style="margin-top: 5px;float: right;">
+
+                  <el-tooltip class="box-item" effect="dark" content="回退重新生成" placement="top" >
+                    <el-button type="danger" text bg size="large">
+                      <i class="fa-solid fa-paper-plane icon-btn"></i>
+                    </el-button>
+                  </el-tooltip>
+
+                  <el-tooltip class="box-item" effect="dark" content="选择专家下一步执行" placement="top" >
+                    <el-button type="warning" text bg size="large" @click="dialogVisible = true" >
+                      <i class="fa-solid fa-user-astronaut icon-btn"></i>
+                    </el-button>
+                  </el-tooltip>
+
+                  <el-tooltip class="box-item" effect="dark" content="提交任务给Agent执行" placement="top" >
+                    <el-button type="primary" text bg size="large" @click="jobDialogVisible = true" >
+                      <i class="fa-solid fa-truck-fast icon-btn"></i>
+                    </el-button>
+                  </el-tooltip>
+
                 </div>
               </div>
             </div>
@@ -69,6 +89,25 @@
        
       </el-row>
     </div>
+
+    <el-dialog v-model="dialogVisible" title="选择专家服务Agent" width="70%" :before-close="handleClose" append-to-body>
+      <RoleAgent />
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">关闭</el-button>
+        </span>
+      </template>
+    </el-dialog>
+
+    <el-dialog v-model="jobDialogVisible" title="选择任务执行Agent" width="70%" :before-close="handleClose" append-to-body>
+      <JobAgent />
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="jobDialogVisible = false">关闭</el-button>
+        </span>
+      </template>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -76,7 +115,11 @@
 import { ref } from 'vue'
 import ChatList from './chatList.vue'
 
-const checked2 = ref(false)
+import RoleAgent from './agent/roleAgent.vue'
+import JobAgent from './agent/jobAgent.vue'
+
+const dialogVisible = ref(false)
+const jobDialogVisible = ref(false)
 
 const favouriteList = ref([
   { id: '1', icon: 'fa-solid fa-truck-fast', name: '技术指导Agent' },
@@ -100,4 +143,13 @@ const helpAutoList = ref([
   { id: '6', icon: 'fa-solid fa-user-nurse', name: '数据库设计Agent' },
 ])
 
+const handleClose = () => {
+}
+
 </script>
+
+<style lang="scss" scoped>
+.icon-btn{
+  font-size: 20px;
+}
+</style>
