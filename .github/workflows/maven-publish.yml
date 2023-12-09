@@ -214,6 +214,7 @@ jobs:
             export DINGTALK_APP_SECRET=${{ secrets.DEV_DINGTALK_APP_SECRET }}
             export DINGTALK_ROBOT_WEBHOOK=${{ secrets.DEV_DINGTALK_ROBOT_WEBHOOK }}
             export DINGTALK_ROBOT_SECRET=${{ secrets.DEV_DINGTALK_ROBOT_SECRET }}
+            export DINGTALK_ROBOT_COMENT_LINK=${{ secrets.DEV_DINGTALK_COMMENT_LINK }}
 
             export DB_MYSQL_URL=${{ secrets.DEV_DB_MYSQL_URL }}
             export DB_MYSQL_USRENAME=${{ secrets.DEV_DB_MYSQL_USRENAME }}

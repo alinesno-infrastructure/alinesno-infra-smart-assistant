@@ -2,6 +2,7 @@ package com.alinesno.infra.smart.assistant.role;
 
 import cn.hutool.core.date.DateUtil;
 import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
+import com.alinesno.infra.smart.assistant.role.common.RoleUtils;
 import com.alinesno.infra.smart.assistant.role.context.RoleChainContext;
 import com.alinesno.infra.smart.brain.api.reponse.TaskContentDto;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
@@ -41,7 +42,6 @@ public class TeamTrainingSpecialist extends PlatformExpert {
             brainRemoteService.chatTask(params , businessId , promptId);
 
             log.debug("params = {}" , params);
-            System.out.println("TeamTrainGeneratorContent executed!");
 
             // 设置上下文
             roleContext.setBusinessId(businessId);
@@ -64,12 +64,9 @@ public class TeamTrainingSpecialist extends PlatformExpert {
             RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
 
             String businessId = roleContext.getBusinessId() ;  // 获取到业务Id
-            String promptId = roleContext.getPromptId() ;
-
             TaskContentDto content = brainRemoteService.chatContent(businessId);
 
             log.debug("promptId = {} , content = {}" , promptId , content);
-            System.out.println("TeamTrainGeneratorContent executed!");
 
             // 设置上下文
             roleContext.setAssistantContent(content);
@@ -84,6 +81,7 @@ public class TeamTrainingSpecialist extends PlatformExpert {
             // 获取上下文
             RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
             TaskContentDto taskContentDto = roleContext.getAssistantContent() ;
+            String businessId = roleContext.getBusinessId() ;
 
             long startTime = roleContext.getStartTime() ;
             long endTime = System.currentTimeMillis() ;
@@ -94,40 +92,14 @@ public class TeamTrainingSpecialist extends PlatformExpert {
 
             noticeDto.setBusinessId(roleContext.getBusinessId());
             noticeDto.setTaskName(roleContext.getUserContent());
-            noticeDto.setApplyLink("http://portal.infra.linesno.com");
+            noticeDto.setApplyLink(platformUrl + businessId);
             noticeDto.setEnv("测试环境");
-            noticeDto.setUsageTime(formatTime(startTime , endTime));
+            noticeDto.setUsageTime(RoleUtils.formatTime(startTime , endTime));
             noticeDto.setFinishTime(DateUtil.formatDateTime(new Date()));
             noticeDto.setTaskStatus(taskContentDto.getTaskStatus() == 2 ?"完成":"失败");
 
             dingtalkNoticeService.noticeAgent(noticeDto);
-            System.out.println("TeamTrainGeneratorContent executed!");
         }
     }
 
-    public static String formatTime(long startTime, long endTime) {
-        long elapsedTime = endTime - startTime;
-
-        long hours = elapsedTime / 3600000;
-        long remainingMillis = elapsedTime % 3600000;
-        long minutes = remainingMillis / 60000;
-        remainingMillis %= 60000;
-        long seconds = remainingMillis / 1000;
-        long milliseconds = remainingMillis % 1000;
-
-        StringBuilder formattedTime = new StringBuilder();
-
-        if (hours > 0) {
-            formattedTime.append(hours).append("时");
-        }
-        if (minutes > 0 || hours > 0) {
-            formattedTime.append(minutes).append("分");
-        }
-        if (seconds > 0 || minutes > 0 || hours > 0) {
-            formattedTime.append(seconds).append("秒");
-        }
-        formattedTime.append(milliseconds);
-
-        return formattedTime.toString();
-    }
 }

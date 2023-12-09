@@ -14,7 +14,7 @@ $chartColor: #3b5998;
   right: 0px;
   left: 0px;
   z-index: 1000;
-  border-bottom: 1px solid #e5e5e5 ;
+  border-bottom: 1px solid rgb(229, 229, 229) ;
 
   .header-logo-label {
     font-size: 16px;
@@ -835,9 +835,10 @@ $chartColor: #3b5998;
 // 专家体系
 .smart-container {
   margin: auto;
-  margin-top: 30px;
-  margin-bottom: 50px;
-  width: 80%;
+  // margin-top: 30px;
+  // margin-bottom: 50px;
+  width: 100%;
+  max-width: 1300px;
 
   .robot-chat-help-container {
     margin-left: 10px;
@@ -856,7 +857,7 @@ $chartColor: #3b5998;
         padding: 0 10px;
         font-family: PingFangSC-Medium;
         font-weight: 600;
-        border-bottom: 1px solid #e5e5e5;
+        border-bottom: 1px solid #fafafa ;
         font-size: 16px;
         color: #000;
         display: flex;
@@ -864,7 +865,7 @@ $chartColor: #3b5998;
       }
 
       .robot-chat-help-item-list-panel {
-        margin: 10px;
+        margin: 10px 0px;
         float: left;
         margin-bottom: 0px;
 
@@ -876,6 +877,9 @@ $chartColor: #3b5998;
         li.item-process {
           list-style: none;
           float: left;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           width: calc(50% - 10px);
           margin-right: 5px;
           margin-left: 5px;
@@ -894,16 +898,16 @@ $chartColor: #3b5998;
   .robot-chat-windows {
     float: left;
     width: 100%;
-    border: 1px solid rgba(230, 231, 235, 0.3);
+    // border: 1px solid rgba(230, 231, 235, 0.3);
   }
 
   .robot-chat-header {
-    border-top: 2px solid #0064c8;
+    // border-top: 2px solid #3b5998;
     padding: 15px;
     float: left;
     width: 100%;
     background: #fff;
-    box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid #fafafa;
 
     .chat-header-title {
       float: left;
@@ -921,9 +925,9 @@ $chartColor: #3b5998;
   }
 
   .robot-chat-body {
-    height: calc(100vh - 290px);
+    height: calc(100vh - 160px);
     background: #fff;
-    border-bottom: 1px solid #e6e6e6;
+    // border-bottom: 1px solid rgba(230, 231, 235, 0.3) ; 
   }
 
   .robot-chat-footer {
@@ -935,7 +939,7 @@ $chartColor: #3b5998;
         border: 0px;
         background: #fff;
         padding: 10px;
-        height: 100px;
+        // height: 100px;
         border: 0px;
         outline: none;
       }

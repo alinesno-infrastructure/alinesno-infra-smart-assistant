@@ -13,6 +13,7 @@ import com.yomahub.liteflow.core.FlowExecutor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,7 @@ public abstract class PlatformExpert implements IBaseExpertService {
 
     protected int defaultSleepTime = 5*1000 ; // 默认生成内容等待时间
 
+    @Value("${alinesno.infra.smart.comment-link}")
     protected String platformUrl ;
 
     private int defaultThreadPool = 200 ;

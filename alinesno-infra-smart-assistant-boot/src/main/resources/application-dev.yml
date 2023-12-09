@@ -50,6 +50,7 @@ alinesno.infra:
   gateway:
     host:
   smart:
+    comment-link:
     dingtalk:
       app-key:
       app-secret:

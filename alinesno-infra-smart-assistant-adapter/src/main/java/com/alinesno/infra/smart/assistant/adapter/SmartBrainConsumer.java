@@ -23,7 +23,7 @@ public interface SmartBrainConsumer {
      * @param businessId
      * @return
      */
-    @Post(url = "/api/llm/chatContent")
+    @Post(url = "/api/llm/chatContent" , connectTimeout = 30000)
     public AjaxResult chatContent(@Query("businessId") String businessId) ;
 
 }
