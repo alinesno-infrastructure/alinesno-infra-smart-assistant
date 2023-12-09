@@ -4,6 +4,7 @@ import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
+import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.mapper.IndustryRoleMapper;
 import com.alinesno.infra.smart.assistant.redis.MessageConstants;
 import com.alinesno.infra.smart.assistant.redis.PublishService;
@@ -59,7 +60,7 @@ public class IndustryRoleServiceImpl extends IBaseServiceImpl<IndustryRoleEntity
     }
 
     @Override
-    public void runRoleChainByRoleId(Map<String , Object> params , String roleId) {
+    public void runRoleChainByRoleId(Map<String , Object> params , String roleId , NoticeDto noticeDto) {
 
         Assert.notNull(params , "请求参数为空.");
 
@@ -69,6 +70,6 @@ public class IndustryRoleServiceImpl extends IBaseServiceImpl<IndustryRoleEntity
         String chainName = roleChain.getChainName() ;
         Long chainId = roleChain.getId() ;
 
-        baseExpert.processExpert(params , chainName , chainId);
+        baseExpert.processExpert(params , chainName , chainId , noticeDto);
     }
 }

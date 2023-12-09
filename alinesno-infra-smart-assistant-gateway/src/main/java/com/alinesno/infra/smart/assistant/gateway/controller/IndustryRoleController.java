@@ -69,7 +69,7 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
         Map<String , Object> params = new HashMap<>() ;
         params.put("label1" , executeOrder) ;
 
-        service.runRoleChainByRoleId(params , roleId) ;
+        service.runRoleChainByRoleId(params , roleId , null) ;
 
         return ok() ;
     }

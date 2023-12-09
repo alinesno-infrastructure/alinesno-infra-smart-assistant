@@ -11,4 +11,6 @@ import com.alinesno.infra.smart.assistant.entity.ChannelEntity;
  */
 public interface IChannelService extends IBaseService<ChannelEntity> {
 
+    String getRoleIdByRobotKey(String robotKey) ;
+
 }

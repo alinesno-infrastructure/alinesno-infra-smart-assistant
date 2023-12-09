@@ -3,6 +3,7 @@ package com.alinesno.infra.smart.assistant.service;
 import com.alinesno.infra.common.facade.services.IBaseService;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
+import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 
 import java.util.Map;
 
@@ -27,5 +28,5 @@ public interface IIndustryRoleService extends IBaseService<IndustryRoleEntity> {
      * @param params
      * @param roleId
      */
-    void runRoleChainByRoleId(Map<String , Object> params , String roleId);
+    void runRoleChainByRoleId(Map<String , Object> params , String roleId , NoticeDto noticeDto);
 }

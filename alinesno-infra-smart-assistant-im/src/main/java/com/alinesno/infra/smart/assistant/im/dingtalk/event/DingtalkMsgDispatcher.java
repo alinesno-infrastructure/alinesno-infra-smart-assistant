@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -58,12 +59,19 @@ public class DingtalkMsgDispatcher {
         }else if(dto.getMessageType().equals("markdown")){
             OapiRobotSendRequest.Markdown markdown = getMarkdown(noticeDto);
             request.setMarkdown(markdown);
+        }else if(dto.getMessageType().equals("actionCard")){
+            OapiRobotSendRequest.Actioncard actioncard = new OapiRobotSendRequest.Actioncard() ;
+            // TODO
+            request.setActionCard(actioncard);
         }
+
+        log.debug("dto userId = {}" , dto.getAtUser());
 
         OapiRobotSendRequest.At at = new OapiRobotSendRequest.At();
         if(dto.getAtUser() != null){
             at.setAtUserIds(List.of(dto.getAtUser()));
         }
+
         at.setIsAtAll(dto.isAtAll());
         request.setAt(at);
 
@@ -83,7 +91,7 @@ public class DingtalkMsgDispatcher {
         String taskStatus = noticeDto.getTaskStatus();
         String businessId = noticeDto.getBusinessId();
 
-        String markdownText = "#### 你的任务已经完成:\n" +
+        String markdownText = "## "+noticeDto.getSenderNick()+"的任务已经处理:\n" +
                 "- <font color=\"#3b5998\">" +taskName+ "</font>\n" +
                 "---\n" +
                 "- 业务标识: "+businessId+"\n" +
@@ -92,6 +100,7 @@ public class DingtalkMsgDispatcher {
                 "- 内容: [查看生成结果]("+applyLink+")\n" +
                 "- 状态: " +taskStatus+ "\n" +
                 "- 完成时间: "+finishTime+"\n" +
+                "---\n" +
                 "- 执行人：培训题设计Agent" ;
 
         markdown.setText(markdownText) ;

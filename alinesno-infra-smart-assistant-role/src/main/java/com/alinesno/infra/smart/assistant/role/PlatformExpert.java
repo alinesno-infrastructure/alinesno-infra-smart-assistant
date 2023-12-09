@@ -3,13 +3,13 @@ package com.alinesno.infra.smart.assistant.role;
 import cn.hutool.core.util.IdUtil;
 import com.alinesno.infra.smart.assistant.api.prompt.PromptMessage;
 import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
+import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.im.service.IDingtalkNoticeService;
 import com.alinesno.infra.smart.assistant.role.service.BrainRemoteService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import com.alinesno.infra.smart.assistant.service.IWorkflowExecutionService;
 import com.alinesno.infra.smart.assistant.service.IWorkflowNodeExecutionService;
 import com.yomahub.liteflow.core.FlowExecutor;
-import jakarta.annotation.Resource;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,9 @@ public abstract class PlatformExpert implements IBaseExpertService {
     protected static final String AGG = "_agg" ;  // 聚合内容
     protected static final String APPLY = "_apply" ;  // 内容审核
 
-    private String platformUrl ;
+    protected int defaultSleepTime = 5*1000 ; // 默认生成内容等待时间
+
+    protected String platformUrl ;
 
     private int defaultThreadPool = 200 ;
 
@@ -39,7 +41,7 @@ public abstract class PlatformExpert implements IBaseExpertService {
     @Autowired
     protected IDingtalkNoticeService dingtalkNoticeService ;
 
-    @Resource
+    @Autowired
     protected FlowExecutor flowExecutor;
 
     @Autowired
@@ -70,7 +72,8 @@ public abstract class PlatformExpert implements IBaseExpertService {
 
     }
 
-    public void processExpert(Map<String, Object> params, String chainName , Long chainId){
+    @Override
+    public void processExpert(Map<String, Object> params, String chainName , Long chainId, NoticeDto noticeDto){
 
     }
 

@@ -30,6 +30,16 @@ public class ChannelEntity extends InfraBaseEntity {
     @ColumnComment("工具类型：企业微信/钉钉/飞书等.")
     private String toolType; // 工具类型：企业微信/钉钉/飞书等
 
+    @ColumnType(length = 50)
+    @ColumnComment("机器人key")
+    @TableField("robot_key")
+    private String robotKey ;
+
+    @ColumnType(length = 50)
+    @ColumnComment("角色ID")
+    @TableField("role_id")
+    private long roleId;
+
     @TableField("api_key") // MyBatis-Plus 字段注解
     @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 100)
     @ColumnComment("工具的 API 密钥")

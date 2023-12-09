@@ -18,6 +18,9 @@ public class NoticeDto {
     private String operator ; // 执行人
     private String applyLink ; // 审批时间
 
+    // 机器人相关信息
+    private String chatbotUserId ; // 机器人ID
     private String sender ; // 发起人，用于完成之后@通知对方
+    private String senderNick ; // 发起人昵称
 
 }

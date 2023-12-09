@@ -32,7 +32,7 @@ public class BrainRemoteService {
      * @param promptId
      */
     @Retryable(retryFor = {Exception.class} , maxAttempts = 5 , backoff = @Backoff(delay = 5000L , multiplier = 2))
-    public void commitTask(Map<String , Object> params , String businessId , String promptId){
+    public void chatTask(Map<String , Object> params , String businessId , String promptId){
 
         BrainTaskDto dto = new BrainTaskDto() ;
 
@@ -42,16 +42,6 @@ public class BrainRemoteService {
 
         AjaxResult result = smartBrainConsumer.chatTask(dto) ;
         log.debug("result = {}" , result);
-
-    }
-
-    public static void main(String[] args) {
-        String str = "{\"codeContent\":[],\"businessId\":\"1732896326648168448\",\"taskStatus\":1}" ;
-        TaskContentDto result = JSONObject.parseObject(str , TaskContentDto.class)  ;
-
-        System.out.println("result = " + result.toString());
-
-
     }
 
     /**

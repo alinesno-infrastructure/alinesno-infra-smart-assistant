@@ -19,6 +19,10 @@ public class DingtalkNoticeServiceImpl implements IDingtalkNoticeService {
     @Autowired
     private DingtalkMsgDispatcher dingtalkMsgDispatcher ;
 
+    /**
+     * 发送执行结果通知给机器人
+     * @param noticeDto
+     */
     @SneakyThrows
     @Override
     public void noticeAgent(NoticeDto noticeDto) {
@@ -26,6 +30,7 @@ public class DingtalkNoticeServiceImpl implements IDingtalkNoticeService {
         DingtalkRobotMessageDto dto = new DingtalkRobotMessageDto() ;
 
         dto.setAtAll(false);
+        dto.setAtUser(noticeDto.getSender());
         dto.setMessageType("markdown");
         dto.setMessageContent(noticeDto.getTaskName());
 

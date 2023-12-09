@@ -65,13 +65,13 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="渠道名称" align="left" key="name" prop="name" v-if="columns[1].visible" :show-overflow-tooltip="true">
+          <el-table-column label="渠道名称" align="left" key="name" width="250" prop="name" v-if="columns[1].visible" :show-overflow-tooltip="true">
             <template #default="scope">
               <div style="font-size: 15px;font-weight: 500;color: #3b5998;">
                 {{ scope.row.name }}
               </div>
               <div style="font-size: 13px;color: #a5a5a5;">
-                 {{ scope.row.name }}
+                角色关联: {{ scope.row.roleId }}
               </div>
             </template>
           </el-table-column>
@@ -81,13 +81,13 @@
                 {{ scope.row.description }}
               </div>
               <div style="font-size: 13px;color: #a5a5a5;">
-                会话次数: 12734 有效沟通:198312
+                机器人Key: {{ scope.row.robotKey }}
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="渠道类型" align="center" key="toolType" prop="toolType" v-if="columns[2].visible" :show-overflow-tooltip="true"/>
-          <el-table-column label="使用场景" align="center" key="screen" prop="screen" v-if="columns[3].visible" :show-overflow-tooltip="true"/>
-          <el-table-column label="状态" align="center" key="hasStatus" prop="hasStatus" v-if="columns[4].visible" :show-overflow-tooltip="true">
+          <el-table-column label="渠道类型" align="center" key="toolType" width="150" prop="toolType" v-if="columns[2].visible" :show-overflow-tooltip="true"/>
+          <el-table-column label="使用场景" align="center" key="screen" width="150" prop="screen" v-if="columns[3].visible" :show-overflow-tooltip="true"/>
+          <el-table-column label="状态" align="center" key="hasStatus" width="80" prop="hasStatus" v-if="columns[4].visible" :show-overflow-tooltip="true">
             <template #default="scope">
               <el-button type="primary" text bg icon="Link" v-if="scope.row.hasStauts === '1'">正常</el-button>
               <el-button type="danger" text bg icon="Link" v-if="scope.row.hasStauts === '0'">异常</el-button>
@@ -98,7 +98,7 @@
               <span>{{ parseTime(scope.row.addTime) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" v-if="columns[8].visible">
+          <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width" v-if="columns[8].visible">
             <template #default="scope">
               <el-tooltip content="修改" placement="top" v-if="scope.row.applicationId !== 1">
                 <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
@@ -136,6 +136,22 @@
           <el-col :span="24">
             <el-form-item label="渠道类型" prop="toolType">
               <el-input v-model="form.toolType" placeholder="请输入渠道类型" maxlength="50"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="机器人Key" prop="robotKey">
+              <el-input v-model="form.robotKey" placeholder="请输入机器人Key" maxlength="50"/>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="关联角色" prop="roleId">
+              <el-input v-model="form.roleId" placeholder="请输入角色Id" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>

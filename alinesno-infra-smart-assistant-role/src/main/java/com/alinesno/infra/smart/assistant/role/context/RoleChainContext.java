@@ -1,5 +1,6 @@
 package com.alinesno.infra.smart.assistant.role.context;
 
+import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.brain.api.reponse.TaskContentDto;
 import com.yomahub.liteflow.slot.DefaultContext;
 import lombok.Data;
@@ -19,6 +20,11 @@ public class RoleChainContext extends DefaultContext {
     private String userContent ; // 用户要求
     private Map<String , Object> params ; // 请求参数
 
-    private TaskContentDto assistantContent ; // 机器人回复
+    private TaskContentDto assistantContent ; // Brain服务回复
+    private NoticeDto noticeDto ; // 机器人请求
+
+    // 执行周期
+    private long startTime ;  // 开始时间
+    private long endTime ; // 结束时间
 
 }
