@@ -1,6 +1,6 @@
 <!-- 意见审批  -->
 <template>
-  <div class="acp-dashboard">
+  <div class="acp-dashboard" style="padding: 0px 10px !important">
     <div class="smart-container">
       <el-row>
         <el-col :span="16">
