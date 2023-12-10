@@ -1,12 +1,13 @@
 package com.alinesno.infra.smart.assistant.role;
 
-import com.alinesno.infra.smart.assistant.api.prompt.PromptMessage;
+import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
+import com.alinesno.infra.smart.assistant.role.context.RoleChainContext;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.core.NodeComponent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * 示例的Chain配置
@@ -15,10 +16,7 @@ import java.util.List;
 @Component
 public class DemoChainExpert extends PlatformExpert {
 
-    @Override
-    public void performSpecializedTask(List<PromptMessage> prompts) {
-
-    }
+    private static final String promptId = "0GSheQ31" ;
 
     @LiteflowComponent(value = "a" , name="测试执行节点A")
     public class ACmp extends NodeComponent {
@@ -26,6 +24,23 @@ public class DemoChainExpert extends PlatformExpert {
         @Override
         public void process() {
             System.out.println("ACmp executed!");
+
+            // 获取上下文
+            RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
+            roleContext.setStartTime(System.currentTimeMillis());
+
+            NoticeDto noticeDto = roleContext.getNoticeDto() ;
+
+            // 通过上下文传入
+            String businessId = generatorId() ;
+
+            // 获取到参数
+            Map<String , Object> params = this.getRequestData();
+
+            log.debug("params = {}" , params);
+            log.debug("businessId = {}" , businessId);
+            log.debug("noticeDto = {}" , noticeDto);
+
         }
     }
 

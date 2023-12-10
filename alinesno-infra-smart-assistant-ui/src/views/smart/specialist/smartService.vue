@@ -34,14 +34,14 @@
                     </el-button>
                   </el-tooltip>
 
-                  <el-tooltip class="box-item" effect="dark" content="选择专家下一步执行" placement="top" >
-                    <el-button type="warning" text bg size="large" @click="dialogVisible = true" >
-                      <i class="fa-solid fa-user-astronaut icon-btn"></i>
+                  <el-tooltip class="box-item" effect="dark" content="编辑生成内容" placement="top" >
+                    <el-button type="warning" text bg size="large" @click="handleEditorContent()" >
+                      <i class="fa-solid fa-pen-nib icon-btn"></i>
                     </el-button>
                   </el-tooltip>
 
                   <el-tooltip class="box-item" effect="dark" content="提交任务给Agent执行" placement="top" >
-                    <el-button type="primary" text bg size="large" @click="jobDialogVisible = true" >
+                    <el-button type="primary" text bg size="large" @click="dialogVisible = true" >
                       <i class="fa-solid fa-truck-fast icon-btn"></i>
                     </el-button>
                   </el-tooltip>
@@ -90,8 +90,11 @@
       </el-row>
     </div>
 
-    <el-dialog v-model="dialogVisible" title="选择专家服务Agent" width="70%" :before-close="handleClose" append-to-body>
-      <RoleAgent />
+    <el-dialog v-model="dialogVisible" title="选择专家服务Agent" width="75%" :before-close="handleClose" append-to-body>
+
+      <!-- 打开角色管理 -->
+      <RoleAgent :businessId="businessId" />
+
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">关闭</el-button>
@@ -99,11 +102,23 @@
       </template>
     </el-dialog>
 
-    <el-dialog v-model="jobDialogVisible" title="选择任务执行Agent" width="70%" :before-close="handleClose" append-to-body>
-      <JobAgent />
+    <el-dialog v-model="editDialogVisible" title="编辑生成内容" width="60%" :before-close="handleClose" append-to-body>
+
+      <!-- 编辑生成的内容 -->
+      <el-form :model="form" ref="ChainRef" v-loading="editorLoading" label-width="0px">
+        <el-row>
+            <el-col :span="24">
+              <el-form-item prop="currentTaskContent">
+                  <el-input rows="20" resize="none" type="textarea" v-model="currentTaskContent" placeholder="请输入任务名称" maxlength="50" />
+              </el-form-item>
+            </el-col>
+        </el-row>
+      </el-form>
+
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="jobDialogVisible = false">关闭</el-button>
+          <el-button type="primary" @click="submitAssistantContentForm">更新</el-button>
+          <el-button @click="editDialogVisible = false">关闭</el-button>
         </span>
       </template>
     </el-dialog>
@@ -113,13 +128,22 @@
 
 <script setup>
 import { ref } from 'vue'
-import ChatList from './chatList.vue'
+import ChatList from './chatList'
 
-import RoleAgent from './agent/roleAgent.vue'
-import JobAgent from './agent/jobAgent.vue'
+import {
+  chatAssistantContent , 
+  updateAssistantContent
+} from '@/api/smart/assistant/robot'
 
+import { getParam } from '@/utils/ruoyi'
+
+import RoleAgent from './agent/roleAgent'
+
+const businessId  = ref("") ;
+const editorLoading = ref(true) ;
 const dialogVisible = ref(false)
-const jobDialogVisible = ref(false)
+const editDialogVisible = ref(false)
+const currentTaskContent = ref("")
 
 const favouriteList = ref([
   { id: '1', icon: 'fa-solid fa-truck-fast', name: '技术指导Agent' },
@@ -143,8 +167,56 @@ const helpAutoList = ref([
   { id: '6', icon: 'fa-solid fa-user-nurse', name: '数据库设计Agent' },
 ])
 
+const data = reactive({
+   form: {},
+   queryParams: {
+      pageNum: 1,
+      pageSize: 10,
+      dbName: undefined,
+      dbDesc: undefined
+   },
+   rules: {
+      dbName: [{ required: true, message: "名称不能为空", trigger: "blur" }] , 
+      jdbcUrl: [{ required: true, message: "连接不能为空", trigger: "blur" }],
+      dbType: [{ required: true, message: "类型不能为空", trigger: "blur" }] , 
+      dbUsername: [{ required: true , message: "用户名不能为空", trigger: "blur"}],
+      dbPasswd: [{ required: true, message: "密码不能为空", trigger: "blur" }] , 
+      dbDesc: [{ required: true, message: "备注不能为空", trigger: "blur" }] 
+   }
+});
+
+const { queryParams, form, rules } = toRefs(data);
+
 const handleClose = () => {
+  dialogVisible.value = false ; 
+  editDialogVisible.value = false ;
 }
+
+/** 编辑生成内容 */
+function handleEditorContent(){
+  editDialogVisible.value = true ; 
+
+  chatAssistantContent(businessId.value).then(response => {
+    currentTaskContent.value = response.data.genContent ; 
+    editorLoading.value = false ;
+  })
+}
+
+/** 提交流程按钮 */
+function submitAssistantContentForm() {
+  proxy.$refs["ChainRef"].validate(valid => {
+
+    if (valid) {
+      updateAssistantContent(businessId.value , currentTaskContent.value).then(response => {
+        proxy.$modal.msgSuccess("更新成功");
+      });
+    }
+  });
+};
+
+  
+businessId.value = getParam('businessId') ;
+console.log('businessId = ' + businessId) ;
 
 </script>
 

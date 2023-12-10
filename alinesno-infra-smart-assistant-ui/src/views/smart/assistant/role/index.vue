@@ -84,11 +84,16 @@
             </template>
           </el-table-column>
           <el-table-column label="所属领域" align="center" width="150" key="domain" prop="domain" v-if="columns[3].visible" :show-overflow-tooltip="true">
-            <template>
-              软件开发
+            <template #default="scope">
+               <span v-if="scope.$index%2 == 0">
+                  <i class="fa-solid fa-truck-fast icon-btn"></i> 执行
+                </span>
+               <span v-if="scope.$index%2 == 1">
+                  <i class="fa-solid fa-user-astronaut icon-btn"></i> 专家
+               </span>
             </template>
           </el-table-column>
-          <el-table-column label="知识库" align="center" width="150"  key="roleLevel" prop="roleLevel" v-if="columns[4].visible" :show-overflow-tooltip="true">
+          <el-table-column label="知识库" align="center" width="120"  key="roleLevel" prop="roleLevel" v-if="columns[4].visible" :show-overflow-tooltip="true">
             <template #default="scope">
               <el-button type="primary" text bg icon="CopyDocument"  @click="handleLangChain(scope.row)" >导入库</el-button>
             </template>
@@ -98,7 +103,7 @@
               <el-button type="primary" text bg icon="Paperclip"  @click="handleLangChain(scope.row)" >配置</el-button>
             </template>
           </el-table-column>
-          <el-table-column label="流程定义" align="center" width="200"  key="target" prop="target" v-if="columns[6].visible" :show-overflow-tooltip="true">
+          <el-table-column label="流程定义" align="center" width="150"  key="target" prop="target" v-if="columns[6].visible" :show-overflow-tooltip="true">
             <template #default="scope">
               <el-button type="primary" text bg icon="Postcard" @click="handleLangChain(scope.row)" >专家链路</el-button>
             </template>

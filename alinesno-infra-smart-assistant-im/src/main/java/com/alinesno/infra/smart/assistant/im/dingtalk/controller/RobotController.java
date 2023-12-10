@@ -8,11 +8,13 @@ import com.alinesno.infra.smart.assistant.adapter.SmartBrainConsumer;
 import com.alinesno.infra.smart.assistant.im.dingtalk.dto.ChatMessageDto;
 import com.alinesno.infra.smart.assistant.im.dingtalk.dto.DingtalkRobotMessageDto;
 import com.alinesno.infra.smart.assistant.im.dingtalk.event.DingtalkMsgDispatcher;
+import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
 import com.alinesno.infra.smart.brain.api.reponse.TaskContentDto;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +34,59 @@ public class RobotController extends SuperController {
     private DingtalkMsgDispatcher dingtalkMsgDispatcher ;
 
     @Autowired
+    private IIndustryRoleService industryRoleService ;
+
+    @Autowired
     private SmartBrainConsumer smartBrainConsumer ;
+
+    /**
+     * 获取到消息信息
+     * @return
+     */
+    @GetMapping("/chatAssistantContent")
+    public AjaxResult chatAssistantContent(String businessId){
+
+        AjaxResult result = smartBrainConsumer.chatContent(businessId) ;
+        log.debug("chatContent result = {}" , result);
+
+        return result ;
+    }
+
+    /**
+     * 获取到消息信息
+     * @return
+     */
+    @GetMapping("/updateAssistantContent")
+    public AjaxResult updateAssistantContent(@RequestBody TaskContentDto dto){
+
+        AjaxResult result = smartBrainConsumer.modifyContent(dto) ;
+        log.debug("chatContent result = {}" , result);
+
+        return result ;
+    }
+
+    /**
+     * 执行下一个节点的任务
+     * @return
+     */
+    @GetMapping("/runChainAgent")
+    public AjaxResult runChainAgent(String businessId , String roleId){
+
+        log.debug("businessId = {} , roleId = {}" , businessId , roleId);
+        AjaxResult result = smartBrainConsumer.chatContent(businessId) ;
+
+        log.debug("chatContent result = {}" , result);
+
+        String resultData = result.get("data").toString() ;
+        TaskContentDto ta = null ;
+        if(resultData != null) {
+            ta = JSONObject.parseObject(resultData, TaskContentDto.class);
+        }
+
+        industryRoleService.runChainAgent(ta , roleId) ;
+
+        return ok() ;
+    }
 
     /**
      * 获取到消息信息
@@ -51,19 +105,19 @@ public class RobotController extends SuperController {
             ta =  JSONObject.parseObject(resultData, TaskContentDto.class) ;
             List<ChatMessageDto> messageList = new ArrayList<>() ;
 
+            ChatMessageDto personDto = new ChatMessageDto() ;
+            personDto.setChatText("收到，罗小东的任务我已经在处理，请稍等1-2分钟 :-)");
+            personDto.setName("考核题目生成Agent");
+            personDto.setRoleType("agent");
+            personDto.setDateTime(DateUtil.formatDateTime(new Date()));
+            messageList.add(personDto) ;
+
             ChatMessageDto dto = new ChatMessageDto() ;
             dto.setChatText(ta.getGenContent());
             dto.setName("高级数据库工程师");
             dto.setRoleType("agent");
             dto.setDateTime(DateUtil.formatDateTime(new Date()));
             messageList.add(dto) ;
-
-            ChatMessageDto personDto = new ChatMessageDto() ;
-            personDto.setChatText("收到，罗小东的任务我已经在处理，请稍等1-2分钟 :-)");
-            personDto.setName("考核题目生成Agent");
-            personDto.setRoleType("person");
-            personDto.setDateTime(DateUtil.formatDateTime(new Date()));
-            messageList.add(personDto) ;
 
             ChatMessageDto dto3 = new ChatMessageDto() ;
 

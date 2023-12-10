@@ -81,7 +81,7 @@ function readerHtml(chatText){
 
 /** 获取到会话信息 */
 function handleChatMessage(){
-  let businessId = getParam('businessId') ;
+  const businessId = getParam('businessId') ;
   console.log('businessId = ' + businessId) ;
 
   chatMessage(businessId).then(response => {

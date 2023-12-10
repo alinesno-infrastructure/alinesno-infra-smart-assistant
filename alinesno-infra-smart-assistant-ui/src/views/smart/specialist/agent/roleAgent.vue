@@ -16,8 +16,8 @@
         </el-form>
 
         <el-table v-loading="loading" :data="RoleList" @selection-change="handleSelectionChange">
-          <el-table-column type="index" width="50" label="序号" align="center"/>
-          <el-table-column label="图标" align="center" width="70px" prop="icon" v-if="columns[0].visible">
+          <el-table-column type="index" width="40" align="center"/>
+          <el-table-column label="图标" align="center" width="60px" prop="icon" v-if="columns[0].visible">
             <template #default="scope">
               <div class="role-icon">
                 <img :src="'http://data.linesno.com/icons/circle/Delivery boy-' + ((scope.$index + 1)%5 + 1) + '.png'" />
@@ -40,13 +40,20 @@
                 {{ scope.row.responsibilities }}
               </div>
               <div style="font-size: 13px;color: #a5a5a5;">
-                会话次数: 12734 有效沟通:198312
+                会话次数: 12734 稳定率:98%
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="执行任务" align="center" width="150"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
+          <el-table-column label="所属团队" align="center" width="150" key="responsibilities" prop="responsibilities" v-if="columns[2].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button type="primary" text bg icon="Position"  @click="handleLangChain(scope.row)">执行</el-button>
+              <div>
+                工程师团队
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column label="执行任务" align="center" width="110"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
+            <template #default="scope">
+              <el-button type="primary" text bg icon="Position" :loading="runChainAgentLoadding" @click="handleChainAgent(scope.row)">执行</el-button>
             </template>
           </el-table-column>
 
@@ -78,17 +85,27 @@ import {
 } from "@/api/smart/assistant/role";
 
 import {
+  runChainAgent
+} from '@/api/smart/assistant/robot'
+
+import {
   addRoleChain , 
   updateRoleChain,
 } from "@/api/smart/assistant/chain"
 
 import {reactive} from "vue";
 
+const props = defineProps({
+  businessId: {
+    type: [Number, String]
+  }
+});
+
 const router = useRouter();
 const {proxy} = getCurrentInstance();
 
 const RoleList = ref([]);
-const open = ref(false);
+const runChainAgentLoadding = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
@@ -190,6 +207,18 @@ function handleLangChain(row){
     chainOpen.value = true;
     chainTitle.value = "配置链路";
   });
+
+}
+
+/** 执行下一个节点机器人 */
+function handleChainAgent(row){
+  const roleId = row.id ; 
+  const businessId = props.businessId ; 
+  console.log('roleId = ' + roleId + ' , businessId = ' + businessId) ;
+
+  runChainAgent(roleId , businessId).then(response => {
+    proxy.$modal.msgSuccess("运行成功，请注意查收钉钉消息.");
+  })
 
 }
 

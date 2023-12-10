@@ -7,6 +7,7 @@ import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.im.service.IDingtalkNoticeService;
 import com.alinesno.infra.smart.assistant.service.IChannelService;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
+import com.alinesno.infra.smart.assistant.service.INoticeService;
 import com.dingtalk.open.app.api.callback.OpenDingTalkCallbackListener;
 import com.dingtalk.open.app.api.models.bot.ChatbotMessage;
 import com.dingtalk.open.app.api.models.bot.MessageContent;
@@ -37,10 +38,13 @@ public class ChatBotCallbackListener implements OpenDingTalkCallbackListener<Cha
     private IChannelService channelService ;
 
     @Autowired
+    private INoticeService noticeService ;
+
+    @Autowired
     private IDingtalkNoticeService dingtalkNoticeService ;
 
     /**
-     * https://open.dingtalk.com/document/orgapp/the-application-robot-in-the-enterprise-sends-group-chat-messages
+     * <a href="https://open.dingtalk.com/document/orgapp/the-application-robot-in-the-enterprise-sends-group-chat-messages">...</a>
      *
      * @param message
      * @return
@@ -54,6 +58,9 @@ public class ChatBotCallbackListener implements OpenDingTalkCallbackListener<Cha
                 String msg = text.getContent();
 
                 NoticeDto noticeDto = getNoticeDto(message , msg);
+
+                // 保存消息实体信息
+                noticeService.saveNoticeDto(noticeDto) ;
 
                 // 获取到执行角色的ID
                 String roleId = channelService.getRoleIdByRobotKey(noticeDto.getChatbotUserId())  ;

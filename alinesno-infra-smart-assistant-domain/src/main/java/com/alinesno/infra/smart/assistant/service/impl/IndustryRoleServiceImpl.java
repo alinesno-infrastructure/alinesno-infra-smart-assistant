@@ -3,21 +3,26 @@ package com.alinesno.infra.smart.assistant.service.impl;
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
+import com.alinesno.infra.smart.assistant.entity.NoticeEntity;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.mapper.IndustryRoleMapper;
 import com.alinesno.infra.smart.assistant.redis.MessageConstants;
 import com.alinesno.infra.smart.assistant.redis.PublishService;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
+import com.alinesno.infra.smart.assistant.service.INoticeService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
+import com.alinesno.infra.smart.brain.api.reponse.TaskContentDto;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,6 +46,9 @@ public class IndustryRoleServiceImpl extends IBaseServiceImpl<IndustryRoleEntity
 
     @Resource(name="chainRunner")
     private IBaseExpertService baseExpert ;
+
+    @Autowired
+    private INoticeService noticeService ;
 
     @Override
     public void saveRoleChainInfo(RoleChainEntity chain , String roleId) {
@@ -72,4 +80,26 @@ public class IndustryRoleServiceImpl extends IBaseServiceImpl<IndustryRoleEntity
 
         baseExpert.processExpert(params , chainName , chainId , noticeDto);
     }
+
+    @Override
+    public void runChainAgent(TaskContentDto dto , String roleId) {
+
+        // TODO 待优化获取多个脚本的问题
+        String msg = dto.getCodeContent().get(0).getContent();
+
+        NoticeEntity noticeEntity = noticeService.getByBusinessId(dto.getBusinessId()) ;
+        NoticeDto noticeDto = new NoticeDto() ;
+
+        if(noticeEntity != null){
+            BeanUtils.copyProperties(noticeEntity , dto);
+            noticeDto.setTaskName(dto.getGenContent());
+        }
+
+        // 发送培训相关的要求到任务中
+        Map<String , Object> params = new HashMap<>() ;
+        params.put("label1" , msg) ;
+
+        runRoleChainByRoleId(params , roleId , noticeDto);
+    }
+
 }
