@@ -22,24 +22,10 @@
 			<version>${revision}</version>
 		</dependency>
 
-		<!-- 引入第三方facade_start -->
-		<dependency>
-			<groupId>com.alinesno.infra.smart</groupId>
-			<artifactId>alinesno-infra-smart-brain-facade</artifactId>
-			<version>${revision}</version>
-		</dependency>
-		<!-- 引入第三方facade_end -->
-
 		<dependency>
 			<groupId>com.thoughtworks.xstream</groupId>
 			<artifactId>xstream</artifactId>
 			<version>1.4.20</version>
-		</dependency>
-
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
 		</dependency>
 
         <dependency>

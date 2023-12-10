@@ -1,9 +1,12 @@
 package com.alinesno.infra.smart.assistant.adapter;
 
 import com.alinesno.infra.common.facade.response.AjaxResult;
-import com.alinesno.infra.smart.brain.api.BrainTaskDto;
-import com.alinesno.infra.smart.brain.api.reponse.TaskContentDto;
-import com.dtflys.forest.annotation.*;
+import com.alinesno.infra.smart.assistant.api.adapter.BrainTaskDto;
+import com.alinesno.infra.smart.assistant.api.adapter.TaskContentDto;
+import com.dtflys.forest.annotation.BaseRequest;
+import com.dtflys.forest.annotation.JSONBody;
+import com.dtflys.forest.annotation.Post;
+import com.dtflys.forest.annotation.Query;
 
 /**
  * 调用接口
