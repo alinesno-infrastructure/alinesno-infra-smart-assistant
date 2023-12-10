@@ -13,6 +13,9 @@
               <div class="header-body-main" style="margin-left:10px;margin-top: 5px;float: left;font-weight: bold;">
                 <span class="text-sm mr-2" style="color: var(--el-text-color-regular);">AIP智能体专家</span>
               </div>
+              <router-link target="_blank" to="/dashboard">
+                <el-button type="primary" icon="House" text bg size="default" style="margin-top: 2px;margin-left: 20px;">管理台</el-button>
+              </router-link>
             </div>
 
             <div class="header-avatar" style="float: right;margin-right: 10px;">
@@ -59,10 +62,13 @@
 <script setup>
 // import TheWelcome from '../components/TheWelcome.vue'
 
+import { useRouter } from "vue-router";
 import SmartService from './smartService';
 import ChatSessionPanel from './chatSessionPanel';
 
 import { ref, reactive } from 'vue'
+
+const router = useRouter()
 const textarea = ref('this is a test')
 
 const loading = ref(false)
@@ -175,6 +181,11 @@ const onInput = (val) => {
 
 const onReady = (cm) => {
   console.log(cm.focus())
+}
+
+function openDashboard(){
+  // router.push('/dashboard')
+  window.open(href.href + '/dashboard', '_blank')
 }
 
 const handleGetParams = (params) => {

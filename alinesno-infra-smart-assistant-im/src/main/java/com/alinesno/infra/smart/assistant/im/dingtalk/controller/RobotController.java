@@ -8,15 +8,13 @@ import com.alinesno.infra.smart.assistant.adapter.SmartBrainConsumer;
 import com.alinesno.infra.smart.assistant.api.adapter.TaskContentDto;
 import com.alinesno.infra.smart.assistant.im.dingtalk.dto.ChatMessageDto;
 import com.alinesno.infra.smart.assistant.im.dingtalk.dto.DingtalkRobotMessageDto;
+import com.alinesno.infra.smart.assistant.im.dingtalk.dto.WebMessageDto;
 import com.alinesno.infra.smart.assistant.im.dingtalk.event.DingtalkMsgDispatcher;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,10 +51,29 @@ public class RobotController extends SuperController {
     }
 
     /**
+     * 前端用户发送消息
+     * @return
+     */
+    @PostMapping("/sendUserMessage")
+    public AjaxResult sendUserMessage(@RequestBody List<WebMessageDto> dtoList){
+
+        log.debug("dtoList = {}" , JSONObject.toJSONString(dtoList));
+
+        ChatMessageDto personDto = new ChatMessageDto() ;
+
+        personDto.setChatText("收到，罗小东的任务我已经在处理，请稍等1-2分钟 :-)");
+        personDto.setName("考核题目生成Agent");
+        personDto.setRoleType("agent");
+        personDto.setDateTime(DateUtil.formatDateTime(new Date()));
+
+        return AjaxResult.success(personDto) ;
+    }
+
+    /**
      * 获取到消息信息
      * @return
      */
-    @GetMapping("/updateAssistantContent")
+    @PostMapping("/updateAssistantContent")
     public AjaxResult updateAssistantContent(@RequestBody TaskContentDto dto){
 
         AjaxResult result = smartBrainConsumer.modifyContent(dto) ;
@@ -105,12 +122,6 @@ public class RobotController extends SuperController {
             ta =  JSONObject.parseObject(resultData, TaskContentDto.class) ;
             List<ChatMessageDto> messageList = new ArrayList<>() ;
 
-            ChatMessageDto personDto = new ChatMessageDto() ;
-            personDto.setChatText("收到，罗小东的任务我已经在处理，请稍等1-2分钟 :-)");
-            personDto.setName("考核题目生成Agent");
-            personDto.setRoleType("agent");
-            personDto.setDateTime(DateUtil.formatDateTime(new Date()));
-            messageList.add(personDto) ;
 
             ChatMessageDto dto = new ChatMessageDto() ;
             dto.setChatText(ta.getGenContent());
@@ -139,6 +150,20 @@ public class RobotController extends SuperController {
             dto3.setRoleType("agent");
             dto3.setDateTime(DateUtil.formatDateTime(new Date()));
             messageList.add(dto3) ;
+
+            ChatMessageDto personDto1 = new ChatMessageDto() ;
+            personDto1.setChatText("生成一个开发管理服务");
+            personDto1.setName("考核题目生成Agent");
+            personDto1.setRoleType("person");
+            personDto1.setDateTime(DateUtil.formatDateTime(new Date()));
+            messageList.add(personDto1) ;
+
+            ChatMessageDto personDto = new ChatMessageDto() ;
+            personDto.setChatText("收到，罗小东的任务我已经在处理，请稍等1-2分钟 :-)");
+            personDto.setName("考核题目生成Agent");
+            personDto.setRoleType("agent");
+            personDto.setDateTime(DateUtil.formatDateTime(new Date()));
+            messageList.add(personDto) ;
 
             return AjaxResult.success(messageList) ;
         }

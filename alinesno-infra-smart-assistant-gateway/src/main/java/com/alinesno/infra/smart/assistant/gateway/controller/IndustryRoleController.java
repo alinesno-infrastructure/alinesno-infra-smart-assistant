@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,6 +56,16 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
         return this.toPage(model, this.getFeign(), page);
+    }
+
+    /**
+     * 运行角色流程
+     * @return
+     */
+    @GetMapping("/listAllRole")
+    public AjaxResult listAllRole(){
+        List<IndustryRoleEntity> roleEntityList = service.list() ;
+        return AjaxResult.success(roleEntityList) ;
     }
 
     /**

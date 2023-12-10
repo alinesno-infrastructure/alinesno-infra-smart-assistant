@@ -1,16 +1,17 @@
 <template>
-  <el-scrollbar class="scroll-panel" v-loading="loading" ref="scrollbarRef" always>
+  <el-scrollbar class="scroll-panel" ref="scrollbarRef" loading always wrap-style="padding:10px">
 
-    <div ref="innerRef" style="height: auto;">
+    <div ref="innerRef">
       <div class="robot-chat-ai-say-box" v-for="(item, index) in messageList" :key="index">
-        <div class="chat-ai-header" :class="item.roleType=='person'?'say-right-window':''">
+        <div class="chat-ai-header" :class="item.roleType == 'person' ? 'say-right-window' : ''">
           <div class="header-images">
             <img src="http://data.linesno.com/icons/sepcialist/dataset_55.png" />
           </div>
         </div>
-        <div class="chat-ai-say-body" :class="item.roleType=='person'?'say-right-window':''" style="max-width:90%">
+        <div class="chat-ai-say-body" :class="item.roleType == 'person' ? 'say-right-window' : ''" style="max-width:90%">
           <div class="say-message-info"> {{ item.name }} {{ item.dateTime }}</div>
-          <div class="say-message-body markdown-body" v-html="readerHtml(item.chatText)"></div>
+          <div class="say-message-body markdown-body" v-if="item.readerType === 'html'" v-html="item.chatText"></div>
+          <div class="say-message-body markdown-body" v-else v-html="readerHtml(item.chatText)"></div>
         </div>
       </div>
     </div>
@@ -26,33 +27,55 @@ import {
 
 import { getParam } from '@/utils/ruoyi'
 
-import { computed, ref } from 'vue';
+import { computed, ref , onMounted, onBeforeMount } from 'vue';
 import MarkdownIt from 'markdown-it';
 import mdKatex from '@traptitech/markdown-it-katex';
 // import mila from 'markdown-it-link-attributes';
 import hljs from 'highlight.js';
 
-
-const messageList = ref([
-  { roleType: 'agent', name: '数据库设计Agent', date: '07-16 19:19:51', chatText: '你现在是一名Java计算机面试官，请生成微服务架构相关的，现在需要生成题目做于Java面试题，主要题目类型如下：\n\n- 单选题： single_choice  \n- 多选题： multiple_choice  \n- 填空题： fill_in_the_blank  \n\n现在请使用yaml生成单选题5题，多选题2题，填写题3题，参考下面的示例生成yaml文件，并返回yaml格式\n题目的评分标准按题目的难度来设定分数，总分是100分，请生成10道题目。\n\n下面是生成的示例数据：\n```yaml\n- title: 三国谁最厉害\n  desc: 这里考的是三国中哪个最厉害的角色\n  type: single_choice\n  score: 10\n  answers: \n  \t- A: 张三\n  \t- B: 王五\n  \t- C: 李四\n   \t- D: 吕布\n  rightAnswer: D\n\n- title: 三国谁最厉害，下面哪个是错的\n  desc: 这里考的是三国中哪个最厉害的角色\n  type: multiple_choice\n  score: 10\n  answers: \n  \t- A: 张三\n  \t- B: 王五\n  \t- C: 李四\n   \t- D: 吕布\n  rightAnswer: A|B|C # 多个答案使用|号进行分隔\n\n- title: 三国谁最厉害\n  desc: 这里考的是三国中哪个最厉害的角色\n  type: fill_in_the_blank\n  score: 10\n  answers: 吕布\n```\n\n下面是返回的格式，请生成10道题目\n```yaml\n\u003c在这里生成考试题目\u003e\n```\n "},{"role":"system","content":"你现在是一名Java计算机面试官，请生成微服务架构相关的，现在需要生成题目做于Java面试题，你将会收到一份面试题目的需求，根据需求生成内容。' },
-  { roleType: 'person', name: '平台管理员', date: '07-18 20:19:51', chatText: '给出查询出alinesno.code.test的字典接口代码' },
-])
-const loading = ref(true)
+const messageList = ref([])
+const loading = ref(false)
 
 // 滚动条的处理_starter
 const innerRef = ref(null);
 const scrollbarRef = ref(null);
 
-function initChatBoxScroll(){
+// 改变组件的中的方法
+const pushMessageList = (mess) => {
+  console.log('mess = ' + mess);
+  console.log('mess = ' + JSON.stringify(mess));
+
+  let chatText = '';
+  for (let i = 0; i < mess.length; i++) {
+    let content = mess[i];
+    if (content.type === 'text') {
+      chatText += ('<span class="mention-text">' + (content.text) + '</span>');
+    } else if (content.type === 'mention') {
+      chatText += ('<span class="mention">' + ('@' + content.username) + '</span>');
+    }
+  }
+
+  console.log('chatText = ' + chatText);
+  messageList.value.push({ roleType: 'person', readerType:'html', name: '软件工程师罗小东', date: '12-10 13:58:21', chatText: chatText });
+
+  initChatBoxScroll();
+};
+
+// 推送消息到当前面板
+const pushResponseMessageList = (message) => {
+  messageList.value.push(message) ; 
+  initChatBoxScroll();
+}
+
+function initChatBoxScroll() {
 
   const element = innerRef.value;  // 获取滚动元素
-  const scrollHeight = element.scrollHeight ;
+  const scrollHeight = element.scrollHeight;
 
   // TODO 待处理滚动条没有到底部的问题
   console.log('scrollHeight = ' + scrollHeight);
-  scrollbarRef.value.setScrollTop(scrollHeight) ;
+  scrollbarRef.value.setScrollTop(scrollHeight) ; //scrollHeight);
 }
-
 
 const mdi = new MarkdownIt({
   html: false,
@@ -75,34 +98,43 @@ function highlightBlock(str, lang) {
 }
 
 
-function readerHtml(chatText){
-  return mdi.render(chatText) ;
+function readerHtml(chatText) {
+  return mdi.render(chatText);
 }
 
 /** 获取到会话信息 */
-function handleChatMessage(){
-  const businessId = getParam('businessId') ;
-  console.log('businessId = ' + businessId) ;
+function handleChatMessage() {
+
+  const businessId = getParam('businessId') == null ? '1733452663532019712' : getParam('businessId');
+  console.log('businessId = ' + businessId);
 
   chatMessage(businessId).then(response => {
-    messageList.value = response.data ; 
-    loading.value = false ;
-    initChatBoxScroll() ;
+    messageList.value = response.data;
+    loading.value = false;
+    initChatBoxScroll();
   })
+
 }
 
-handleChatMessage() ;
+onMounted(() => {
+  handleChatMessage();
+})
+
+// 将这个方法暴露出去,这样父组件就可以使用了哈
+defineExpose({
+  pushMessageList,
+  pushResponseMessageList
+});
 
 </script>
 
 <style lang="scss" scoped>
-
-.scroll-panel{
-    padding-bottom: 10px;
-    float: left;
-    width: 100%;
-    height: calc(100% - 65px);
-    overflow: hidden;;
+.scroll-panel {
+  padding-bottom: 10px;
+  float: left;
+  width: 100%;
+  height: calc(100% - 55px);
+  overflow: hidden;
 }
 
 .robot-chat-ai-say-box {
@@ -154,6 +186,13 @@ handleChatMessage() ;
 
   }
 
+  .message-list {
+    margin-top: 20px;
+  }
+
+  .message {
+    margin-bottom: 8px;
+  }
 
 }
 

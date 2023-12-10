@@ -54,9 +54,9 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
-        path: '/index',
+        path: '/dashboard',
         component: () => import('@/views/index'),
-        name: '/index',
+        name: '/dashboard',
         meta: { title: '首页', icon: 'dashboard', affix: true }
       }, 
       {
@@ -118,6 +118,12 @@ export const constantRoutes = [
       // >>>>>>>>>>>>>>>>>>>> assistant_router_end >>>>>>>>>>>>>>>>>>
 
     ]
+  },
+  {
+    path: '/index',
+    component: () => import('@/views/smart/specialist/index'),
+    name: '/index',
+    meta: { title: '内容生成专家', icon: 'dashboard', affix: true }
   },
   {
     path: '/smart/specialist/index',

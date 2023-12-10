@@ -19,6 +19,15 @@ var managerUrl = {
   getRoleChainByChainId: prefix + "getRoleChainByChainId",
   saveRoleChainInfo: prefix + "saveRoleChainInfo",
   runRoleChainByRoleId: prefix + "runRoleChainByRoleId",
+  listAllRole: prefix + "listAllRole",
+}
+
+// 获取到所有角色
+export function listAllRole() {
+  return request({
+    url: managerUrl.listAllRole , 
+    method: 'get'
+  })
 }
 
 // 运行角色流程

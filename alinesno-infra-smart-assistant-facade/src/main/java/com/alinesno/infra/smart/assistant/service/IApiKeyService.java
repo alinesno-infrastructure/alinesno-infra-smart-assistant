@@ -11,4 +11,5 @@ import com.alinesno.infra.smart.assistant.entity.ApiKeyEntity;
  */
 public interface IApiKeyService extends IBaseService<ApiKeyEntity> {
 
+
 }

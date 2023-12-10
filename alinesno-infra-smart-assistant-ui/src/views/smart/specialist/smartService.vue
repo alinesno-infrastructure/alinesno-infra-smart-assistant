@@ -15,76 +15,60 @@
             </div>
             <div class="robot-chat-body">
               <!-- 聊天窗口_start -->
-              <ChatList />
+              <ChatList ref="chatListRef" />
               <!-- 聊天窗口_end -->
             </div>
-            <div class="robot-chat-footer" style="float:left;width:100%">
-              <div class="chat-completion">
+            <div class="robot-chat-footer chat-container" style="float:left;width:100%">
 
-                <textarea placeholder="请用 “输入你的审批意见” 描述您的问题，如：缺少生成的内容" 
-                          maxlength="1000" 
-                          rows="2"  
-                          style="resize: none;float: left;width:calc(100% - 250px);background: #fafafa;margin: 10px;"></textarea>
+              <el-row :gutter="20">
+                <el-col :span="18">
+                    <div class="message-input">
+                      <input
+                        v-model="message"
+                        @input="handleInput"
+                        @keydown="handleKeyDown" 
+                        placeholder="请向你Agent,输入你的命令 ..." />
 
-                <div class="chat-operation" style="margin-top: 5px;float: right;">
+                      <ul v-if="showDropdown" class="mention-dropdown">
+                        <li v-for="(user, index) in users" :key="index" @click="mentionUser(user)">
+                          <img style="width:25px;height:25px;border-radius: 50%;position: absolute;" :src="'http://data.linesno.com/icons/sepcialist/dataset_' + (index + 35) + '.png'" />
+                          <div style="margin-left: 30px;margin-top: 5px;">
+                            {{ user.roleName }}
+                          </div>
+                        </li>
+                      </ul>
 
-                  <el-tooltip class="box-item" effect="dark" content="回退重新生成" placement="top" >
-                    <el-button type="danger" text bg size="large">
-                      <i class="fa-solid fa-paper-plane icon-btn"></i>
-                    </el-button>
-                  </el-tooltip>
+                    </div>
+                </el-col>
+                <el-col :span="6">
 
-                  <el-tooltip class="box-item" effect="dark" content="编辑生成内容" placement="top" >
-                    <el-button type="warning" text bg size="large" @click="handleEditorContent()" >
-                      <i class="fa-solid fa-pen-nib icon-btn"></i>
-                    </el-button>
-                  </el-tooltip>
+                    <el-tooltip class="box-item" effect="dark" content="回退重新生成" placement="top" >
+                      <el-button type="danger" text bg size="large" @click="sendMessage">
+                        <i class="fa-solid fa-paper-plane icon-btn"></i>
+                      </el-button>
+                    </el-tooltip>
 
-                  <el-tooltip class="box-item" effect="dark" content="提交任务给Agent执行" placement="top" >
-                    <el-button type="primary" text bg size="large" @click="dialogVisible = true" >
-                      <i class="fa-solid fa-truck-fast icon-btn"></i>
-                    </el-button>
-                  </el-tooltip>
+                    <el-tooltip class="box-item" effect="dark" content="编辑生成内容" placement="top" >
+                      <el-button type="warning" text bg size="large" @click="handleEditorContent()" >
+                        <i class="fa-solid fa-pen-nib icon-btn"></i>
+                      </el-button>
+                    </el-tooltip>
 
-                </div>
-              </div>
+                    <el-tooltip class="box-item" effect="dark" content="提交任务给Agent执行" placement="top" >
+                      <el-button type="primary" text bg size="large" @click="dialogVisible = true" >
+                        <i class="fa-solid fa-truck-fast icon-btn"></i>
+                      </el-button>
+                    </el-tooltip>
+
+                </el-col>
+              </el-row>
+
             </div>
           </div>
         </el-col>
 
         <el-col :span="6">
-          <div class="robot-chat-help-container">
-            <div class="robot-chat-help-panel">
-              <div class="robot-chat-help-title">专家服务Agent</div>
-              <div class="robot-chat-help-item-list-panel">
-                <div class="process-panel">
-                  <ul>
-                    <li class="item-process" v-for="(item,index) in favouriteList" :key="index">
-                      <img style="width:30px;height:30px;border-radius: 50%;position: absolute;" :src="'http://data.linesno.com/icons/sepcialist/dataset_' + (index+35)+ '.png'" />
-                      <div style="margin-left: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin-top: -2px;">
-                        {{ item.name }} 
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div class="robot-chat-help-panel">
-              <div class="robot-chat-help-title">任务执行Agent</div>
-              <div class="robot-chat-help-item-list-panel">
-                <div class="process-panel">
-                  <ul>
-                    <li class="item-process" v-for="(item,index) in helpAutoList" :key="item.id">
-                      <img style="width:30px;height:30px;border-radius: 50%;position: absolute;" :src="'http://data.linesno.com/icons/sepcialist/dataset_' + (index+15)+ '.png'" />
-                      <div style="margin-left: 40px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis; margin-top: -2px;">
-                        {{ item.name }} 
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+          <SmartServiceAgent />
         </el-col>
        
       </el-row>
@@ -132,40 +116,28 @@ import ChatList from './chatList'
 
 import {
   chatAssistantContent , 
-  updateAssistantContent
+  updateAssistantContent , 
+  sendUserMessage
 } from '@/api/smart/assistant/robot'
+
+import {
+  listAllRole,
+} from "@/api/smart/assistant/role";
 
 import { getParam } from '@/utils/ruoyi'
 
+import SmartServiceAgent from './smartServiceAgent';
 import RoleAgent from './agent/roleAgent'
 
-const businessId  = ref("") ;
+const chatListRef = ref();
+const router = useRouter();
+const {proxy} = getCurrentInstance();
+
+const businessId  = ref("1733452663532019712") ;
 const editorLoading = ref(true) ;
 const dialogVisible = ref(false)
 const editDialogVisible = ref(false)
 const currentTaskContent = ref("")
-
-const favouriteList = ref([
-  { id: '1', icon: 'fa-solid fa-truck-fast', name: '技术指导Agent' },
-  { id: '2', icon: 'fa-solid fa-pen-nib', name: '技术学习材料Agent' },
-  { id: '3', icon: 'fa-solid fa-pen-ruler', name: '解决方案编写Agent' },
-  { id: '4', icon: 'fa-solid fa-paint-roller', name: '技术架构分析Agent' },
-  { id: '7', icon: 'fa-solid fa-file-word', name: '代码工程结构Agent' },
-  { id: '4', icon: 'fa-solid fa-compass-drafting', name: '需求转代码Agent' },
-  { id: '6', icon: 'fa-solid fa-user-nurse', name: '数据库设计Agent' },
-])
-
-const helpAutoList = ref([
-  { id: '1', icon: 'fa-solid fa-truck-fast', name: '技术指导Agent' },
-  { id: '2', icon: 'fa-solid fa-pen-nib', name: '技术学习材料Agent' },
-  { id: '8', icon: 'fa-brands fa-dashcube', name: '考核题目生成Agent' },
-  { id: '3', icon: 'fa-solid fa-pen-ruler', name: '解决方案编写Agent' },
-  { id: '4', icon: 'fa-solid fa-paint-roller', name: '技术架构分析Agent' },
-  { id: '7', icon: 'fa-solid fa-file-word', name: '代码工程结构Agent' },
-  { id: '4', icon: 'fa-solid fa-compass-drafting', name: '需求转代码Agent' },
-  { id: '5', icon: 'fa-solid fa-feather', name: '技术架构Agent' },
-  { id: '6', icon: 'fa-solid fa-user-nurse', name: '数据库设计Agent' },
-])
 
 const data = reactive({
    form: {},
@@ -192,6 +164,120 @@ const handleClose = () => {
   editDialogVisible.value = false ;
 }
 
+
+const message = ref('');
+let users = [] ;
+
+// [
+//   { id: 1, roleName: 'Alice2' },
+//   { id: 2, roleName: 'Bob2' },
+//   { id: 3, roleName: 'Charlie2' },
+//   { id: 4, roleName: '测试人员Agent2' },
+//   { id: 5, roleName: '业务开发Agent2' },
+//   { id: 6, roleName: '技术开发Agent2' },
+//   { id: 7, roleName: 'Alice' },
+//   { id: 8, roleName: 'Bob' },
+//   { id: 9, roleName: 'Charlie' },
+//   { id: 10, roleName: '测试人员Agent' },
+//   { id: 11, roleName: '业务开发Agent' },
+//   { id: 12, roleName: '技术开发Agent' },
+// ];
+
+const showDropdown = ref(false);
+const selectedUsers = ref([]);
+const messageList = ref([]);
+
+const handleInput = () => {
+  const lastWord = message.value.split(' ').pop();
+  if (lastWord.startsWith('@') && lastWord.length > 1) {
+    showDropdown.value = true;
+  } else {
+    showDropdown.value = false;
+  }
+};
+
+const mentionUser = (user) => {
+  const mentionedText = `@${user.roleName}`;
+  message.value = message.value.replace(/@\S*$/, '');
+  message.value += mentionedText + ' ';
+  selectedUsers.value.push(user);
+  showDropdown.value = false;
+};
+
+const sendMessage = () => {
+  const output = {
+    message: message.value,
+    mentionedUsers: selectedUsers.value.map((user) => user.roleName),
+  };
+  const formattedMessage = formatMessage(message.value, selectedUsers.value);
+
+  // 添加到列表中
+  chatListRef.value.pushMessageList(formattedMessage);
+
+  // 发送消息到后台
+  handleSendUserMessage(formattedMessage) ;
+  console.log(output); // Replace with your desired handling of the output
+
+  message.value = '';
+  selectedUsers.value = [];
+};
+
+/** 同步消息到后端 */
+function handleSendUserMessage(formattedMessage){
+  console.log('formattedMessage = ' + formattedMessage) ;
+  sendUserMessage(formattedMessage).then(response => {
+    chatListRef.value.pushResponseMessageList(response.data);
+  })
+}
+
+const removeMention = (userId) => {
+  const userIndex = selectedUsers.value.findIndex((user) => user.id === userId);
+  if (userIndex !== -1) {
+    selectedUsers.value.splice(userIndex, 1);
+    message.value = message.value.replace(`@${users[userIndex].name}`, '');
+  }
+};
+
+const filteredUsers = computed(() => {
+  const lastWord = message.value.split(' ').pop().slice(1).toLowerCase();
+  return users.filter((user) => user.roleName.toLowerCase().startsWith(lastWord));
+});
+
+const formatMessage = (message, selectedUsers) => {
+  const words = message.split(' ');
+  const formattedMessage = [];
+  words.forEach((word) => {
+    const user = selectedUsers.find((u) => `@${u.roleName.toLowerCase()}` === word.toLowerCase());
+    if (user) {
+      formattedMessage.push({ type: 'mention', username: user.roleName, id: user.id });
+    } else {
+      formattedMessage.push({ type: 'text', text: word });
+    }
+  });
+  return formattedMessage;
+};
+
+// return {
+//   message,
+//   users,
+//   showDropdown,
+//   selectedUsers,
+//   messageList,
+//   handleInput,
+//   mentionUser,
+//   sendMessage,
+//   removeMention,
+//   filteredUsers,
+// };
+
+function handleKeyDown(event) {
+  if (event.key === "Enter" && event.ctrlKey) {
+    // 在这里执行你想要的操作
+    console.log("Enter+Ctrl 被按下");
+    sendMessage() ;
+  }
+}
+
 /** 编辑生成内容 */
 function handleEditorContent(){
   editDialogVisible.value = true ; 
@@ -214,14 +300,86 @@ function submitAssistantContentForm() {
   });
 };
 
+/** 获取到所有角色 */
+function handleListAllRole(){
+  listAllRole().then(response => {
+    users = response.data ; 
+  })
+}
   
-businessId.value = getParam('businessId') ;
+businessId.value = getParam('businessId') == null ? '1733452663532019712' : getParam('businessId') ;
 console.log('businessId = ' + businessId) ;
+
+handleListAllRole() ;
 
 </script>
 
 <style lang="scss" scoped>
 .icon-btn{
   font-size: 20px;
+}
+
+.chat-container {
+
+  padding: 10px;
+
+  .message-input {
+    position: relative;
+    margin-top: 8px ;
+  }
+
+  input{
+    width: 100%;
+    height: 41px;
+    padding: 10px;
+    resize: none;
+    background: #fafafa;
+    font-size: 14px;
+    border: 0px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .mention-dropdown {
+    max-height: 250px;
+    overflow-y: auto;
+    position: absolute;
+    top: -258px;
+    left: 0;
+    z-index: 1;
+    list-style-type: none;
+    padding: 0;
+    width: 250px;
+    margin: 4px 0;
+    background-color: #fff;
+    border: 1px solid #e6e6e6 ;
+    border-radius: 5px;
+  }
+
+  .mention-dropdown li {
+    padding: 8px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    background: #fafafa;
+    margin: 5px;
+  }
+
+  button {
+    margin-top: 8px;
+  }
+
+  .message-list {
+    margin-top: 20px;
+  }
+
+  .message {
+    margin-bottom: 8px;
+  }
+
+  .mention {
+    color: #007bff;
+    font-weight: bold;
+    margin-right: 5px;
+  }
 }
 </style>

@@ -1,6 +1,5 @@
 package com.alinesno.infra.smart.assistant;
 
-import com.alinesno.infra.smart.assistant.role.service.BrainRemoteService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -15,10 +14,6 @@ public class SmartAssistantApplication {
 
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx = SpringApplication.run(SmartAssistantApplication.class, args);
-
-		BrainRemoteService brainRemoteService = ctx.getBean(BrainRemoteService.class) ;
-		System.out.println("BrainRemoteService = " + brainRemoteService);
-
 	}
 
 }

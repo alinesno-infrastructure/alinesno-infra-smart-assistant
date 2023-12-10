@@ -9,7 +9,7 @@
 
     <div class="chatChannel-session" :class="index == currentChatChannel ? 'select-chatChannel':''" @click="handleSelectChatChannel(item)" v-for="(item , index) in chatChannel" :key="item">
       <div class="chatChannel-icon">
-        <img :src="'http://data.linesno.com/icons/sepcialist/dataset_' + (index+65)+ '.png'" 
+        <img :src="'http://data.linesno.com/icons/sepcialist/dataset_' + (index+15)+ '.png'" 
           style="width:40px;height:40px;border-radius: 50%;" />
       </div>
       <div class="chatChannel-title">

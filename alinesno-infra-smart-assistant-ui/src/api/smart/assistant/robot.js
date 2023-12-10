@@ -9,6 +9,16 @@ var managerUrl = {
   chatAssistantContent: prefix +"chatAssistantContent" ,
   updateAssistantContent: prefix +"updateAssistantContent" ,
   runChainAgent: prefix +"runChainAgent" ,
+  sendUserMessage: prefix +"sendUserMessage" ,
+}
+
+// 客户端发送消息 
+export function sendUserMessage(data) {
+  return request({
+    url: managerUrl.sendUserMessage , 
+    data: data,
+    method: 'post'
+  })
 }
 
 // 更新获取到的内容 
