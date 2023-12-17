@@ -49,7 +49,7 @@ public class BrainRemoteService {
      * @param businessId
      * @return
      */
-    @Retryable(retryFor = {Exception.class} , maxAttempts = 5 , backoff = @Backoff(delay = 5000L , multiplier = 2))
+    @Retryable(retryFor = {Exception.class} , maxAttempts = 20 , backoff = @Backoff(delay = 5000L , multiplier = 2))
     public TaskContentDto chatContent(String businessId) {
 
         AjaxResult result = smartBrainConsumer.chatContent(businessId) ;

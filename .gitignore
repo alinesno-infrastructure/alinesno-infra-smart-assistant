@@ -8,6 +8,7 @@ bin
 classpath-data.json
 sts-cache
 yarn.lock
+package-lock.json
 
 # Compiled class file
 *.class

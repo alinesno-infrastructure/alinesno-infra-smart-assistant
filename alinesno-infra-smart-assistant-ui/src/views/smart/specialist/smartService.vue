@@ -168,21 +168,6 @@ const handleClose = () => {
 const message = ref('');
 let users = [] ;
 
-// [
-//   { id: 1, roleName: 'Alice2' },
-//   { id: 2, roleName: 'Bob2' },
-//   { id: 3, roleName: 'Charlie2' },
-//   { id: 4, roleName: '测试人员Agent2' },
-//   { id: 5, roleName: '业务开发Agent2' },
-//   { id: 6, roleName: '技术开发Agent2' },
-//   { id: 7, roleName: 'Alice' },
-//   { id: 8, roleName: 'Bob' },
-//   { id: 9, roleName: 'Charlie' },
-//   { id: 10, roleName: '测试人员Agent' },
-//   { id: 11, roleName: '业务开发Agent' },
-//   { id: 12, roleName: '技术开发Agent' },
-// ];
-
 const showDropdown = ref(false);
 const selectedUsers = ref([]);
 const messageList = ref([]);
