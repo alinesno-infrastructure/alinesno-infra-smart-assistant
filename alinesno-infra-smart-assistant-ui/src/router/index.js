@@ -54,7 +54,7 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
-        path: '/dashboard',
+        path: '/index',
         component: () => import('@/views/index'),
         name: '/dashboard',
         meta: { title: '首页', icon: 'dashboard', affix: true }
@@ -119,18 +119,18 @@ export const constantRoutes = [
 
     ]
   },
-  {
-    path: '/index',
-    component: () => import('@/views/smart/specialist/index'),
-    name: '/index',
-    meta: { title: '内容生成专家', icon: 'dashboard', affix: true }
-  },
-  {
-    path: '/smart/specialist/index',
-    component: () => import('@/views/smart/specialist/index'),
-    name: '/smart/specialist/index',
-    meta: { title: '内容生成专家', icon: 'dashboard', affix: true }
-  },
+  // {
+  //   path: '/index',
+  //   component: () => import('@/views/smart/specialist/index'),
+  //   name: '/index',
+  //   meta: { title: '内容生成专家', icon: 'dashboard', affix: true }
+  // },
+  // {
+  //   path: '/smart/specialist/index',
+  //   component: () => import('@/views/smart/specialist/index'),
+  //   name: '/smart/specialist/index',
+  //   meta: { title: '内容生成专家', icon: 'dashboard', affix: true }
+  // },
   {
     path: '/user',
     component: Layout,
