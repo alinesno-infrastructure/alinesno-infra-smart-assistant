@@ -278,53 +278,22 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
     }
 
 //    public static void main(String[] args) {
-//        String functionYaml = "non_functional_requirements:\n" +
-//                "  - performance_requirements:  # 性能需求\n" +
-//                "    - PE-1: \"系统应能够同时处理大量用户的访问请求\"\n" +
-//                "    - PE-2: \"用户通过小程序提交信息后，系统应在5秒内向用户显示确认信息\"\n" +
-//                "    - PE-3: \"系统应在10秒内响应用户的查询请求，并在此期间在屏幕上显示查询结果\"\n" +
-//                "  - security_requirements:  # 安全性需求\n" +
-//                "    - SE-1: \"所有涉及个人身份信息的数据传输应使用加密技术进行保护\"\n" +
-//                "    - SE-2: \"用户登录受到身份验证和访问控制策略的限制\"\n" +
-//                "    - SE-3: \"只有经过身份验证的用户才能访问系统\"\n" +
-//                "    - SE-4: \"用户只能访问其相关的课堂信息\"\n" +
-//                "  - software_quality_attributes:  # 软件质量属性\n" +
-//                "    - QA-1: \"系统应每天24小时可用，可用率为99.9%\"\n" +
-//                "    - QA-2: \"系统崩溃导致信息丢失的概率不应超过1%\"\n" +
-//                "  - other_requirements:  # 其他需求\n" +
-//                "    - OR-1: \"系统应具有用户友好的界面\"\n" +
-//                "    - OR-2: \"系统应支持多种语言\"\n" +
-//                "    - OR-3: \"系统应与不同的操作系统兼容\"" ;
 //
-//        String jsonStr = ParserUtils.convertYamlToJson(functionYaml) ;
-//        System.out.println(jsonStr);
+//        // 非功能性需求
 //
-//        JSONObject jsonObject = JSONObject.parseObject(jsonStr) ;
+//       List<FunctionBean> functionBeanList = new ArrayList<>() ;
+//       FunctionBean f1 = new FunctionBean() ;
+//       f1.setName("性能需求");
+//       f1.setItemList(List.of("系统应能够支持大量同时用户访问" , "用户通过应用程序向系统提交信息后，系统应在3秒内向用户显示确认信息" ,"系统应在5秒内响应用户查询，并在此期间在屏幕上显示查询结果" ));
 //
-//        // Get JSONArray for non_functional_requirements
-//        JSONArray nonFunctionalRequirementsArray = jsonObject.getJSONArray("non_functional_requirements");
+//        FunctionBean f2 = new FunctionBean() ;
+//        f2.setName("安全性需求");
+//        f2.setItemList(List.of( "所有涉及功能信息或个人身份信息的网络事务应根据加密算法进行加密" , "用户通过应用程序向系统提交信息后，系统应在3秒内向用户显示确认信息" ,"系统应在5秒内响应用户查询，并在此期间在屏幕上显示查询结果" ));
 //
-//        // Parse JSON Array to List<FunctionalRequirement>
-//        List<Requirements.FunctionalRequirement> functionalRequirements = nonFunctionalRequirementsArray.toJavaList(Requirements.FunctionalRequirement.class);
+//        functionBeanList.add(f1) ;
+//        functionBeanList.add(f2) ;
 //
-//        // Access the parsed data
-//        for (Requirements.FunctionalRequirement functionalRequirement : functionalRequirements) {
-//            List<Requirements.Requirement> performanceRequirements = functionalRequirement.getPerformance_requirements() ; // .getPerformanceRequirements();
-//            if (performanceRequirements != null) {
-//                for (Requirements.Requirement requirement : performanceRequirements) {
-//                    System.out.println("Code: " + requirement.getCode() + ", Description: " + requirement.getDescription());
-//                }
-//            }
-//
-//            List<Requirements.Requirement> securityRequirements = functionalRequirement.getSecurity_requirements() ; // .getSecurityRequirements();
-//            if (securityRequirements != null) {
-//                for (Requirements.Requirement requirement : securityRequirements) {
-//                    System.out.println("Code: " + requirement.getCode() + ", Description: " + requirement.getDescription());
-//                }
-//            }
-//
-//            // Similarly, add null check for other requirement types (softwareQualityAttributes, otherRequirements)
-//        }
+//        System.out.println(JSONObject.toJSONString(functionBeanList));
 //    }
 
     /**
@@ -339,6 +308,7 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
         private String type ; // 功能类型(M-模块|F-功能|A-按钮)
         private String assistantContent ; // 生成的功能描述
         private List<FunctionBean> subFunction ; // 子类功能
+        private List<String> itemList ; // 子类列表
 
         public FunctionBean copy(){
             FunctionBean b = new FunctionBean() ;
