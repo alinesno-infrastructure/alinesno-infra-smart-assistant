@@ -2,6 +2,7 @@ package com.alinesno.infra.smart.assistant.role.context;
 
 import com.alinesno.infra.smart.assistant.api.adapter.TaskContentDto;
 import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
+import com.alinesno.infra.smart.assistant.role.BusinessAnalystSpecialist;
 import com.yomahub.liteflow.slot.DefaultContext;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -32,4 +33,7 @@ public class RoleChainContext extends DefaultContext {
     // 针对聚合场景
     private List<String> businessIds ; // 所有业务ID列表
     private List<TaskContentDto> assistantContents ; // 所有返回列表结构
+
+    // 针对需求功能列表
+    private List<BusinessAnalystSpecialist.FunctionBean> functionBeanList ;
 }
