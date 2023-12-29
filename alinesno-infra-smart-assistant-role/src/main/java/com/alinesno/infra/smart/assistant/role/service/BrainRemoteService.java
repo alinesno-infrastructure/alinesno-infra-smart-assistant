@@ -8,11 +8,9 @@ import com.alinesno.infra.smart.assistant.api.adapter.TaskContentDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -49,26 +47,20 @@ public class BrainRemoteService {
      * @param businessId
      * @return
      */
-    @Retryable(retryFor = {Exception.class} , maxAttempts = 20 , backoff = @Backoff(delay = 5000L , multiplier = 2))
+    @Retryable(retryFor = {RuntimeException.class} , maxAttempts = 5 , backoff = @Backoff(delay = 5000L , multiplier = 1.5))
     public TaskContentDto chatContent(String businessId) {
 
-        AjaxResult result = smartBrainConsumer.chatContent(businessId) ;
+        try{
+            AjaxResult result = smartBrainConsumer.chatContent(businessId) ;
 
-        log.debug("chatContent result = {}" , result);
+            log.debug("chatContent result = {}" , result);
 
-        String resultData = result.get("data").toString() ;
-        if(resultData != null){
-            TaskContentDto ta =  JSONObject.parseObject(resultData, TaskContentDto.class) ;
-            if(ta.getTaskStatus() == 2){
-                return ta ;
-            }
+            String resultData = result.get("data").toString() ;
+            return JSONObject.parseObject(resultData, TaskContentDto.class);
+        }catch (Exception e){
+            throw new RuntimeException("远程请求异常:" + e.getMessage()) ;
         }
-        throw new RuntimeException(LocalDateTime.now() + ":任务解析未完成.") ;
-    }
 
-    @Recover
-    public void recover(Exception e){
-        System.out.println(e.getMessage());
     }
 
 }

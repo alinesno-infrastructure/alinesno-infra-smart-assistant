@@ -58,7 +58,7 @@ public class TeamTrainingSpecialist extends PlatformExpert {
         public void process() {
 
             // 默认等待生成时间
-            Thread.sleep(defaultSleepTime);
+            Thread.sleep(DEFAULT_SLEEP_TIME);
 
             // 获取上下文
             RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;

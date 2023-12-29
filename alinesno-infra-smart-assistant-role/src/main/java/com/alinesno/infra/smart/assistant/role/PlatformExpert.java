@@ -30,7 +30,8 @@ public abstract class PlatformExpert implements IBaseExpertService {
     protected static final String AGG = "_agg" ;  // 聚合内容
     protected static final String APPLY = "_apply" ;  // 内容审核
 
-    protected int defaultSleepTime = 5*1000 ; // 默认生成内容等待时间
+    protected int DEFAULT_SLEEP_TIME = 5*1000 ; // 默认生成内容等待时间
+    protected int MAX_RETRY_COUNT = 50 ;  // 默认重试次数
 
     @Value("${alinesno.infra.smart.comment-link}")
     protected String platformUrl ;

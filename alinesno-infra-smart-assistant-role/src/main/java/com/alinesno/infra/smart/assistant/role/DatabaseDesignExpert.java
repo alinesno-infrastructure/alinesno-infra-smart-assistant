@@ -62,7 +62,7 @@ public class DatabaseDesignExpert extends PlatformExpert {
         public void process() throws Exception {
 
             // 默认等待生成时间
-            Thread.sleep(defaultSleepTime);
+            Thread.sleep(DEFAULT_SLEEP_TIME);
 
             // 获取上下文
             RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
@@ -122,7 +122,7 @@ public class DatabaseDesignExpert extends PlatformExpert {
         public void process() throws Exception {
 
             // 默认等待生成时间
-            Thread.sleep(defaultSleepTime);
+            Thread.sleep(DEFAULT_SLEEP_TIME);
 
             // 获取上下文
             RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
