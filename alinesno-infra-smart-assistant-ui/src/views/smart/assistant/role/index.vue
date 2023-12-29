@@ -407,7 +407,8 @@ function handleDelete(row) {
 function handleRunChain(row){
 
   loading.value = true;
-  runRoleChainByRoleId(row.id).then(response => {
+  let text = '测试数据' ; 
+  runRoleChainByRoleId(row.id , text).then(response => {
     proxy.$modal.msgSuccess("运行成功.");
     loading.value = false;
   })

@@ -73,7 +73,7 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
      * @return
      */
     @GetMapping("/runRoleChainByRoleId")
-    public AjaxResult runRoleChainByRoleId(String roleId , String executeOrder){
+    public AjaxResult runRoleChainByRoleId(String roleId , @RequestParam("text") String executeOrder){
 
         Assert.hasLength(executeOrder , "执行命令为空.");
 

@@ -24,19 +24,7 @@ import java.util.Map;
 @Component
 public class DatabaseDesignExpert extends PlatformExpert {
 
-    /**
-     * "params": {
-     *     "label1": "设计出电商管理系统的表结构"
-     *  }
-     */
     private static final String DB_TABLE_DESIGN_PROMPT_ID = "uvaWo9Es" ; // 数据库表设计专家
-
-    /**
-     * "params": {
-     *     "label1": "设计出电商管理系统的表结构",
-     *     "label2": "商品表:product,主要用于记录商品的信息，如商品名称、价格、库存等字段"
-     *  }
-     */
     private static final String DB_DDL_DESIGN_PROMPT_ID = "YOFieUPq" ; // 数据库DDL设计专家
 
     private static final String DATABASE_DESIGN_PREFIX = "database_design"  ;
@@ -212,32 +200,5 @@ public class DatabaseDesignExpert extends PlatformExpert {
         private String name;
         private String desc;
     }
-
-
-//    @Override
-//    public void performSpecializedTask(List<PromptMessage> prompts) {
-//
-//        // 创建三个HTTP请求任务
-//        Callable<String> httpRequestTask1 = new BrainRequestTask(getPlatformUrl() , "获取到表名称" , PromptConstants.P_ROLE_1);
-//        Callable<String> httpRequestTask2 = new BrainRequestTask(getPlatformUrl() , "获取到表结构" , PromptConstants.P_ROLE_2);
-//
-//        // 提交任务并获取Future对象
-//        Future<String> future1 = getExecutor().submit(httpRequestTask1);
-//        Future<String> future2 = getExecutor().submit(httpRequestTask2);
-//
-//        // 等待所有HTTP请求执行完成
-//        try {
-//            String response1 = future1.get();
-//            String response2 = future2.get();
-//
-//            // 整合结果
-//            String combinedResponse = response1 + response2 ;
-//
-//            System.out.println("Combined Response: " + combinedResponse);
-//        } catch (InterruptedException | ExecutionException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 
 }

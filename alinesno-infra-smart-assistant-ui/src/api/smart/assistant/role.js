@@ -31,9 +31,9 @@ export function listAllRole() {
 }
 
 // 运行角色流程
-export function runRoleChainByRoleId(roleId) {
+export function runRoleChainByRoleId(roleId , text) {
   return request({
-    url: managerUrl.runRoleChainByRoleId + '?roleId=' + parseStrEmpty(roleId),
+    url: managerUrl.runRoleChainByRoleId + '?roleId=' + parseStrEmpty(roleId) + '&text=' + parseStrEmpty(text),
     method: 'get'
   })
 }
