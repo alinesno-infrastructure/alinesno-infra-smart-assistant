@@ -12,7 +12,7 @@ import com.dtflys.forest.annotation.Query;
  * 调用接口
  */
 @BaseRequest(
-    baseURL = "#{alinesno.infra.gateway.host}" ,
+    baseURL = "#{alinesno.infra.gateway.host}/smart-brain" ,
     connectTimeout = 30*1000
 )
 public interface SmartBrainConsumer {
