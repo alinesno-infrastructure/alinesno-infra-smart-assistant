@@ -3,6 +3,7 @@ package com.alinesno.infra.smart.assistant.role;
 import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
 import com.alinesno.infra.smart.assistant.entity.WorkflowExecutionEntity;
 import com.alinesno.infra.smart.assistant.entity.WorkflowNodeExecutionEntity;
+import com.alinesno.infra.smart.assistant.enums.AssistantConstants;
 import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.role.common.ExecutionStatus;
 import com.alinesno.infra.smart.assistant.role.common.WorkflowStatusEnum;
@@ -44,6 +45,7 @@ public class ChainRunner extends PlatformExpert implements IBaseExpertService {
         // 定义上下文
         RoleChainContext roleContext = new RoleChainContext() ;
         roleContext.setNoticeDto(noticeDto);
+        roleContext.setBusinessId(params.get(AssistantConstants.BUSINESS_ID).toString());
 
         // 执行工作流
         LiteflowResponse response = flowExecutor.execute2Resp(chainName, params , roleContext);

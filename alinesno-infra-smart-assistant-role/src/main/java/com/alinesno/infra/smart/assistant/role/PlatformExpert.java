@@ -3,10 +3,12 @@ package com.alinesno.infra.smart.assistant.role;
 import cn.hutool.core.util.IdUtil;
 import com.alinesno.infra.smart.assistant.api.prompt.PromptMessage;
 import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
+import com.alinesno.infra.smart.assistant.entity.MessageQueueEntity;
 import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.im.service.IDingtalkNoticeService;
+import com.alinesno.infra.smart.assistant.role.event.MessageQueueEvent;
+import com.alinesno.infra.smart.assistant.role.event.PublishService;
 import com.alinesno.infra.smart.assistant.role.service.BrainRemoteService;
-import com.alinesno.infra.smart.assistant.service.IMessageQueueService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import com.alinesno.infra.smart.assistant.service.IWorkflowExecutionService;
 import com.alinesno.infra.smart.assistant.service.IWorkflowNodeExecutionService;
@@ -46,10 +48,10 @@ public abstract class PlatformExpert implements IBaseExpertService {
     protected IDingtalkNoticeService dingtalkNoticeService ;
 
     @Autowired
-    protected IMessageQueueService messageQueueService ;
+    protected FlowExecutor flowExecutor;
 
     @Autowired
-    protected FlowExecutor flowExecutor;
+    protected PublishService publishService ;
 
     @Autowired
     protected IWorkflowExecutionService workflowExecutionService ;
@@ -90,7 +92,17 @@ public abstract class PlatformExpert implements IBaseExpertService {
      * @param resultMap
      */
     protected void saveToBusinessResult(String businessId , String resultMap){
-        messageQueueService.updateAssistantContent(businessId , resultMap) ;
+
+        log.debug("业务服务:{}生成成功，内容:{}" , businessId , resultMap);
+
+        MessageQueueEntity e = new MessageQueueEntity()  ;
+
+        e.setBusinessId(businessId);
+        e.setAssistantContent(resultMap);
+
+        MessageQueueEvent queueEvent = new MessageQueueEvent(e) ;
+        publishService.publishEvent(queueEvent);
+
     }
 
     /**
@@ -98,7 +110,7 @@ public abstract class PlatformExpert implements IBaseExpertService {
      * @return
      */
     protected String generatorId(){
-       return IdUtil.getSnowflakeNextId()+"" ;
+       return IdUtil.getSnowflakeNextIdStr() ;
     }
 
 }

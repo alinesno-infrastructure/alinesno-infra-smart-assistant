@@ -3,6 +3,7 @@ package com.alinesno.infra.smart.assistant.queue.service.impl;
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.smart.assistant.entity.MessageQueueConfigEntity;
 import com.alinesno.infra.smart.assistant.entity.MessageQueueEntity;
+import com.alinesno.infra.smart.assistant.enums.AssistantConstants;
 import com.alinesno.infra.smart.assistant.enums.MessageStatus;
 import com.alinesno.infra.smart.assistant.queue.mapper.MessageQueueMapper;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
@@ -15,6 +16,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.Map;
 
@@ -38,6 +40,9 @@ public class MessageQueueServiceImpl extends IBaseServiceImpl<MessageQueueEntity
     @Override
     public void addMessage(MessageQueueEntity messageQueue) {
 
+        // 判断业务id是否存在
+        Assert.isTrue(hasBusinessId(messageQueue.getBusinessId()) , "业务ID已存在.");
+
         if(queryQueueStatus(messageQueue.getBusinessId())){
 
             messageQueue.setStatus(MessageStatus.SENT.getValue());
@@ -47,10 +52,12 @@ public class MessageQueueServiceImpl extends IBaseServiceImpl<MessageQueueEntity
             long agentId = messageQueue.getAgentId() ;
             String content = messageQueue.getContent() ;
 
-            Map<String , Object> params = objectMapper.readValue(content, new TypeReference<Map<String, Object>>() {});
+            Map<String , Object> params = objectMapper.readValue(content, new TypeReference<>() {});
+            params.put(AssistantConstants.BUSINESS_ID , messageQueue.getBusinessId()) ;
+
             log.debug("agentId = {} , params = {}" , agentId , params);
 
-            industryRoleService.runRoleChainByRoleId(params , agentId+"" , null) ;
+            industryRoleService.runRoleChainByRoleId(params , agentId , null) ;
 
         }else{
 
@@ -58,6 +65,19 @@ public class MessageQueueServiceImpl extends IBaseServiceImpl<MessageQueueEntity
             this.save(messageQueue) ;
 
         }
+    }
+
+    /**
+     * 判断是否已经存在ID
+     * @param businessId
+     * @return
+     */
+    private boolean hasBusinessId(String businessId) {
+
+        LambdaQueryWrapper<MessageQueueEntity> wrapper = new LambdaQueryWrapper<>() ;
+        wrapper.eq(MessageQueueEntity::getBusinessId , businessId) ;
+
+        return count(wrapper) == 0 ;
     }
 
     @SneakyThrows
@@ -71,12 +91,16 @@ public class MessageQueueServiceImpl extends IBaseServiceImpl<MessageQueueEntity
         Map<String , Object> params = objectMapper.readValue(content, new TypeReference<Map<String, Object>>() {});
         log.debug("agentId = {} , params = {}" , agentId , params);
 
-        industryRoleService.runRoleChainByRoleId(params , agentId+"" , null) ;
+        industryRoleService.runRoleChainByRoleId(params , agentId , null) ;
     }
 
     @Override
     public MessageQueueEntity queryMessage(String businessId) {
-        return null;
+
+        LambdaQueryWrapper<MessageQueueEntity> wrapper = new LambdaQueryWrapper<>() ;
+        wrapper.eq(MessageQueueEntity::getBusinessId , businessId) ;
+
+        return this.getOne(wrapper);
     }
 
     @Override

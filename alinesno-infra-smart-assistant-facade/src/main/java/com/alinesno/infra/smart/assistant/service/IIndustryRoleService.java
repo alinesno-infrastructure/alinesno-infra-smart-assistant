@@ -29,12 +29,12 @@ public interface IIndustryRoleService extends IBaseService<IndustryRoleEntity> {
      * @param params
      * @param roleId
      */
-    void runRoleChainByRoleId(Map<String , Object> params , String roleId , NoticeDto noticeDto);
+    void runRoleChainByRoleId(Map<String , Object> params , long roleId , NoticeDto noticeDto);
 
     /**
      * 运行下一个角色业务
      * @param businessId
      * @param roleId
      */
-    void runChainAgent(TaskContentDto businessId, String roleId);
+    void runChainAgent(TaskContentDto businessId, long roleId);
 }

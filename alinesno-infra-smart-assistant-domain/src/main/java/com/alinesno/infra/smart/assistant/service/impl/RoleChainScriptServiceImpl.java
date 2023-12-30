@@ -5,7 +5,7 @@ import com.alinesno.infra.smart.assistant.chain.IChainService;
 import com.alinesno.infra.smart.assistant.entity.RoleChainScriptEntity;
 import com.alinesno.infra.smart.assistant.mapper.RoleChainScriptMapper;
 import com.alinesno.infra.smart.assistant.redis.MessageConstants;
-import com.alinesno.infra.smart.assistant.redis.PublishService;
+import com.alinesno.infra.smart.assistant.redis.PublishRedisService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainScriptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class RoleChainScriptServiceImpl extends IBaseServiceImpl<RoleChainScript
     private IChainService chainService ;
 
     @Autowired
-    private PublishService publishService ;
+    private PublishRedisService publishService ;
 
     @Override
     public void saveScript(RoleChainScriptEntity entity) {

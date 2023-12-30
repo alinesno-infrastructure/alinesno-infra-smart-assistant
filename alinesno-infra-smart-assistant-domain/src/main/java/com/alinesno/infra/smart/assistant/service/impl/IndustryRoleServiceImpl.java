@@ -9,7 +9,7 @@ import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.mapper.IndustryRoleMapper;
 import com.alinesno.infra.smart.assistant.redis.MessageConstants;
-import com.alinesno.infra.smart.assistant.redis.PublishService;
+import com.alinesno.infra.smart.assistant.redis.PublishRedisService;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
 import com.alinesno.infra.smart.assistant.service.INoticeService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
@@ -42,7 +42,7 @@ public class IndustryRoleServiceImpl extends IBaseServiceImpl<IndustryRoleEntity
     private String applicationName;
 
     @Autowired
-    private PublishService publishService ;
+    private PublishRedisService publishService ;
 
     @Resource(name="chainRunner")
     private IBaseExpertService baseExpert ;
@@ -68,7 +68,7 @@ public class IndustryRoleServiceImpl extends IBaseServiceImpl<IndustryRoleEntity
     }
 
     @Override
-    public void runRoleChainByRoleId(Map<String , Object> params , String roleId , NoticeDto noticeDto) {
+    public void runRoleChainByRoleId(Map<String , Object> params , long roleId , NoticeDto noticeDto) {
 
         Assert.notNull(params , "请求参数为空.");
 
@@ -82,7 +82,7 @@ public class IndustryRoleServiceImpl extends IBaseServiceImpl<IndustryRoleEntity
     }
 
     @Override
-    public void runChainAgent(TaskContentDto dto , String roleId) {
+    public void runChainAgent(TaskContentDto dto , long roleId) {
 
         // TODO 待优化获取多个脚本的问题
         String msg = dto.getCodeContent().get(0).getContent();

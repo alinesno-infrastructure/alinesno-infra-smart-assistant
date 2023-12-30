@@ -5,7 +5,7 @@ import com.alinesno.infra.smart.assistant.chain.IChainService;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.mapper.RoleChainMapper;
 import com.alinesno.infra.smart.assistant.redis.MessageConstants;
-import com.alinesno.infra.smart.assistant.redis.PublishService;
+import com.alinesno.infra.smart.assistant.redis.PublishRedisService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class RoleChainServiceImpl extends IBaseServiceImpl<RoleChainEntity, RoleChainMapper> implements IRoleChainService {
 
     @Autowired
-    private PublishService publishService ;
+    private PublishRedisService publishService ;
 
     @Autowired
     private IChainService chainService ;

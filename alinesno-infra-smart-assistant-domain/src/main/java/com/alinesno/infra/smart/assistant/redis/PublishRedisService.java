@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
  * Redis消息发送
  */
 @Service
-public class PublishService {
+public class PublishRedisService {
 
     @Value("${alinesno.infra.smart.assistant.topic:chain_rule_topic}")
     private String ruleTopic;

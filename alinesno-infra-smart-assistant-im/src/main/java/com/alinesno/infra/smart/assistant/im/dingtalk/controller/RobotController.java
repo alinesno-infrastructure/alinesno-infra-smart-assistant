@@ -87,7 +87,7 @@ public class RobotController extends SuperController {
      * @return
      */
     @GetMapping("/runChainAgent")
-    public AjaxResult runChainAgent(String businessId , String roleId){
+    public AjaxResult runChainAgent(String businessId , long roleId){
 
         log.debug("businessId = {} , roleId = {}" , businessId , roleId);
         AjaxResult result = smartBrainConsumer.chatContent(businessId) ;
