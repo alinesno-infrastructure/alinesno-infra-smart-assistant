@@ -81,7 +81,7 @@
 
             <el-table v-loading="loading" :data="ApplicationList" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="50" align="center" />
-              <el-table-column label="图标" align="center" width="55px" prop="icon" v-if="columns[0].visible">
+              <el-table-column label="图标" align="center" width="50px" prop="icon" v-if="columns[0].visible">
                 <template #default="scope">
                   <div class="role-icon" style="font-size: 30px;color:#3b5998">
                     <i v-if="(scope.$index + 1) % 3 == 2" class="fa-brands fa-node-js"></i>
@@ -93,10 +93,10 @@
               <el-table-column label="流程名称" align="left" key="workflowName" prop="workflowName" v-if="columns[1].visible"
                 :show-overflow-tooltip="true">
                 <template #default="scope">
-                  <div style="font-size: 15px;font-weight: 500;color: #3b5998;">
+                  <div style="font-size: 14px;font-weight: 500;color: #3b5998;">
                     {{ scope.row.workflowName }}#{{ scope.row.buildNumber }}
                   </div>
-                  <div style="font-size: 13px;color: #a5a5a5;">
+                  <div style="font-size: 12px;color: #a5a5a5;">
                     执行时间: {{ scope.row.usageTimeSeconds }}
                   </div>
                 </template>

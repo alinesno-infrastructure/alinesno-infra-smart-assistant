@@ -23,7 +23,7 @@ actable:
   table:
     auto: update
   model:
-    pack: com.alinesno.infra.smart.assistant.entity
+    pack: com.alinesno.infra.smart.assistant.entity,com.alinesno.infra.smart.assistant.queue.entity
   database:
     type: mysql
   index:

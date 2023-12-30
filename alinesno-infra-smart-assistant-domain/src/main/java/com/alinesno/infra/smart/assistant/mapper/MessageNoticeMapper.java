@@ -1,7 +1,7 @@
 package com.alinesno.infra.smart.assistant.mapper;
 
 import com.alinesno.infra.common.facade.mapper.repository.IBaseMapper;
-import com.alinesno.infra.smart.assistant.entity.MessageEntity;
+import com.alinesno.infra.smart.assistant.entity.MessageNoticeEntity;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.alinesno.infra.smart.assistant.entity.MessageEntity;
  * @author luoxiaodong
  * @version 1.0.0
  */
-public interface MessageMapper extends IBaseMapper<MessageEntity> {
+public interface MessageNoticeMapper extends IBaseMapper<MessageNoticeEntity> {
 
 }

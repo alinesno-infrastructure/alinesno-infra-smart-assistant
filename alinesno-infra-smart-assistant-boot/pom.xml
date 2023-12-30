@@ -23,6 +23,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alinesno.infra.smart</groupId>
+			<artifactId>alinesno-infra-smart-assistant-queue</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alinesno.infra.smart</groupId>
 			<artifactId>alinesno-infra-smart-assistant-domain</artifactId>
 			<version>${revision}</version>
 		</dependency>

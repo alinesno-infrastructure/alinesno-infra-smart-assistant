@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.alinesno.infra.smart.assistant.entity.MessageEntity;
+import com.alinesno.infra.smart.assistant.entity.MessageNoticeEntity;
 import com.alinesno.infra.smart.assistant.mapper.MessageMapper;
 import com.alinesno.infra.smart.assistant.service.IMessageService;
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
@@ -18,7 +18,7 @@ import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
  * @version 1.0.0
  */
 @Service
-public class MessageServiceImpl extends IBaseServiceImpl<MessageEntity, MessageMapper> implements IMessageService {
+public class MessageServiceImpl extends IBaseServiceImpl<MessageNoticeEntity, MessageMapper> implements IMessageService {
 
 	// 日志记录
 	@SuppressWarnings("unused")

@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,9 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
     private static final String STEP_04 = "3hmyCqhJ" ;
     private static final String STEP_05 = "wbqZCMp8" ;
 
+    // 内容容器
+    private static final Map<String, Object> resultMap = new HashMap<>() ;
+
     @LiteflowComponent(value = "BA_STEP_01" , name="需求分析_需求文档分析")
     public class BA_STEP_01 extends NodeComponent {
 
@@ -39,6 +43,28 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
 
             Map<String , Object> params = this.getRequestData();
             brainRemoteService.chatTask(params , businessId , STEP_01);
+
+            // >>>>>>>>>>>>>>>>>>>>>>> 获取结果并解析 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+            int retryCount = 0 ;
+            while (retryCount <= MAX_RETRY_COUNT) {
+
+                Thread.sleep(DEFAULT_SLEEP_TIME);
+
+                TaskContentDto content = brainRemoteService.chatContent(businessId);
+                log.debug("promptId = {} , content = {}" , STEP_03 , content);
+
+                if(content.getTaskStatus() == 2){
+                    String yamlContent = content.getCodeContent().get(0).getContent() ;
+                    log.debug("yamlContent = {}" , yamlContent);
+
+                    resultMap.put(STEP_01 , ParserUtils.convertYamlToJson(yamlContent)) ;
+
+                    break ;
+                }
+
+                retryCount ++ ;
+                log.debug("生效获取业务[{}]次数:{}" , businessId , retryCount);
+            }
 
             roleContext.setBusinessId(businessId);
             roleContext.setUserContent(params.get("label1").toString());
@@ -56,6 +82,28 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
             Map<String , Object> params = this.getRequestData();
             brainRemoteService.chatTask(params , businessId , STEP_02);
 
+            // >>>>>>>>>>>>>>>>>>>>>>> 获取结果并解析 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
+            int retryCount = 0 ;
+            while (retryCount <= MAX_RETRY_COUNT) {
+
+                Thread.sleep(DEFAULT_SLEEP_TIME);
+
+                TaskContentDto content = brainRemoteService.chatContent(businessId);
+                log.debug("promptId = {} , content = {}" , STEP_02 , content);
+
+                if(content.getTaskStatus() == 2){
+                    String yamlContent = content.getCodeContent().get(0).getContent() ;
+                    log.debug("yamlContent = {}" , yamlContent);
+
+                    resultMap.put(STEP_02 , ParserUtils.convertYamlToJson(yamlContent)) ;
+
+                    break ;
+                }
+
+                retryCount ++ ;
+                log.debug("生效获取业务[{}]次数:{}" , businessId , retryCount);
+            }
+
             roleContext.setBusinessId(businessId);
             roleContext.setUserContent(params.get("label1").toString());
         }
@@ -72,8 +120,6 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
             Map<String , Object> params = this.getRequestData();
             brainRemoteService.chatTask(params , businessId , STEP_03);
 
-            // 等待获取到内容并解析
-
             // >>>>>>>>>>>>>>>>>>>>>>> 获取结果并解析 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>.
             int retryCount = 0 ;
             while (retryCount <= MAX_RETRY_COUNT) {
@@ -86,6 +132,9 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
                 if(content.getTaskStatus() == 2){
                     List<FunctionBean> functionBeanList = parseFunctionModule(content.getCodeContent().get(0).getContent());
                     roleContext.setFunctionBeanList(functionBeanList);
+
+                    resultMap.put(STEP_03 , JSONObject.toJSON(functionBeanList)) ;
+
                     break ;
                 }
 
@@ -131,7 +180,7 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
                 // 等待获取内容并解析
                 for(FunctionBean functionBean : functionBeanBusList){
                     TaskContentDto content = brainRemoteService.chatContent(functionBean.getBusinessId());
-                    log.debug("promptId = {} , content = {}" , STEP_03 , content);
+                    log.debug("promptId = {} , content = {}" , STEP_04 , content);
 
                     if(content.getTaskStatus() != 2){
                         isFinish = false ;
@@ -155,6 +204,8 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
 
             // >>>>>>>>>>>>>>>>>>>> 输出内容 >>>>>>>>>>>>>>>>>>>>
             log.debug("functionBeanAssisList = {}" , JSONObject.toJSONString(functionBeanAssisList));
+
+            resultMap.put(STEP_04 , JSONObject.toJSON(functionBeanAssisList)) ;
         }
     }
 
@@ -176,10 +227,14 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
                 Thread.sleep(DEFAULT_SLEEP_TIME);
 
                 TaskContentDto content = brainRemoteService.chatContent(businessId);
-                log.debug("promptId = {} , content = {}" , STEP_03 , content);
+                log.debug("promptId = {} , content = {}" , STEP_05 , content);
 
                 if(content.getTaskStatus() == 2){
                     // 解析获取非功能性需求
+                    String yamlContent = content.getCodeContent().get(0).getContent() ;
+                    log.debug("yamlContent = {}" , yamlContent);
+
+                    resultMap.put(STEP_05 , JSONObject.toJSON(yamlContent)) ;
 
                     break ;
                 }
@@ -199,6 +254,11 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
         @Override
         public void process() throws Exception {
 
+            RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
+            String businessId = roleContext.getBusinessId() ; // 获取到业务Id
+
+            // 将聚合生成的内容保存到内容数据库中
+            saveToBusinessResult(businessId , JSONObject.toJSONString(resultMap)) ;
         }
     }
 
@@ -276,25 +336,6 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
         return jsonObject.getJSONObject("function").getString("desc") ;
 
     }
-
-//    public static void main(String[] args) {
-//
-//        // 非功能性需求
-//
-//       List<FunctionBean> functionBeanList = new ArrayList<>() ;
-//       FunctionBean f1 = new FunctionBean() ;
-//       f1.setName("性能需求");
-//       f1.setItemList(List.of("系统应能够支持大量同时用户访问" , "用户通过应用程序向系统提交信息后，系统应在3秒内向用户显示确认信息" ,"系统应在5秒内响应用户查询，并在此期间在屏幕上显示查询结果" ));
-//
-//        FunctionBean f2 = new FunctionBean() ;
-//        f2.setName("安全性需求");
-//        f2.setItemList(List.of( "所有涉及功能信息或个人身份信息的网络事务应根据加密算法进行加密" , "用户通过应用程序向系统提交信息后，系统应在3秒内向用户显示确认信息" ,"系统应在5秒内响应用户查询，并在此期间在屏幕上显示查询结果" ));
-//
-//        functionBeanList.add(f1) ;
-//        functionBeanList.add(f2) ;
-//
-//        System.out.println(JSONObject.toJSONString(functionBeanList));
-//    }
 
     /**
      * 功能列表

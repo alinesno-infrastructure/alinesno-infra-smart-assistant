@@ -1,6 +1,6 @@
 package com.alinesno.infra.smart.assistant.service;
 
-import com.alinesno.infra.smart.assistant.entity.MessageEntity;
+import com.alinesno.infra.smart.assistant.entity.MessageNoticeEntity;
 import com.alinesno.infra.common.facade.services.IBaseService;
 
 /**
@@ -12,6 +12,6 @@ import com.alinesno.infra.common.facade.services.IBaseService;
  * @version 1.0.0
  */
 
-public interface IMessageService extends IBaseService<MessageEntity> {
+public interface IMessageService extends IBaseService<MessageNoticeEntity> {
 
 }

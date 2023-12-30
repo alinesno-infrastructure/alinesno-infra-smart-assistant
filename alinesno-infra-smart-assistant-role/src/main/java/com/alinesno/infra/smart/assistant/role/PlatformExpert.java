@@ -6,6 +6,7 @@ import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
 import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.im.service.IDingtalkNoticeService;
 import com.alinesno.infra.smart.assistant.role.service.BrainRemoteService;
+import com.alinesno.infra.smart.assistant.service.IMessageQueueService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import com.alinesno.infra.smart.assistant.service.IWorkflowExecutionService;
 import com.alinesno.infra.smart.assistant.service.IWorkflowNodeExecutionService;
@@ -31,7 +32,7 @@ public abstract class PlatformExpert implements IBaseExpertService {
     protected static final String APPLY = "_apply" ;  // 内容审核
 
     protected int DEFAULT_SLEEP_TIME = 5*1000 ; // 默认生成内容等待时间
-    protected int MAX_RETRY_COUNT = 50 ;  // 默认重试次数
+    protected int MAX_RETRY_COUNT = 100 ;  // 默认重试次数
 
     @Value("${alinesno.infra.smart.comment-link}")
     protected String platformUrl ;
@@ -43,6 +44,9 @@ public abstract class PlatformExpert implements IBaseExpertService {
 
     @Autowired
     protected IDingtalkNoticeService dingtalkNoticeService ;
+
+    @Autowired
+    protected IMessageQueueService messageQueueService ;
 
     @Autowired
     protected FlowExecutor flowExecutor;
@@ -78,6 +82,15 @@ public abstract class PlatformExpert implements IBaseExpertService {
     @Override
     public void processExpert(Map<String, Object> params, String chainName , Long chainId, NoticeDto noticeDto){
 
+    }
+
+    /**
+     * 保存生成的内容到持久化中
+     * @param businessId
+     * @param resultMap
+     */
+    protected void saveToBusinessResult(String businessId , String resultMap){
+        messageQueueService.updateAssistantContent(businessId , resultMap) ;
     }
 
     /**

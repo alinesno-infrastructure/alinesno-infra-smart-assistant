@@ -1,6 +1,6 @@
 package com.alinesno.infra.smart.assistant.gateway.controller;
 
-import com.alinesno.infra.smart.assistant.entity.MessageEntity;
+import com.alinesno.infra.smart.assistant.entity.MessageNoticeEntity;
 import com.alinesno.infra.smart.assistant.service.IMessageService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Scope(SpringInstanceScope.PROTOTYPE)
 @RequestMapping("/api/infra/smart/assistant/message")
-public class MessageController extends BaseController<MessageEntity, IMessageService> {
+public class MessageController extends BaseController<MessageNoticeEntity, IMessageService> {
 
     // 日志记录
     private static final Logger log = LoggerFactory.getLogger(MessageController.class);

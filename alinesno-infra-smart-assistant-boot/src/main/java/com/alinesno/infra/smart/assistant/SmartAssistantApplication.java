@@ -2,7 +2,6 @@ package com.alinesno.infra.smart.assistant;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * 集成一个Java开发示例工具
@@ -13,7 +12,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class SmartAssistantApplication {
 
 	public static void main(String[] args) {
-		ConfigurableApplicationContext ctx = SpringApplication.run(SmartAssistantApplication.class, args);
+		SpringApplication.run(SmartAssistantApplication.class, args);
 	}
 
 }

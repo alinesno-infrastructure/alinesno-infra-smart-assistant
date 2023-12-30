@@ -22,8 +22,8 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@TableName("message")
-public class MessageEntity extends InfraBaseEntity {
+@TableName("message_notice")
+public class MessageNoticeEntity extends InfraBaseEntity {
 	/**
 	 * 消息ID
 	 */
