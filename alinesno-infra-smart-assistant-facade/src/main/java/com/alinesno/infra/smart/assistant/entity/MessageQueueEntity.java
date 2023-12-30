@@ -41,6 +41,10 @@ public class MessageQueueEntity extends InfraBaseEntity {
     private long agentId ; // AgentId
 
     @TableField
+    @Column(type = MySqlTypeConstant.BIGINT , comment = "所属频道ID")
+    private long channelId ; // channelId
+
+    @TableField
     @Column(type = MySqlTypeConstant.LONGTEXT  , comment = "消息内容(使用的是Map-JSON格式化)")
     private String content;   // 消息内容(使用的是Map-JSON格式化)
 

@@ -38,4 +38,13 @@ public class AssistantController extends SuperController {
         return AjaxResult.success(roleEntityList) ;
     }
 
+    /**
+     * 查询Agent详情
+     * @return
+     */
+    @GetMapping("/getById")
+    public IndustryRoleEntity getById(String roleId){
+        return roleService.getById(roleId);
+    }
+
 }
