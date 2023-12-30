@@ -1,5 +1,6 @@
 package com.alinesno.infra.smart.assistant.gateway.controller;
 
+import com.alinesno.infra.common.facade.pageable.ConditionDto;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 应用构建Controller
@@ -47,6 +51,17 @@ public class WorkflowNodeExecutionController extends BaseController<WorkflowNode
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
+
+        List<ConditionDto> conditionDtos = new ArrayList<>() ;
+
+        ConditionDto conditionDto = new ConditionDto() ;
+        conditionDto.setValue(request.getParameter("currentWorkflowId"));
+        conditionDto.setColumn("workflow_execution_id");
+
+        conditionDtos.add(conditionDto) ;
+
+        page.setConditionList(conditionDtos);
+
         return this.toPage(model, this.getFeign(), page);
     }
 
@@ -55,3 +70,14 @@ public class WorkflowNodeExecutionController extends BaseController<WorkflowNode
         return this.service;
     }
 }
+
+
+
+
+
+
+
+
+
+
+

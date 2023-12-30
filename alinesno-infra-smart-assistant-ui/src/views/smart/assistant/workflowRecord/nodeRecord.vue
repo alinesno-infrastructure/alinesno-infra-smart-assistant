@@ -8,11 +8,15 @@
           <el-table-column type="index" width="50" label="序号" align="center"/>
 
           <el-table-column label="节点名称" align="left" key="nodeName" prop="nodeName" v-if="columns[1].visible" :show-overflow-tooltip="true"/>
-          <el-table-column label="执行时间" align="center" width="80" key="timeSpent" prop="timeSpent" v-if="columns[4].visible" :show-overflow-tooltip="true"/>
+          <el-table-column label="执行时间" align="left" width="150" key="timeSpent" prop="timeSpent" v-if="columns[4].visible">
+            <template #default="scope">
+              {{ handleFormatTime(scope.row.timeSpent) }}
+            </template>
+          </el-table-column>
           <el-table-column label="执行状态" align="center" key="status" prop="workflowStatus" v-if="columns[3].visible" width="100" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button v-if="scope.row.workflowStatus === 'success'" type="success" :icon="CircleCheck" text bg>成功</el-button>
-              <el-button v-if="scope.row.workflowStatus === 'fail'"  type="warning" :icon="Warning" text bg>失败</el-button>
+              <el-button v-if="scope.row.status === 'success'" type="success" :icon="CircleCheck" text bg>成功</el-button>
+              <el-button v-if="scope.row.status === 'fail'"  type="warning" :icon="Warning" text bg>失败</el-button>
             </template>
           </el-table-column>
 
@@ -202,7 +206,7 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    fcurrentWorkflowId: parentParams.currentWorkflowId ,
+    currentWorkflowId: parentParams.currentWorkflowId ,
     nodeName: undefined,
     showName: undefined,
     status: undefined,
@@ -239,6 +243,26 @@ function getList() {
 
 };
 
+/** 时间格式化 */
+function handleFormatTime(mTime) {
+
+  const seconds = mTime/60 ; 
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+    
+  let formattedTime = '';
+    
+  if (hours > 0) {
+      formattedTime += `${hours}时`;
+  }
+  if (minutes > 0 || hours > 0) {
+      formattedTime += `${minutes}分`;
+  }
+  formattedTime += `${remainingSeconds}秒`;
+    
+  return formattedTime;
+}
 
 /** 搜索按钮操作 */
 function handleQuery() {

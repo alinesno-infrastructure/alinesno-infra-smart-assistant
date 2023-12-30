@@ -8,6 +8,7 @@ import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -64,7 +65,12 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
      */
     @GetMapping("/listAllRole")
     public AjaxResult listAllRole(){
-        List<IndustryRoleEntity> roleEntityList = service.list() ;
+
+        LambdaQueryWrapper<IndustryRoleEntity> wrapper = new LambdaQueryWrapper<>() ;
+        wrapper.orderByDesc(IndustryRoleEntity::getAddTime) ;
+
+        List<IndustryRoleEntity> roleEntityList = service.list(wrapper) ;
+
         return AjaxResult.success(roleEntityList) ;
     }
 

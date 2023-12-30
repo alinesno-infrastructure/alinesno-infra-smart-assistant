@@ -34,9 +34,7 @@ public class AssistantController extends SuperController {
      */
     @GetMapping("/list")
     public AjaxResult agentList(){
-
         List<IndustryRoleEntity> roleEntityList = roleService.list() ;
-
         return AjaxResult.success(roleEntityList) ;
     }
 
