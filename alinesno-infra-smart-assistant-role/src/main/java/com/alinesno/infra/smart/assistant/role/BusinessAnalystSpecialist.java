@@ -51,7 +51,7 @@ public class BusinessAnalystSpecialist extends PlatformExpert {
                 Thread.sleep(DEFAULT_SLEEP_TIME);
 
                 TaskContentDto content = brainRemoteService.chatContent(businessId);
-                log.debug("promptId = {} , content = {}" , STEP_03 , content);
+                log.debug("promptId = {} , content = {}" , STEP_01 , content);
 
                 if(content.getTaskStatus() == 2){
                     String yamlContent = content.getCodeContent().get(0).getContent() ;
