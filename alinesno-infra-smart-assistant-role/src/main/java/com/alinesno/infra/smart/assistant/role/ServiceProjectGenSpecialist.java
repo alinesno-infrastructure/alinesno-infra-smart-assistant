@@ -30,7 +30,7 @@ public class ServiceProjectGenSpecialist extends PlatformExpert {
         @Override
         public void process() throws Exception {
             RoleChainContext roleContext = this.getContextBean(RoleChainContext.class);
-            String businessId = generatorId();
+            String businessId = roleContext.getBusinessId();
 
             Map<String , Object> params = this.getRequestData();
             brainRemoteService.chatTask(params , businessId , SPG_STEP_01);
