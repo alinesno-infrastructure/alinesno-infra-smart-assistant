@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
  * 应用构建Mapper接口
  * 
  * @version 1.0.0
- * @since 2023-09-30
+ * @author luoxiaodong
  */
 @Mapper
 public interface ApplicationMapper extends IBaseMapper<ApplicationEntity> {

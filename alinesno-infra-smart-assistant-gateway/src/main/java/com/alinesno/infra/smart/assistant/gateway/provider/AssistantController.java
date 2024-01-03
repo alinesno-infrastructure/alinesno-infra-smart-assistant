@@ -2,14 +2,14 @@ package com.alinesno.infra.smart.assistant.gateway.provider;
 
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.SuperController;
+import com.alinesno.infra.smart.assistant.api.IndustryRoleCatalogDto;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
+import com.alinesno.infra.smart.assistant.service.IIndustryRoleCatalogService;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +28,9 @@ public class AssistantController extends SuperController {
     @Autowired
     private IIndustryRoleService roleService ;
 
+    @Autowired
+    private IIndustryRoleCatalogService catalogService;
+
     /**
      * 获取到所有的agent
      * @return
@@ -35,6 +38,19 @@ public class AssistantController extends SuperController {
     @GetMapping("/list")
     public AjaxResult agentList(){
         List<IndustryRoleEntity> roleEntityList = roleService.list() ;
+        return AjaxResult.success(roleEntityList) ;
+    }
+
+    /**
+     * 根据id获取到agent的列表
+     * @return
+     */
+    @PostMapping("/listByIds")
+    public AjaxResult agentListByIds(@RequestBody List<Long> ids){
+
+        log.debug("listByIds = {}" , ids);
+
+        List<IndustryRoleEntity> roleEntityList = roleService.listByIds(ids) ;
         return AjaxResult.success(roleEntityList) ;
     }
 
@@ -47,4 +63,13 @@ public class AssistantController extends SuperController {
         return roleService.getById(roleId);
     }
 
+    /**
+     * 查询角色与类型
+     * @return
+     */
+    @GetMapping("/allCatalog")
+    public AjaxResult allCatalog(){
+        List<IndustryRoleCatalogDto> roleEntityList = catalogService.allCatalog() ;
+        return AjaxResult.success(roleEntityList) ;
+    }
 }

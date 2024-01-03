@@ -22,10 +22,10 @@ public class IndustryRoleEntity extends InfraBaseEntity {
     @ColumnComment("角色名称")
     private String roleName; // 角色名称
 
-    @TableField("industry") // MyBatis-Plus 字段注解
-    @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 100)
+    @TableField("industry_catalog") // MyBatis-Plus 字段注解
+    @ColumnType(value = MySqlTypeConstant.BIGINT, length = 32)
     @ColumnComment("所属行业")
-    private String industry; // 所属行业
+    private Long industryCatalog ; // 所属行业
 
     @TableField("responsibilities") // MyBatis-Plus 字段注解
     @ColumnType(value = MySqlTypeConstant.TEXT)

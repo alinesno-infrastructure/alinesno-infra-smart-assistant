@@ -8,7 +8,7 @@ import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
  * 应用构建Service接口
  * 
  * @version 1.0.0
- * @since 2023-09-30
+ * @author luoxiaodong
  */
 public interface INoticeService extends IBaseService<NoticeEntity> {
 

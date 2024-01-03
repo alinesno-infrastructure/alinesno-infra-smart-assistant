@@ -92,6 +92,12 @@ export const constantRoutes = [
         meta: { title: '密钥管理', icon: 'dashboard', affix: true }
       },
       {
+        path: '/smart/assistant/roleCatalog/index',
+        component: () => import('@/views/smart/assistant/roleCatalog/index'),
+        name: '/smart/assistant/roleCatalog/index',
+        meta: { title: '角色类型管理', icon: 'dashboard', affix: true }
+      },
+      {
         path: '/smart/assistant/role/index',
         component: () => import('@/views/smart/assistant/role/index'),
         name: '/smart/assistant/role/index',

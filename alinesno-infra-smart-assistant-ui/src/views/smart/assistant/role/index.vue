@@ -1,8 +1,35 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
+
+            <!--类型数据-->
+      <el-col :span="4" :xs="24">
+            <div class="head-container">
+               <el-input
+                  v-model="deptName"
+                  placeholder="请输入类型名称"
+                  clearable
+                  prefix-icon="Search"
+                  style="margin-bottom: 20px"
+               />
+            </div>
+            <div class="head-container">
+               <el-tree
+                  :data="deptOptions"
+                  :props="{ label: 'label', children: 'children' }"
+                  :expand-on-click-node="false"
+                  :filter-node-method="filterNode"
+                  ref="deptTreeRef"
+                  node-key="id"
+                  highlight-current
+                  default-expand-all
+                  @node-click="handleNodeClick"
+               />
+            </div>
+         </el-col>
+
        <!--应用数据-->
-      <el-col :span="24" :xs="24">
+      <el-col :span="20" :xs="20">
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
 
           <el-form-item label="角色名称" prop="roleName">
@@ -56,7 +83,7 @@
 
         <el-table v-loading="loading" :data="RoleList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center"/>
-          <el-table-column label="图标" align="center" width="80px" prop="icon" v-if="columns[0].visible">
+          <el-table-column label="图标" align="center" width="60px" prop="icon" v-if="columns[0].visible">
             <template #default="scope">
               <div class="role-icon">
                 <img :src="'http://data.linesno.com/icons/circle/Delivery boy-' + ((scope.$index + 1)%5 + 1) + '.png'" />
@@ -83,26 +110,23 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="所属领域" align="center" width="150" key="domain" prop="domain" v-if="columns[3].visible" :show-overflow-tooltip="true">
+          <el-table-column label="所属领域" align="center" width="180" key="domain" prop="domain" v-if="columns[3].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-               <span v-if="scope.$index%2 == 0">
-                  <i class="fa-solid fa-truck-fast icon-btn"></i> 执行
-                </span>
-               <span v-if="scope.$index%2 == 1">
-                  <i class="fa-solid fa-user-astronaut icon-btn"></i> 专家
-               </span>
+              <i class="fa-solid fa-user-astronaut icon-btn"></i> {{ scope.row.industryCatalog }}
             </template>
           </el-table-column>
           <el-table-column label="知识库" align="center" width="120"  key="roleLevel" prop="roleLevel" v-if="columns[4].visible" :show-overflow-tooltip="true">
             <template #default="scope">
-              <el-button type="primary" text bg icon="CopyDocument"  @click="handleLangChain(scope.row)" >导入库</el-button>
+              <el-button type="primary" text bg icon="CopyDocument"  @click="handleLangChain(scope.row)" >配置</el-button>
             </template>
           </el-table-column>
+          <!--
           <el-table-column label="角色技能" align="center" width="150"  key="storagePath" prop="storagePath" v-if="columns[5].visible" :show-overflow-tooltip="true">
             <template #default="scope">
               <el-button type="primary" text bg icon="Paperclip"  @click="handleLangChain(scope.row)" >配置</el-button>
             </template>
           </el-table-column>
+          -->
           <el-table-column label="流程定义" align="center" width="150"  key="target" prop="target" v-if="columns[6].visible" :show-overflow-tooltip="true">
             <template #default="scope">
               <el-button type="primary" text bg icon="Postcard" @click="handleLangChain(scope.row)" >专家链路</el-button>
@@ -173,16 +197,30 @@
     <!-- 添加或修改应用配置对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" append-to-body>
       <el-form :model="form" :rules="rules" ref="RoleRef" label-width="80px">
+          <el-row>
+              <el-col :span="24">
+                <el-form-item style="width: 100%;" label="类型" prop="industryCatalog">
+                    <el-tree-select
+                      v-model="form.industryCatalog"
+                      :data="deptOptions"
+                      :props="{ value: 'id', label: 'label', children: 'children' }"
+                      value-key="id"
+                      placeholder="请选择归属类型"
+                      check-strictly
+                    />
+                </el-form-item>
+              </el-col>
+          </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item  label="角色名称" prop="roleName">
+            <el-form-item  label="名称" prop="roleName">
               <el-input v-model="form.roleName" placeholder="请输入角色名称" maxlength="50"/>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="24">
-            <el-form-item label="角色描述" prop="responsibilities">
+            <el-form-item label="描述" prop="responsibilities">
               <el-input v-model="form.responsibilities" placeholder="请输入角色描述" maxlength="50"/>
             </el-form-item>
           </el-col>
@@ -190,18 +228,20 @@
 
         <el-row>
           <el-col :span="24">
-            <el-form-item label="角色级别" prop="roleLevel">
+            <el-form-item label="级别" prop="roleLevel">
               <el-input v-model="form.roleLevel" placeholder="请输入角色级别" maxlength="100"/>
             </el-form-item>
           </el-col>
         </el-row>
+        <!-- 
         <el-row>
           <el-col :span="24">
             <el-form-item label="所属领域" prop="domain">
               <el-input v-model="form.domain" placeholder="请输入所属领域" maxlength="100"/>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> 
+        -->
 
       </el-form>
       <template #footer>
@@ -260,6 +300,7 @@ import {
   delRole,
   getRole,
   updateRole,
+  catalogTreeSelect,
   addRole,
   getRoleChainByChainId,
   saveRoleChainInfo,
@@ -334,7 +375,7 @@ const data = reactive({
     roleName: undefined,
     responsibilities: undefined,
     status: undefined,
-    deptId: undefined
+    industryCatalog: undefined
   },
   rules: {
     roleId: [{required: true, message: "应用编号不能为空", trigger: "blur"}],
@@ -372,6 +413,12 @@ function getList() {
   });
 };
 
+// 节点单击事件
+function handleNodeClick(data) {
+   queryParams.value.industryCatalog = data.id;
+   console.log('data.id = ' + data.id)
+   getList();
+}
 
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -520,14 +567,23 @@ function submitForm() {
   });
 };
 
+/** 查询类型下拉树结构 */
+function getDeptTree() {
+  catalogTreeSelect().then(response => {
+    deptOptions.value = response.data;
+  });
+};
+
+getDeptTree();
 getList();
+
 </script>
 
 <style lang="scss" scoped>
 .role-icon {
   img {
-    width:45px;
-    height:45px;
+    width:40px;
+    height:40px;
   }
 }
 </style>

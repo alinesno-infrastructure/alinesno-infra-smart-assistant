@@ -1,11 +1,14 @@
 package com.alinesno.infra.smart.assistant.gateway.controller;
 
+import com.alinesno.infra.common.core.utils.StringUtils;
+import com.alinesno.infra.common.facade.pageable.ConditionDto;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
 import com.alinesno.infra.smart.assistant.entity.RoleChainEntity;
+import com.alinesno.infra.smart.assistant.service.IIndustryRoleCatalogService;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
 import com.alinesno.infra.smart.assistant.service.IRoleChainService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -29,7 +32,7 @@ import java.util.Map;
  * 继承自BaseController类并实现IApplicationService接口
  * 
  * @version 1.0.0
- * @since 2023-09-30
+ * @author luoxiaodong
  */
 @Slf4j
 @Api(tags = "IndustryRole")
@@ -40,6 +43,9 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
 
     @Autowired
     private IIndustryRoleService service;
+
+    @Autowired
+    private IIndustryRoleCatalogService catalogService ;
 
     @Autowired
     private IRoleChainService roleChainService ;
@@ -56,6 +62,20 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
+
+        List<ConditionDto> condition =  page.getConditionList() ;
+
+        String catalogId =  request.getParameter("industryCatalog") ;
+
+        if(StringUtils.isNotBlank(catalogId)){
+            ConditionDto dto = new ConditionDto() ;
+            dto.setColumn("industry_catalog");
+            dto.setValue(catalogId);
+
+            condition.add(dto) ;
+            page.setConditionList(condition);
+        }
+
         return this.toPage(model, this.getFeign(), page);
     }
 
@@ -103,6 +123,11 @@ public class IndustryRoleController extends BaseController<IndustryRoleEntity, I
         RoleChainEntity roleChain = roleChainService.getById(role.getChainId()) ;
 
         return AjaxResult.success(roleChain==null?new RoleChainEntity():roleChain) ;
+    }
+
+    @GetMapping("/catalogTreeSelect")
+    public AjaxResult catalogTreeSelect(){
+        return AjaxResult.success("success" , catalogService.selectCatalogTreeList()) ;
     }
 
     /**

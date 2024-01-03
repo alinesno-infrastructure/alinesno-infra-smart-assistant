@@ -18,8 +18,18 @@ var managerUrl = {
   downloadfile: prefix + "downloadfile",
   getRoleChainByChainId: prefix + "getRoleChainByChainId",
   saveRoleChainInfo: prefix + "saveRoleChainInfo",
+  catalogTreeSelect: prefix + "catalogTreeSelect",
   runRoleChainByRoleId: prefix + "runRoleChainByRoleId",
   listAllRole: prefix + "listAllRole",
+}
+
+
+// 查询部门下拉树结构
+export function catalogTreeSelect() {
+  return request({
+    url: managerUrl.catalogTreeSelect , 
+    method: 'get'
+  })
 }
 
 // 获取到所有角色
