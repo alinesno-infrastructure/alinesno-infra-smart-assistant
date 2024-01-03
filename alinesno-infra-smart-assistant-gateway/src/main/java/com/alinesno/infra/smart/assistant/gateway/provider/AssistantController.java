@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +50,10 @@ public class AssistantController extends SuperController {
     public AjaxResult agentListByIds(@RequestBody List<Long> ids){
 
         log.debug("listByIds = {}" , ids);
+
+        if(ids.isEmpty()){
+            return AjaxResult.error("id长度为空." , new ArrayList<IndustryRoleEntity>()) ;
+        }
 
         List<IndustryRoleEntity> roleEntityList = roleService.listByIds(ids) ;
         return AjaxResult.success(roleEntityList) ;
