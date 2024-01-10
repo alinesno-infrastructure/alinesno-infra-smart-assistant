@@ -29,7 +29,7 @@ public class ProductArticleChapterContentSpecialist extends PlatformExpert {
     private static final String STEP_01 = "PRODUCT_ARTICLE_CHAPTER_CONTENT_STEP_01" ;
 
     // 内容容器
-    private static final List<String> resultMap = new ArrayList<>() ;
+    private List<String> resultMap ;
 
     @LiteflowComponent(value = "PACC_STEP_01", name="生成目录大纲结构")
     public class TeamTrainGenerator extends NodeComponent {
@@ -37,6 +37,7 @@ public class ProductArticleChapterContentSpecialist extends PlatformExpert {
         @SneakyThrows
         @Override
         public void process() {
+            resultMap = new ArrayList<>() ;
 
             // 获取上下文
             RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
