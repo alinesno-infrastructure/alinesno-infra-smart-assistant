@@ -14,20 +14,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 技术团队培训专家业务处理流程 <br/>
- * (集成串行的示例)
+ * 软文目录大纲设计专家
  */
 @Slf4j
 @Component
-public class TeamTrainingSpecialist extends PlatformExpert {
+public class ProductArticleChapterSpecialist extends PlatformExpert {
 
-    private static final String promptId = "0GSheQ31" ;
-    private static final String STEP_01 = "team_train" ;
+    private static final String promptId = "35lxXaDe" ;
+    private static final String STEP_01 = "PRODUCT_ARTICLE_CHAPTER_STEP_01" ;
 
     // 内容容器
     private static final List<String> resultMap = new ArrayList<>() ;
 
-    @LiteflowComponent(value = "team_train" + GEN , name="生成试题请求")
+    @LiteflowComponent(value = "PAC_STEP_01", name="生成目录大纲结构")
     public class TeamTrainGenerator extends NodeComponent {
 
         @SneakyThrows
@@ -73,7 +72,7 @@ public class TeamTrainingSpecialist extends PlatformExpert {
     }
 
     // 根据情况，进行并行处理
-    @LiteflowComponent(value = "team_train" + PARSE , name="解析试题内容并发送到试题库")
+    @LiteflowComponent(value = "PAC_STEP_02", name="保存目录大纲结构")
     public class TeamTrainParse extends NodeComponent {
 
         @SneakyThrows
@@ -87,35 +86,6 @@ public class TeamTrainingSpecialist extends PlatformExpert {
 
             // 将聚合生成的内容保存到内容数据库中
             saveToBusinessResult(businessId , YamlUtils.mergedYamlList(resultMap)) ;
-        }
-    }
-
-    @LiteflowComponent(value = "team_train" + APPLY , name="发送试题到指定通知服务")
-    public class TeamTrainApply extends NodeComponent {
-
-        @Override
-        public void process() {
-            // 获取上下文
-            RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
-            TaskContentDto taskContentDto = roleContext.getAssistantContent() ;
-            String businessId = roleContext.getBusinessId() ;
-
-            long startTime = roleContext.getStartTime() ;
-            long endTime = System.currentTimeMillis() ;
-
-            log.debug("roleContext = {}" , roleContext);
-
-//            NoticeDto noticeDto = roleContext.getNoticeDto() ;
-//
-//            noticeDto.setBusinessId(roleContext.getBusinessId());
-//            noticeDto.setTaskName(roleContext.getUserContent());
-//            noticeDto.setApplyLink(platformUrl + businessId);
-//            noticeDto.setEnv("测试环境");
-//            noticeDto.setUsageTime(RoleUtils.formatTime(startTime , endTime));
-//            noticeDto.setFinishTime(DateUtil.formatDateTime(new Date()));
-//            noticeDto.setTaskStatus(taskContentDto.getTaskStatus() == 2 ?"完成":"失败");
-//
-//            dingtalkNoticeService.noticeAgent(noticeDto);
 
         }
     }
