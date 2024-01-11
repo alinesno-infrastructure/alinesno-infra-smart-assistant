@@ -46,13 +46,10 @@ public class ProductArticleChapterContentSpecialist extends PlatformExpert {
             // 通过上下文传入
             String businessId = roleContext.getBusinessId() ;
 
-            // 获取到参数
-            Map<String , Object> params = this.getRequestData();
-
             List<String> businessIdList = new ArrayList<>() ;
 
             // 获取到解析内容
-            ArticleBean articleBean = getChapterArticleBean(params.get("assistantContent")+"") ;
+            ArticleBean articleBean = getChapterArticleBean(roleContext.getAssistantYamlContent()) ;
 
             for(ArticleBean.Article article : articleBean.getArticle()){
                 List<ArticleBean.Chapter> chapters = article.getChapters() ;

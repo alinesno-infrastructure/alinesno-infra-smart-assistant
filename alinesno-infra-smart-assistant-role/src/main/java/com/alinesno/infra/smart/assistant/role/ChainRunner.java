@@ -45,7 +45,9 @@ public class ChainRunner extends PlatformExpert implements IBaseExpertService {
         // 定义上下文
         RoleChainContext roleContext = new RoleChainContext() ;
         roleContext.setNoticeDto(noticeDto);
+
         roleContext.setBusinessId(params.get(AssistantConstants.BUSINESS_ID).toString());
+        roleContext.setAssistantYamlContent(params.get(AssistantConstants.BUSINESS_ASSISTANT_YAML_CONTENT).toString());
 
         // 执行工作流
         LiteflowResponse response = flowExecutor.execute2Resp(chainName, params , roleContext);

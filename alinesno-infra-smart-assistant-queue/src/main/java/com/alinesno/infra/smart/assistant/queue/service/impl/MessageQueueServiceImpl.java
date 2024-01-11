@@ -53,7 +53,9 @@ public class MessageQueueServiceImpl extends IBaseServiceImpl<MessageQueueEntity
             String content = messageQueue.getContent() ;
 
             Map<String , Object> params = objectMapper.readValue(content, new TypeReference<>() {});
+
             params.put(AssistantConstants.BUSINESS_ID , messageQueue.getBusinessId()) ;
+            params.put(AssistantConstants.BUSINESS_ASSISTANT_YAML_CONTENT, messageQueue.getAssistantContent()) ;
 
             log.debug("agentId = {} , params = {}" , agentId , params);
 
