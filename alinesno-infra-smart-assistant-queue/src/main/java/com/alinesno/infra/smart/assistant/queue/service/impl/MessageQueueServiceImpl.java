@@ -119,7 +119,7 @@ public class MessageQueueServiceImpl extends IBaseServiceImpl<MessageQueueEntity
     }
 
     @Override
-    public void updateAssistantContent(String businessId, String resultMap) {
+    public boolean updateAssistantContent(String businessId, String resultMap) {
 
         LambdaQueryWrapper<MessageQueueEntity> wrapper = new LambdaQueryWrapper<>() ;
         wrapper.eq(MessageQueueEntity::getBusinessId , businessId) ;
@@ -128,5 +128,8 @@ public class MessageQueueServiceImpl extends IBaseServiceImpl<MessageQueueEntity
         entity.setStatus(MessageStatus.SUCCESS.getValue());
         entity.setAssistantContent(resultMap);
         update(entity) ;
+
+        return true ;
     }
+
 }

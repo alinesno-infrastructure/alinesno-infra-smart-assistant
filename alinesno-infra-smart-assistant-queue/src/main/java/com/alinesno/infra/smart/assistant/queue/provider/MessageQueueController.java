@@ -2,6 +2,7 @@ package com.alinesno.infra.smart.assistant.queue.provider;
 
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.rest.SuperController;
+import com.alinesno.infra.smart.assistant.api.adapter.TaskContentDto;
 import com.alinesno.infra.smart.assistant.entity.MessageQueueEntity;
 import com.alinesno.infra.smart.assistant.service.IMessageQueueService;
 import lombok.extern.slf4j.Slf4j;
@@ -46,4 +47,13 @@ public class MessageQueueController extends SuperController {
         return AjaxResult.success(messageQueue);
     }
 
+    /**
+     * 更新内容
+     * @param dto
+     * @return
+     */
+    @PostMapping("/modifyContent")
+    public boolean modifyContent(@RequestBody TaskContentDto dto){
+        return queueService.updateAssistantContent(dto.getBusinessId() , dto.getGenContent());
+    }
 }

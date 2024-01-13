@@ -59,9 +59,26 @@ public class ProductArticleChapterContentSpecialist extends PlatformExpert {
 
                     Map<String , Object> paramsLabel = this.getRequestData();
                     paramsLabel.put("label1" , chapter.getChapter()) ;
+                    paramsLabel.put("label2" , roleContext.getAssistantYamlContent()) ;
 
                     brainRemoteService.chatTask(paramsLabel , bId , promptId);
                     log.debug("params = {}" , paramsLabel);
+
+                    if(chapter.getSubChapters() != null && !chapter.getSubChapters().isEmpty()){
+
+                        for(ArticleBean.SubChapter subChapter : chapter.getSubChapters()){
+
+                            String subBId = generatorId() ;
+                            Map<String , Object> subParamsLabel = this.getRequestData();
+                            subParamsLabel.put("label1" , subChapter.getSub()) ;
+                            subParamsLabel.put("label2" , roleContext.getAssistantYamlContent()) ;
+
+                            brainRemoteService.chatTask(subParamsLabel , subBId , promptId);
+                            log.debug("params = {}" , paramsLabel);
+
+                            businessIdList.add(subBId) ;
+                        }
+                    }
 
                     businessIdList.add(bId) ;
                 }
@@ -109,6 +126,8 @@ public class ProductArticleChapterContentSpecialist extends PlatformExpert {
 
             RoleChainContext roleContext = this.getContextBean(RoleChainContext.class) ;
             String businessId = roleContext.getBusinessId() ; // 获取到业务Id
+
+            resultMap.add(0 ,roleContext.getAssistantYamlContent()) ;
 
             log.debug("YamlUtils.mergedYamlList(resultMap) = \r\n{}" , YamlUtils.mergedYamlList(resultMap));
 

@@ -3,6 +3,7 @@ package com.alinesno.infra.smart.assistant.role.utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.commons.lang.StringUtils;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -250,13 +251,25 @@ public final class YamlUtils {
      * @param resultMap
      * @return
      */
+    @SneakyThrows
     public static String mergedYamlList(List<String> resultMap) {
+
+        System.out.println("---->>>>>>>>> \r\n" + YAMLMapper.toYAML(resultMap));
+
         StringBuilder content = new StringBuilder() ;
 
         if(!resultMap.isEmpty()){
-           for(String str : resultMap) {
+            int size = resultMap.size() ;
+            for(int i = 0 ; i < resultMap.size() ; i ++){
+               String str = resultMap.get(i) ;
                content.append(str) ;
-           }
+
+               if(size > 1 && i < size - 1){
+                   content.append("\r\n");
+                   content.append("----") ;
+                   content.append("\r\n");
+               }
+            }
         }
 
         return content.toString() ;

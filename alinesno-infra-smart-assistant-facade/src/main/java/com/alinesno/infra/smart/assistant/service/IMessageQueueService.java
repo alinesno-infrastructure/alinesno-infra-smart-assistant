@@ -32,9 +32,11 @@ public interface IMessageQueueService extends IBaseService<MessageQueueEntity> {
 
     /**
      * 内容生成完成
+     *
      * @param businessId
      * @param resultMap
+     * @return
      */
-    void updateAssistantContent(String businessId, String resultMap);
+    boolean updateAssistantContent(String businessId, String resultMap);
 
 }
