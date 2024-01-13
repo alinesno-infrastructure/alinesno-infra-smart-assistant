@@ -1,4 +1,4 @@
-//package com.alinesno.infra.smart.assistant.im.dingtalk.service;
+package com.alinesno.infra.smart.assistant.im.dingtalk.service;//package com.alinesno.infra.smart.assistant.im.dingtalk.service;
 //
 //import com.aliyun.dingtalkoauth2_1_0.Client;
 //import com.aliyun.dingtalkoauth2_1_0.models.GetAccessTokenRequest;

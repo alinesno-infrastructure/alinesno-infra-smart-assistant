@@ -15,7 +15,7 @@
 
 	<dependencies>
 
-        <!-- 引用服务 -->
+        <!-- >>>>>>>>>>>>>>>>>> 引用服务_start >>>>>>>>>>>>>>>>>> -->
 		<dependency>
 			<groupId>com.alinesno.infra.common</groupId>
 			<artifactId>alinesno-infra-common-web-api-sso</artifactId>
@@ -24,6 +24,11 @@
 		<dependency>
 			<groupId>com.alinesno.infra.smart</groupId>
 			<artifactId>alinesno-infra-smart-assistant-queue</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alinesno.infra.smart</groupId>
+			<artifactId>alinesno-infra-smart-assistant-plugin</artifactId>
 			<version>${revision}</version>
 		</dependency>
 		<dependency>
@@ -51,6 +56,7 @@
 			<artifactId>alinesno-infra-smart-assistant-gateway</artifactId>
 			<version>${revision}</version>
 		</dependency>
+		<!-- >>>>>>>>>>>>>>>>>> 引用服务_end >>>>>>>>>>>>>>>>>> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

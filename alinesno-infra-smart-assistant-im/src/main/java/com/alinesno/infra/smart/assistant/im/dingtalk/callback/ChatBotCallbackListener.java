@@ -1,4 +1,4 @@
-//package com.alinesno.infra.smart.assistant.im.dingtalk.callback;
+package com.alinesno.infra.smart.assistant.im.dingtalk.callback;//package com.alinesno.infra.smart.assistant.im.dingtalk.callback;
 //
 //import cn.hutool.core.util.IdUtil;
 //import com.alibaba.fastjson.JSONObject;

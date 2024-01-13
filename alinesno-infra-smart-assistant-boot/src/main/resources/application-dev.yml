@@ -51,6 +51,11 @@ alinesno.infra:
     host:
   smart:
     comment-link:
+    assistant:
+      plugin:
+        central: http://www.baidu.com
+        path: E:\GPT-Tmp
+#        path: ${user.home}/.smart-assistant/plugins
     dingtalk:
       app-key:
       app-secret:

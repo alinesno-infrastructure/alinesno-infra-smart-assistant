@@ -1,4 +1,4 @@
-//package com.alinesno.infra.smart.assistant.im.dingtalk.service;
+package com.alinesno.infra.smart.assistant.im.dingtalk.service;//package com.alinesno.infra.smart.assistant.im.dingtalk.service;
 //
 //import com.alibaba.fastjson.JSONObject;
 //import com.aliyun.dingtalkrobot_1_0.Client;

@@ -1,4 +1,4 @@
-//package com.alinesno.infra.smart.assistant.adapter.impl;
+package com.alinesno.infra.smart.assistant.adapter.impl;//package com.alinesno.infra.smart.assistant.adapter.impl;
 //
 //import com.alinesno.infra.smart.assistant.adapter.SmartBrainConsumer;
 //import org.slf4j.Logger;

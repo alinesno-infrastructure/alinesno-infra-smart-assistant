@@ -27,7 +27,7 @@ const menuItems = ref([
   {id:'9' , icon:'fa-solid fa-file-pdf' , link:'/smart/assistant/roleCatalog/index' , desc:'角色类型'},
   {id:'3' , icon:'fa-solid fa-feather' , link:'/smart/assistant/chainScript/index' , desc:'节点定义'},
   {id:'4' , icon:'fa-solid fa-paper-plane' , link:'/smart/assistant/apikey/index' , desc:'密钥管理'},
-  {id:'5' , icon:'fa-solid fa-box' , link:'/smart/assistant/channel/index' , desc:'渠道管理'},
+  {id:'5' , icon:'fa-solid fa-box' , link:'/smart/assistant/channel/index' , desc:'插件管理'},
   {id:'7' , icon:'fa-solid fa-pen-nib' , link:'/smart/assistant/workflowRecord/index' , desc:'工作流日志'},
   {id:'6' , icon:'fa-brands fa-drupal' , link:'/smart/assistant/requestRecord/index' , desc:'调用日志'},
 ]);

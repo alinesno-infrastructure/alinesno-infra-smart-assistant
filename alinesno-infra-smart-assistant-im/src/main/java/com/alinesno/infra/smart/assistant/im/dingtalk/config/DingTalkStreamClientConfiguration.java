@@ -1,4 +1,4 @@
-//package com.alinesno.infra.smart.assistant.im.dingtalk.config;
+package com.alinesno.infra.smart.assistant.im.dingtalk.config;//package com.alinesno.infra.smart.assistant.im.dingtalk.config;
 //
 //import com.alinesno.infra.smart.assistant.im.dingtalk.callback.AIGraphPluginCallbackListener;
 //import com.alinesno.infra.smart.assistant.im.dingtalk.callback.ChatBotCallbackListener;

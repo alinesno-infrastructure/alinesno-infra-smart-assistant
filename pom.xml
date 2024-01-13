@@ -33,11 +33,15 @@
         <module>alinesno-infra-smart-assistant-gateway</module>  <!-- 接口服务 -->
         <module>alinesno-infra-smart-assistant-client</module>  <!-- 对外引用 -->
         <module>alinesno-infra-smart-assistant-queue</module>  <!-- 任务队列 -->
+        <module>alinesno-infra-smart-assistant-plugin</module>  <!-- 插件管理 -->
         <module>alinesno-infra-smart-assistant-boot</module>  <!-- 启动服务 -->
 
         <!-- 前端服务
         <module>alinesno-infra-smart-assistant-ui</module>
         -->
+
+        <!-- 示例工程 -->
+        <module>demo-plugin</module>  <!-- 启动服务 -->
     </modules>
 
 </project>
