@@ -1,12 +1,17 @@
 package com.alinesno.infra.smart.assistant.gateway.provider;
 
+import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
+import com.alinesno.infra.common.facade.response.HttpStatus;
 import com.alinesno.infra.common.web.adapter.rest.SuperController;
 import com.alinesno.infra.smart.assistant.api.IndustryRoleCatalogDto;
 import com.alinesno.infra.smart.assistant.entity.IndustryRoleEntity;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleCatalogService;
 import com.alinesno.infra.smart.assistant.service.IIndustryRoleService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +39,29 @@ public class AssistantController extends SuperController {
 
     /**
      * 获取到所有的agent
+     *
      * @return
      */
     @GetMapping("/list")
-    public AjaxResult agentList(){
-        List<IndustryRoleEntity> roleEntityList = roleService.list() ;
-        return AjaxResult.success(roleEntityList) ;
+    public TableDataInfo agentList(int pageNow , int pageSize , String agentName){
+
+        TableDataInfo tableDataInfo = new TableDataInfo() ;
+
+        Page<IndustryRoleEntity> page = new Page<>(pageNow , pageSize) ;
+        LambdaQueryWrapper<IndustryRoleEntity> queryWrapper = new LambdaQueryWrapper<>() ;
+
+        if(StringUtils.isNotBlank(agentName)){
+            queryWrapper.like(IndustryRoleEntity::getRoleName , agentName) ;
+        }
+
+        page = roleService.page(page , queryWrapper) ;
+
+        tableDataInfo.setCode(HttpStatus.SUCCESS);
+        tableDataInfo.setMsg("查询成功");
+        tableDataInfo.setRows(page.getRecords());
+        tableDataInfo.setTotal(page.getTotal());
+
+        return tableDataInfo ;
     }
 
     /**
