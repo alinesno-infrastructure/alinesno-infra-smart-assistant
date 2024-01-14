@@ -17,6 +17,11 @@ import lombok.EqualsAndHashCode;
 @TableName("industry_role") // MyBatis-Plus 表名注解
 public class IndustryRoleEntity extends InfraBaseEntity {
 
+    @TableField("role_avatar") // MyBatis-Plus 字段注解
+    @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 32)
+    @ColumnComment("角色名称")
+    private String roleAvatar; // 角色头像
+
     @TableField("role_name") // MyBatis-Plus 字段注解
     @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 100)
     @ColumnComment("角色名称")

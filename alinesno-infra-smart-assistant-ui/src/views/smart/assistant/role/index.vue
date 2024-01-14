@@ -86,7 +86,7 @@
           <el-table-column label="图标" align="center" width="60px" prop="icon" v-if="columns[0].visible">
             <template #default="scope">
               <div class="role-icon">
-                <img :src="'http://data.linesno.com/icons/circle/Delivery boy-' + ((scope.$index + 1)%5 + 1) + '.png'" />
+                <img :src="imagePath(scope.row)" />
               </div>
             </template>
           </el-table-column>
@@ -197,6 +197,32 @@
     <!-- 添加或修改应用配置对话框 -->
     <el-dialog :title="title" v-model="open" width="800px" append-to-body>
       <el-form :model="form" :rules="rules" ref="RoleRef" label-width="80px">
+          <el-row>
+            <el-col :span="24" class="editor-after-div">
+              <el-form-item
+                  label="头像"
+                  :rules="[{
+                      required: true,
+                      message: '请上传运行效果',
+                      trigger: 'blur',
+                    },]"
+                >
+                  <el-upload
+                    :file-list="fileList"
+                    :action="upload.url + '?type=img&updateSupport=' + upload.updateSupport"
+                    list-type="picture-card"
+                    :auto-upload="true"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :headers="upload.headers"
+                    :disabled="upload.isUploading"
+                    :on-progress="handleFileUploadProgress"
+                  >
+                    <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+                  </el-upload>
+                </el-form-item>
+            </el-col>
+          </el-row>
           <el-row>
               <el-col :span="24">
                 <el-form-item style="width: 100%;" label="类型" prop="industryCatalog">
@@ -312,6 +338,7 @@ import {
   updateRoleChain,
 } from "@/api/smart/assistant/chain"
 
+import { ElMessage } from 'element-plus'
 import {reactive} from "vue";
 
 const router = useRouter();
@@ -328,6 +355,7 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+const imageUrl = ref('')
 
 const chainOpen = ref(false);
 const chainTitle = ref("");
@@ -350,7 +378,7 @@ const upload = reactive({
   // 设置上传的请求头部
   headers: {Authorization: "Bearer " + getToken()},
   // 上传的地址
-  url: import.meta.env.VITE_APP_BASE_API + "/system/Role/importData"
+  url: import.meta.env.VITE_APP_BASE_API + "/api/infra/smart/assistant/role/importData"
 });
 // 列显隐信息
 const columns = ref([
@@ -367,7 +395,9 @@ const columns = ref([
 ]);
 
 const data = reactive({
-  form: {},
+  form: {
+    roleAvatar: null
+  },
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -402,6 +432,14 @@ const data = reactive({
 
 const {queryParams, form, rules , chainForm , chainRules} = toRefs(data);
 
+/** 显示图片 */
+function imagePath(row){
+  let roleAvatar = '1746435800232665090' ; 
+  if(row.roleAvatar){
+    roleAvatar = row.roleAvatar ; 
+  }
+  return import.meta.env.VITE_APP_BASE_API + "/api/infra/smart/assistant/role/displayImage/" + roleAvatar ; 
+}
 
 /** 查询应用列表 */
 function getList() {
@@ -411,6 +449,22 @@ function getList() {
     RoleList.value = res.rows;
     total.value = res.total;
   });
+};
+
+/** 图片上传成功 */
+const handleAvatarSuccess = (response, uploadFile) => {
+  imageUrl.value = URL.createObjectURL(uploadFile.raw);
+  form.value.roleAvatar = response.data ;
+  console.log('form.roleAvatar = ' + form.roleAvatar);
+};
+
+/** 图片上传之前 */
+const beforeAvatarUpload = (rawFile) => {
+  if (rawFile.size / 1024 / 1024 > 2) {
+    ElMessage.error('Avatar picture size can not exceed 2MB!');
+    return false;
+  }
+  return true;
 };
 
 // 节点单击事件
@@ -584,6 +638,25 @@ getList();
   img {
     width:40px;
     height:40px;
+    border-radius: 5px;
   }
 }
+
+.editor-after-div {
+  .el-upload{
+      widtH:56px;
+      height: 56px;
+      text-align: center;
+      line-height: 56px;
+  }
+  .el-upload-list__item-thumbnail{
+      width: 56px;
+      height: 56px;
+  }
+  .el-upload-list__item{
+      width: 56px;
+      height: 56px;
+  }
+}
+
 </style>

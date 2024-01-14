@@ -11,6 +11,8 @@ public class IndustryRoleDto {
 
     private String roleName; // 角色名称
 
+    private String roleAvatar ; // 角色头像
+
     private Long industryCatalog ; // 所属行业
 
     private String responsibilities; // 角色职责描述

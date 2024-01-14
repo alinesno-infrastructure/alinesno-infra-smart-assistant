@@ -18,7 +18,7 @@
 		<!-- 引用公共门面服务 -->
 		<dependency>
 			<groupId>com.alinesno.infra.smart</groupId>
-			<artifactId>alinesno-infra-smart-assistant-facade</artifactId>
+			<artifactId>alinesno-infra-smart-assistant-adapter</artifactId>
 			<version>${revision}</version>
 		</dependency>
 

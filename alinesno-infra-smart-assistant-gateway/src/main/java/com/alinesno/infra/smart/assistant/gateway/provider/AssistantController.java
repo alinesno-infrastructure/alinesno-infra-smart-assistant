@@ -1,7 +1,6 @@
 package com.alinesno.infra.smart.assistant.gateway.provider;
 
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
-import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.facade.response.HttpStatus;
 import com.alinesno.infra.common.web.adapter.rest.SuperController;
 import com.alinesno.infra.smart.assistant.api.IndustryRoleCatalogDto;
@@ -69,16 +68,12 @@ public class AssistantController extends SuperController {
      * @return
      */
     @PostMapping("/listByIds")
-    public AjaxResult agentListByIds(@RequestBody List<Long> ids){
-
+    public List<IndustryRoleEntity> agentListByIds(@RequestBody List<Long> ids){
         log.debug("listByIds = {}" , ids);
-
         if(ids.isEmpty()){
-            return AjaxResult.error("id长度为空." , new ArrayList<IndustryRoleEntity>()) ;
+            return new ArrayList<IndustryRoleEntity>() ;
         }
-
-        List<IndustryRoleEntity> roleEntityList = roleService.listByIds(ids) ;
-        return AjaxResult.success(roleEntityList) ;
+        return roleService.listByIds(ids) ;
     }
 
     /**
@@ -92,11 +87,11 @@ public class AssistantController extends SuperController {
 
     /**
      * 查询角色与类型
+     *
      * @return
      */
     @GetMapping("/allCatalog")
-    public AjaxResult allCatalog(){
-        List<IndustryRoleCatalogDto> roleEntityList = catalogService.allCatalog() ;
-        return AjaxResult.success(roleEntityList) ;
+    public List<IndustryRoleCatalogDto> allCatalog(){
+        return catalogService.allCatalog() ;
     }
 }
