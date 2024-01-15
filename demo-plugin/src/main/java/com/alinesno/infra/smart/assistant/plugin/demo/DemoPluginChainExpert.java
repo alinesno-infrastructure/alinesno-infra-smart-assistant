@@ -15,11 +15,11 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class DemoChainExpert extends PlatformExpert {
+public class DemoPluginChainExpert extends PlatformExpert {
 
     private static final String promptId = "0GSheQ31" ;
 
-    @LiteflowComponent(value = "DemoPlugin-a" , name="插件测试执行节点A")
+    @LiteflowComponent(value = "DemoPlugin_a" , name="插件测试执行节点A")
     public class ACmp extends NodeComponent {
 
         @Override
@@ -45,7 +45,7 @@ public class DemoChainExpert extends PlatformExpert {
         }
     }
 
-    @LiteflowComponent(value = "DemoPlugin-b" , name="插件测试执行节点B")
+    @LiteflowComponent(value = "DemoPlugin_b" , name="插件测试执行节点B")
     public class BCmp extends NodeComponent {
 
         @Override
@@ -55,7 +55,7 @@ public class DemoChainExpert extends PlatformExpert {
 
     }
 
-    @LiteflowComponent(value = "DemoPlugin-c" , name="插件测试执行节点C")
+    @LiteflowComponent(value = "DemoPlugin_c" , name="插件测试执行节点C")
     public class CCmp extends NodeComponent {
 
         @Override

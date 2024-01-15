@@ -14,6 +14,12 @@
     <artifactId>demo-plugin</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <properties>
+        <plugin.name>测试业务角色</plugin.name>
+        <plugin.desc>用于做示例插件和插件模板配置</plugin.desc>
+        <plugin.author>luoxiaodong</plugin.author>
+    </properties>
+
     <dependencies>
 
         <!-- config-agent_start -->
@@ -29,5 +35,28 @@
         </dependency>
         <!-- config-agent_end -->
     </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <PluginName>${plugin.name}</PluginName>
+                            <PluginDesc>${plugin.desc}</PluginDesc>
+                            <PluginAuthor>${plugin.author}</PluginAuthor>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

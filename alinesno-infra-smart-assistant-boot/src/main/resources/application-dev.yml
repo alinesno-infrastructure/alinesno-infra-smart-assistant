@@ -23,7 +23,7 @@ actable:
   table:
     auto: update
   model:
-    pack: com.alinesno.infra.smart.assistant.entity,com.alinesno.infra.smart.assistant.queue.entity
+    pack: com.alinesno.infra.smart.assistant.entity,com.alinesno.infra.smart.assistant.queue.entity,,com.alinesno.infra.smart.assistant.plugin.entity
   database:
     type: mysql
   index:
@@ -53,9 +53,8 @@ alinesno.infra:
     comment-link:
     assistant:
       plugin:
-        central: http://www.baidu.com
-        path: E:\GPT-Tmp
-#        path: ${user.home}/.smart-assistant/plugins
+        central: http://data.linesno.com/plugins/
+        path: ${user.home}/.smart-assistant/plugins
     dingtalk:
       app-key:
       app-secret:

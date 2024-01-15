@@ -1,4 +1,4 @@
-package com.alinesno.infra.smart.assistant.plugin.config;
+package com.alinesno.infra.smart.assistant.plugin;
 
 import lombok.Data;
 import lombok.ToString;

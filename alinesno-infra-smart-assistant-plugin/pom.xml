@@ -23,10 +23,21 @@
 		</dependency>
 		<!-- 引入forest_starter_end -->
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-loader</artifactId>
+			<version>3.1.4</version>
+		</dependency>
+
 		<!-- 引用公共门面服务 -->
 		<dependency>
 			<groupId>com.alinesno.infra.smart</groupId>
 			<artifactId>alinesno-infra-smart-assistant-facade</artifactId>
+			<version>${revision}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alinesno.infra.smart</groupId>
+			<artifactId>alinesno-infra-smart-assistant-role</artifactId>
 			<version>${revision}</version>
 		</dependency>
 
@@ -37,6 +48,6 @@
 			<version>${revision}</version>
 		</dependency>
 
-	</dependencies>
+    </dependencies>
 
 </project>

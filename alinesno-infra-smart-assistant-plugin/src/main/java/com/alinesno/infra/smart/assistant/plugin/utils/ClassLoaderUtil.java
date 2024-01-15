@@ -1,12 +1,17 @@
 package com.alinesno.infra.smart.assistant.plugin.utils;
 
+import com.yomahub.liteflow.annotation.LiteflowComponent;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
@@ -18,45 +23,58 @@ import java.net.URLConnection;
 public class ClassLoaderUtil {
 
     /**
-     * 从插件中心下载jar到指定的目录结构
-     * @param jarUrl
-     * @param targetDirectory
+     * 方法描述 判断class对象是否带有spring的注解
+     * 存放實現
+     *
+     * @param cla jar中的每一个class
+     * @return true 是spring bean   false 不是spring bean
+     * @method isSpringBeanClass
      */
-    public static void downloadJar(String jarUrl, String targetDirectory) {
-        try {
-            URL url = new URL(jarUrl);
-            URLConnection conn = url.openConnection();
+    public static boolean isSpringBeanClass(Class<?> cla) {
 
-            // 打开输入流
-            try (InputStream in = conn.getInputStream();
-                 BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(targetDirectory + "/downloaded.jar"))) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = in.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
-                }
-            }
-
-            System.out.println("Jar downloaded to: " + targetDirectory + "/downloaded.jar");
-        } catch (IOException e) {
-            log.error("服务异常:{}" , e.getMessage());
+        if (cla == null) {
+            return false;
         }
+        //是否是接口
+        if (cla.isInterface()) {
+            return false;
+        }
+        //是否是抽象类
+        if (Modifier.isAbstract(cla.getModifiers())) {
+            return false;
+        }
+        try {
+            if (cla.getAnnotation(Component.class) != null) {
+                return true;
+            }
+        }catch (Exception e){
+            log.error("出现异常：{}",e.getMessage());
+        }
+
+        try {
+            if (cla.getAnnotation(LiteflowComponent.class) != null) {
+                return true;
+            }
+        }catch (Exception e){
+            log.error("出现异常：{}",e.getMessage());
+        }
+
+        try {
+            if (cla.getAnnotation(Repository.class) != null) {
+                return true;
+            }
+        }catch (Exception e){
+            log.error("出现异常：{}",e.getMessage());
+        }
+
+        try {
+            if (cla.getAnnotation(Service.class) != null) {
+                return true;
+            }
+        }catch (Exception e){
+            log.error("出现异常：{}",e.getMessage());
+        }
+        return false;
     }
 
-    public static ClassLoader getClassLoader(String url) {
-        try {
-            Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-
-            if (!method.isAccessible()) {
-                method.setAccessible(true);
-            }
-
-            URLClassLoader classLoader = new URLClassLoader(new URL[]{}, ClassLoaderUtil.class.getClassLoader());
-            method.invoke(classLoader, new URL(url));
-            return classLoader;
-        } catch (Exception e) {
-            log.error("getClassLoader-error", e);
-            return null;
-        }
-    }
 }
