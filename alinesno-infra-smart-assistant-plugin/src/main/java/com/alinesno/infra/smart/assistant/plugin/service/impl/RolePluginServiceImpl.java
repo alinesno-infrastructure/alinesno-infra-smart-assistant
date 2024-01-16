@@ -4,7 +4,6 @@ import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.smart.assistant.entity.AccountRolePluginEntity;
 import com.alinesno.infra.smart.assistant.entity.RolePluginEntity;
 import com.alinesno.infra.smart.assistant.plugin.AssistantPluginProperties;
-import com.alinesno.infra.smart.assistant.plugin.loader.PluginImportBeanDefinitionRegistrar;
 import com.alinesno.infra.smart.assistant.plugin.mapper.RolePluginMapper;
 import com.alinesno.infra.smart.assistant.plugin.service.IAccountRolePluginService;
 import com.alinesno.infra.smart.assistant.plugin.service.IRolePluginService;
@@ -32,8 +31,8 @@ public class RolePluginServiceImpl extends IBaseServiceImpl<RolePluginEntity , R
     @Autowired
     private AssistantPluginProperties pluginProperties ;
 
-    @Autowired
-    private PluginImportBeanDefinitionRegistrar registrar ;
+//    @Autowired
+//    private PluginImportBeanDefinitionRegistrar registrar ;
 
     @SneakyThrows
     @Override
@@ -50,7 +49,7 @@ public class RolePluginServiceImpl extends IBaseServiceImpl<RolePluginEntity , R
         PluginLoader.downloadPlugin(pluginUrl , localPath);
 
         // 2. 动态加载插件
-        registrar.loadPlugin(localPath) ;
+//        registrar.loadPlugin(localPath) ;
 
         // 添加用户注册插件
         AccountRolePluginEntity accountRolePluginEntity = new AccountRolePluginEntity() ;
