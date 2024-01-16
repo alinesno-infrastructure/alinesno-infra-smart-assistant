@@ -1,5 +1,6 @@
 package com.alinesno.infra.smart.assistant.plugin.utils;
 
+import com.alinesno.infra.smart.assistant.role.utils.YAMLMapper;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -8,19 +9,16 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.apache.commons.io.FileUtils;
-import org.jetbrains.annotations.NotNull;
+import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.jar.Manifest;
 
 /**
  * 加载插件
@@ -56,53 +54,30 @@ public class PluginLoader {
         List<PluginInfo> pluginInfoList = new ArrayList<>();
         try {
             // 读取插件中心的配置文件
-            Properties properties = new Properties();
-            try (InputStream inputStream = new URL(pluginCentralUrl + "plugins.properties").openStream()) {
-                properties.load(inputStream);
-            }
+            URL url = new URL(pluginCentralUrl + "plugins.yaml");
+            String pluginYaml = IOUtils.toString(url, StandardCharsets.UTF_8);
+            log.debug("pluginYaml = {}" , pluginYaml);
+
+            Agents agent = YAMLMapper.fromYAML(pluginYaml , Agents.class) ;
 
             // 循环下载插件
-            for (String pluginName : properties.stringPropertyNames()) {
+            for (PluginInfo plugin : agent.agents) {
 
-                log.debug("pluginName = {}" , pluginName);
-                String pluginJar = properties.getProperty(pluginName) ;
+                log.debug("plugin = {}" , plugin);
+                String pluginJar = plugin.getJarName() ;
 
-                String pluginLocation = properties.getProperty(pluginName);
-                String pluginUrl = pluginCentralUrl + pluginLocation;
+                String pluginUrl = pluginCentralUrl + pluginJar;
                 String localPath = localPluginPath + "/" + pluginJar ;
 
                 downloadPlugin(pluginUrl, localPath);
 
                 log.debug("下载插件成功:{}" , localPath);
-
-                // 解析MANIFEST.MF信息
-                try (JarFile jarFile = new JarFile(localPath)) {
-                    PluginInfo pluginInfo = getPluginInfo(pluginName, jarFile, localPath);
-                    pluginInfoList.add(pluginInfo);
-                }
-
             }
         } catch (IOException e) {
             log.error("下载异常: {}", e.getMessage());
         }
 
         return pluginInfoList;
-    }
-
-    @NotNull
-    public static PluginInfo getPluginInfo(String pluginName, JarFile jarFile, String localPath) throws IOException {
-        Manifest manifest = jarFile.getManifest();
-        Attributes attributes = manifest.getMainAttributes();
-
-        // 构建PluginInfo对象
-        PluginInfo pluginInfo = new PluginInfo();
-        pluginInfo.setName(attributes.getValue("PluginName"));
-        pluginInfo.setDesc(attributes.getValue("PluginDesc"));
-        pluginInfo.setAuthor(attributes.getValue("PluginAuthor"));
-        pluginInfo.setJarName(pluginName);
-        pluginInfo.setLocalPath(localPath);
-
-        return pluginInfo;
     }
 
     /**
@@ -134,6 +109,14 @@ public class PluginLoader {
                 }
             }
         }
+    }
+
+    /**
+     * 专家列表
+     */
+    @Data
+    public static class Agents {
+        private List<PluginInfo> agents ;
     }
 
     /**
