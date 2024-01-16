@@ -14,8 +14,10 @@ import lombok.EqualsAndHashCode;
 public class RolePluginEntity extends InfraBaseEntity {
 
     private String name ; // 名称
+    private String desc ; // 插件描述
     private String jarName ; // jar包名称
     private String author ; // 作者
     private String version ; // 版本号
+    private String localPath; // 本地路径
 
 }

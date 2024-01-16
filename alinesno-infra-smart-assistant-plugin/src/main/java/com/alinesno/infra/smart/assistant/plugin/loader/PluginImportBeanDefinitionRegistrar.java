@@ -47,12 +47,16 @@ public class PluginImportBeanDefinitionRegistrar extends JarLauncher implements 
      */
     private String packagePrefix ;
 
+    private BeanDefinitionRegistry registry ;
+
     @SneakyThrows
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 
         List<PluginLoader.PluginInfo> list = PluginLoader.loadPlugin(central , basePath);
         log.debug("list = {}" , list);
+
+        this.registry = registry ;
 
         File directory = new File(basePath);
         File[] jarFiles = directory.listFiles((dir, name) -> name.endsWith(".jar"));
@@ -126,6 +130,49 @@ public class PluginImportBeanDefinitionRegistrar extends JarLauncher implements 
         this.basePath = environment.getProperty("alinesno.infra.smart.assistant.plugin.path");
         this.central = environment.getProperty("alinesno.infra.smart.assistant.plugin.central" , "http://data.linesno.com/plugins/");
         this.packagePrefix = environment.getProperty("alinesno.infra.smart.assistant.plugin.prefix" , "com.alinesno.infra.smart.assistant.plugin");
+    }
+
+    /**
+     * 加载单个插件
+     * @param pluginLocalPath
+     */
+    @SneakyThrows
+    public void loadPlugin(String pluginLocalPath) {
+
+        File jarFile = new File(pluginLocalPath) ;
+
+        URL url = jarFile.toURI().toURL();
+        ClassLoader classLoader = super.createClassLoader(new URL[]{url}) ;
+
+        URL jarUrl = jarFile.toURI().toURL();
+        log.debug("jarFile = {}" , jarUrl);
+
+        try (JarFile jf = new JarFile(jarFile)) {
+            Enumeration<JarEntry> entries = jf.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry jarEntry = entries.nextElement();
+
+                if (jarEntry.getName().endsWith(".class")) {
+                    String className = jarEntry.getName().replace("/", ".").substring(0, jarEntry.getName().length() - 6);
+
+                    log.debug("--->>>> className = {}" , className);
+
+                    if(className.startsWith(packagePrefix)){
+                        Class<?> clazz;
+                        try {
+                            clazz = classLoader.loadClass(className);
+
+                            //注册
+                            registerBean(clazz, registry);
+
+                            log.info("register bean [{}],Class [{}] success.", clazz.getName(), clazz);
+                        } catch (Exception e) {
+                            log.error("加载类包异常:{}" , e.getMessage());
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

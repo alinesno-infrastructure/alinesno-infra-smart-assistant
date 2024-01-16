@@ -1,49 +1,95 @@
 package com.alinesno.infra.smart.assistant.plugin.controller;
 
-import cn.hutool.core.util.IdUtil;
+import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
+import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
-import com.alinesno.infra.smart.assistant.enums.AssistantConstants;
-import com.alinesno.infra.smart.assistant.role.context.RoleChainContext;
-import com.dtflys.forest.annotation.Get;
-import com.yomahub.liteflow.builder.el.LiteFlowChainELBuilder;
-import com.yomahub.liteflow.core.FlowExecutor;
-import com.yomahub.liteflow.flow.LiteflowResponse;
-import jakarta.annotation.Resource;
+import com.alinesno.infra.common.web.adapter.rest.BaseController;
+import com.alinesno.infra.smart.assistant.entity.RolePluginEntity;
+import com.alinesno.infra.smart.assistant.plugin.service.IRolePluginService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
+/**
+ * 角色插件管理
+ */
 @Slf4j
 @RequestMapping("/api/assistant/role/plugin")
 @RestController
-public class RolePluginController {
+public class RolePluginController extends BaseController<RolePluginEntity , IRolePluginService> {
 
-    @Resource
-    private FlowExecutor flowExecutor;
+    @Autowired
+    private IRolePluginService service;
 
     /**
-     * 测试运行插件
+     * 获取ApplicationEntity的DataTables数据
+     *
+     * @param request HttpServletRequest对象
+     * @param model Model对象
+     * @param page DatatablesPageBean对象
+     * @return 包含DataTables数据的TableDataInfo对象
+     */
+    @ResponseBody
+    @PostMapping("/datatables")
+    public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
+        log.debug("page = {}", ToStringBuilder.reflectionToString(page));
+        return this.toPage(model, this.getFeign(), page);
+    }
+
+    @Override
+    public IRolePluginService getFeign() {
+        return this.service;
+    }
+
+    /**
+     * 重新加载插件
      * @return
      */
-    @GetMapping("/testPlugin")
-    public AjaxResult testPlugin(){
+    @GetMapping("/reloadPlugin")
+    public AjaxResult reloadPlugin(){
+        service.reloadPlugin() ;
+        return AjaxResult.success();
+    }
 
-        LiteFlowChainELBuilder.createChain().setChainId("DemoPluginChain").setEL(
-                "THEN(DemoPlugin_a,DemoPlugin_b)"
-        ).build();
+    /**
+     * 安装插件
+     * @return
+     */
+    @GetMapping("/installPlugin/{pluginId}")
+    public AjaxResult installPlugin(@PathVariable("pluginId") long pluginId){
 
-        flowExecutor.reloadRule();
+        log.debug("pluginId = {}" , pluginId);
 
-        RoleChainContext roleContext = new RoleChainContext() ;
-        roleContext.setBusinessId(IdUtil.getSnowflakeNextIdStr());
+        long accountId = 1L ;
+        service.installPlugin(accountId , pluginId) ;
 
-        LiteflowResponse response = flowExecutor.execute2Resp("DemoPluginChain" , null , roleContext);
-        log.debug("response = {}" , response);
+        return AjaxResult.success();
+    }
 
-        return AjaxResult.success() ;
+    /**
+     * 删除插件
+     * @return
+     */
+    @GetMapping("/removePlugin")
+    public AjaxResult removePlugin(){
+
+        return AjaxResult.success();
+    }
+
+    /**
+     * 更新插件
+     * @return
+     */
+    @GetMapping("/updatePlugin/{pluginId}")
+    public AjaxResult updatePlugin(@PathVariable("pluginId") long pluginId){
+
+        long accountId = 1L ;
+        service.installPlugin(accountId , pluginId) ;
+
+        return AjaxResult.success();
     }
 
 }

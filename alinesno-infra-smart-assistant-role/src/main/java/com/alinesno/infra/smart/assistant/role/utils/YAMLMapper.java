@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 public class YAMLMapper {
 
@@ -17,5 +18,10 @@ public class YAMLMapper {
     // 将Java对象转换为YAML字符串
     public static String toYAML(Object object) throws IOException {
         return objectMapper.writeValueAsString(object);
+    }
+
+    // 将YAML字符串转换为List类型的Java对象
+    public static <T> List<T> listFromYAML(String yaml, Class<T> elementType) throws IOException {
+        return objectMapper.readValue(yaml, objectMapper.getTypeFactory().constructCollectionType(List.class, elementType));
     }
 }

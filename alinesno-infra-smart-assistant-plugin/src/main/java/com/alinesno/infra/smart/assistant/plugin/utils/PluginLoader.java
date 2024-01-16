@@ -90,7 +90,7 @@ public class PluginLoader {
     }
 
     @NotNull
-    private static PluginInfo getPluginInfo(String pluginName, JarFile jarFile, String localPath) throws IOException {
+    public static PluginInfo getPluginInfo(String pluginName, JarFile jarFile, String localPath) throws IOException {
         Manifest manifest = jarFile.getManifest();
         Attributes attributes = manifest.getMainAttributes();
 
@@ -112,7 +112,7 @@ public class PluginLoader {
      * @param localPluginPath 本地保存路径
      * @throws IOException 可能抛出的IO异常
      */
-    private static void downloadPlugin(String pluginUrl, String localPluginPath) throws IOException {
+    public static void downloadPlugin(String pluginUrl, String localPluginPath) throws IOException {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(pluginUrl).build();
 
