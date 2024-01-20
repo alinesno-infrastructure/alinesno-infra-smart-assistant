@@ -263,7 +263,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item label="数据源" prop="dataSourceApi">
-              <el-input v-model="form.dataSourceApi" placeholder="请输入角色数据来源接口" maxlength="128"/>
+              <el-input v-model="form.dataSourceApi" placeholder="请输入角色数据来源接口" maxlength="512"/>
             </el-form-item>
           </el-col>
         </el-row> 

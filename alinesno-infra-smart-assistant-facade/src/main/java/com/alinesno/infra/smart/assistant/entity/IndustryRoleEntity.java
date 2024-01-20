@@ -28,7 +28,7 @@ public class IndustryRoleEntity extends InfraBaseEntity {
     private String roleName; // 角色名称
 
     @TableField("data_source_api") // MyBatis-Plus 字段注解
-    @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 128)
+    @ColumnType(value = MySqlTypeConstant.VARCHAR, length = 512)
     @ColumnComment("数据源API")
     private String dataSourceApi ; // 数据源API
 
