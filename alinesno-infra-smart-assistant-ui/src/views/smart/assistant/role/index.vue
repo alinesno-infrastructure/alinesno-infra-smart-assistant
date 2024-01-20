@@ -259,15 +259,14 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!-- 
+
         <el-row>
           <el-col :span="24">
-            <el-form-item label="所属领域" prop="domain">
-              <el-input v-model="form.domain" placeholder="请输入所属领域" maxlength="100"/>
+            <el-form-item label="数据源" prop="dataSourceApi">
+              <el-input v-model="form.dataSourceApi" placeholder="请输入角色数据来源接口" maxlength="128"/>
             </el-form-item>
           </el-col>
         </el-row> 
-        -->
 
       </el-form>
       <template #footer>

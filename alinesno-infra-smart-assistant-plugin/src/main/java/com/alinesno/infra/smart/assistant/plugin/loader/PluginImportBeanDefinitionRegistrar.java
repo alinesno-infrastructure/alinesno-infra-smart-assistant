@@ -128,7 +128,7 @@ public class PluginImportBeanDefinitionRegistrar extends JarLauncher implements 
     @Override
     public void setEnvironment(Environment environment) {
         this.basePath = environment.getProperty("alinesno.infra.smart.assistant.plugin.path");
-        this.central = environment.getProperty("alinesno.infra.smart.assistant.plugin.central" , "http://data.linesno.com/plugins/");
+        this.central = environment.getProperty("alinesno.infra.smart.assistant.plugin.central");
         this.packagePrefix = environment.getProperty("alinesno.infra.smart.assistant.plugin.prefix" , "com.alinesno.infra.smart.assistant.plugin");
     }
 
