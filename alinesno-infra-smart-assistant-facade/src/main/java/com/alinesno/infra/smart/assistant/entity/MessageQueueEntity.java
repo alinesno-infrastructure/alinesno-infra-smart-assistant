@@ -52,4 +52,12 @@ public class MessageQueueEntity extends InfraBaseEntity {
     @Column(type = MySqlTypeConstant.LONGTEXT  , comment = "生成的内容")
     private String assistantContent ;  // 生成的内容
 
+    // 生成的信息内容(这里结合查看服务)
+    @TableField
+    @Column(type = MySqlTypeConstant.VARCHAR, length = 8  , comment = "链接类型")
+    private String linkType ; // 链接类型
+
+    @TableField
+    @Column(type = MySqlTypeConstant.VARCHAR , length = 512, comment = "链接地址")
+    private String linkPath ; // 链接连接地址
 }

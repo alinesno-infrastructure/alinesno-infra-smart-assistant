@@ -42,9 +42,8 @@ public class MessageQueueController extends SuperController {
      * @return
      */
     @PostMapping("/queryMessage")
-    public AjaxResult queryMessage(String businessId){
-        MessageQueueEntity messageQueue = queueService.queryMessage(businessId);
-        return AjaxResult.success(messageQueue);
+    public MessageQueueEntity queryMessage(String businessId){
+        return queueService.queryMessage(businessId);
     }
 
     /**

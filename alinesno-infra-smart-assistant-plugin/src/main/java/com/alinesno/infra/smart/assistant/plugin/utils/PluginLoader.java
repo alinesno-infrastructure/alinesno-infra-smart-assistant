@@ -39,7 +39,7 @@ public class PluginLoader {
      * pluginDesc: jar包插件的作用描述信息
      * pluginAuthor: 插件的作者信息，比如hangman<hangman@gmail.com/>
      *
-     * @param pluginCentralUrl 插件中心的URL，例如 <a href="http://plugin.central.com/plugins.txt">...</a>
+     * @param pluginCentralUrl 插件中心的URL，例如 <a href="http://plugin.central.com/plugins.yaml">...</a>
      * @param localPluginPath  从插件中心下载到本地目录
      * @return 插件信息列表
      */
