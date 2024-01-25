@@ -17,6 +17,7 @@ import java.util.Map;
 public class RoleChainContext extends DefaultContext {
 
     private String businessId ;  // 业务ID
+    private String channel ;  // 频道ID
 
     private String promptId ;  // 指令标识
     private String userContent ; // 用户要求
@@ -33,8 +34,5 @@ public class RoleChainContext extends DefaultContext {
     // 针对聚合场景
     private List<String> businessIds ; // 所有业务ID列表
     private List<TaskContentDto> assistantContents ; // 所有返回列表结构
-
-    // 针对需求功能列表
-//    private List<BusinessAnalystSpecialist.FunctionBean> functionBeanList ;
 
 }

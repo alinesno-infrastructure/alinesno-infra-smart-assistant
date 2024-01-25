@@ -1,13 +1,16 @@
 package com.alinesno.infra.smart.assistant.role.common;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@NoArgsConstructor
 @ToString
 @Data
 public class TableItem {
     private String taskStatus;
     private String businessId;
+    private String channel ;
     private String taskType;
     private String taskName;
     private String assistantContent;
