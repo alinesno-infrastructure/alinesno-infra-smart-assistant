@@ -6,6 +6,7 @@ import com.alinesno.infra.smart.assistant.chain.IBaseExpertService;
 import com.alinesno.infra.smart.assistant.entity.MessageQueueEntity;
 import com.alinesno.infra.smart.assistant.im.dto.NoticeDto;
 import com.alinesno.infra.smart.assistant.im.service.IDingtalkNoticeService;
+import com.alinesno.infra.smart.assistant.role.common.TableItem;
 import com.alinesno.infra.smart.assistant.role.event.MessageQueueEvent;
 import com.alinesno.infra.smart.assistant.role.event.PublishService;
 import com.alinesno.infra.smart.assistant.role.service.BrainRemoteService;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -111,6 +113,27 @@ public abstract class PlatformExpert implements IBaseExpertService {
      */
     protected String generatorId(){
        return IdUtil.getSnowflakeNextIdStr() ;
+    }
+
+    /**
+     * 发送任务状态通知，用于让前端了解任务的状态
+     */
+    protected void pushTaskInfo(String title , String assistantContent){
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(5);
+
+        String[] statusOptions = {"pending", "completed", "failed"};
+        String[] taskType = {"1", "4", "5"};
+
+        new TableItem(
+                statusOptions[random.nextInt(statusOptions.length)],
+                "B00" + (randomIndex + 1),
+                taskType[random.nextInt(taskType.length)],
+                title ,
+                assistantContent ,
+                (random.nextInt(10) + 1) + "秒"
+        );
     }
 
 }
